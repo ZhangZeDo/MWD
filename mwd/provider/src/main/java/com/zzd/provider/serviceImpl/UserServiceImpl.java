@@ -5,6 +5,7 @@ import com.zzd.api.dao.TUserMapper;
 import com.zzd.api.domain.TUser;
 import com.zzd.api.domain.TUserExample;
 import com.zzd.api.dto.UserDTO;
+import com.zzd.api.exceptions.BussException;
 import com.zzd.api.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +43,7 @@ public class UserServiceImpl implements UserService {
             }
         }catch (Exception e){
             logger.error("根据用户账号获取用户信息异常，原因：",e);
-            return null;
+            throw new BussException("根据用户账号获取用户信息失败");
         }
     }
 
@@ -52,6 +53,7 @@ public class UserServiceImpl implements UserService {
             TUser user = new TUser();
         }catch (Exception e){
             logger.error("添加用户信息异常，原因：",e);
+            throw new BussException("添加用户信息失败");
         }
     }
 }

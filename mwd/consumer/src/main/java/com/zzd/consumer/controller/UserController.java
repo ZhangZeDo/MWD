@@ -1,12 +1,11 @@
 package com.zzd.consumer.controller;
 
-import com.alibaba.dubbo.config.annotation.Reference;
 import com.zzd.api.domain.TUser;
+import com.zzd.api.dto.ResponseResult;
 import com.zzd.api.service.UserService;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -18,17 +17,19 @@ import javax.annotation.Resource;
 @RestController
 @RequestMapping("user")
 public class UserController {
+    private Logger logger = LoggerFactory.getLogger(UserController.class);
+
     @Resource
     private UserService userService;
 
-    @RequestMapping(value = "selectUserByAccount")
+    @RequestMapping(value = "selectUserByAccount",method = RequestMethod.GET)
     @ResponseBody
     public Object selectUserByAccount() {
         try{
             TUser user = userService.selectUserByAccount("123456");
-            return user;
+            return ResponseResult.build(user);
         }catch (Exception e){
-            return null;
+            return ResponseResult.error(e.getMessage());
         }
     }
 }
