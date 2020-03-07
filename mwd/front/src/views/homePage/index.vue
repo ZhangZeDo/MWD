@@ -6,12 +6,10 @@
 
 <script>
     export default {
-        name: "index"
+        name: "home"
     }
 </script>
 
 <style lang="css" scoped>
-    div {
-        margin-top: 60px;
-    }
+
 </style>
