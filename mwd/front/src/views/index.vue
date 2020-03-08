@@ -7,14 +7,10 @@
 
 <script>
     import Navbar from "../components/Navbar";
-    // import HomePage from "../views/homePage/index";
-    // import PersonalCenter from  "../views/personalCenter/index";
     export default {
         name: "index",
         components: {
             Navbar,
-            // HomePage,
-            // PersonalCenter,
         },
         data(){
             return{

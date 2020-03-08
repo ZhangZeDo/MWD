@@ -9,11 +9,11 @@
         name: "center",
         data(){
             return{
-                userName:'',
+                userName:'111',
             }
         },
         created() {
-            this.userName = this.$route.query.modelName
+
         }
     }
 </script>

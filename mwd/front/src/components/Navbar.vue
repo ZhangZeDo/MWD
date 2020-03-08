@@ -9,7 +9,7 @@
                   text-color="#fff"
                   active-text-color="#ffd04b"
                   style="padding-left: 40%">
-              <el-menu-item index="1" @click="jump('homePage','HomePage')" >首页</el-menu-item>
+              <el-menu-item index="1" @click="jump('homePage')" >首页</el-menu-item>
               <el-submenu index="2">
                   <template slot="title">我的工作台</template>
                   <el-menu-item index="2-1">选项1</el-menu-item>
@@ -23,8 +23,8 @@
                   </el-submenu>
               </el-submenu>
               <el-menu-item index="3">消息中心</el-menu-item>
-              <el-menu-item index="4" @click="jump('order','11111')">订单管理</el-menu-item>
-              <el-menu-item index="5" @click="jump('personalCenter','PersonalCenter')">个人中心</el-menu-item>
+              <el-menu-item index="4" @click="jump('order')">订单管理</el-menu-item>
+              <el-menu-item index="5" @click="jump('personalCenter')">个人中心</el-menu-item>
           </el-menu>
       </div>
   </div>
@@ -43,8 +43,8 @@ export default {
         };
     },
     methods: {
-        jump(path,modelName){
-            this.$router.push({path:path,query:{modelName:modelName}})
+        jump(path){
+            this.$router.push({path:path})
         }
     }
 }

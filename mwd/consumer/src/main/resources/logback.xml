@@ -21,7 +21,7 @@
               class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>provider/${catalina.base}/logs/allLog.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${catalina.base}/logs/allLog.%d{yyyy-MM-dd}.zip</fileNamePattern>
+            <fileNamePattern>provider/${catalina.base}/logs/allLog.%d{yyyy-MM-dd}.zip</fileNamePattern>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
 
@@ -43,7 +43,7 @@
         </filter>
         <file>provider/${catalina.base}/logs/errorLog.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${catalina.base}/logs/errorLog.%d{yyyy-MM-dd}.zip</fileNamePattern>
+            <fileNamePattern>provider/${catalina.base}/logs/errorLog.%d{yyyy-MM-dd}.zip</fileNamePattern>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
 
@@ -65,7 +65,7 @@
         </filter>
         <file>provider/${catalina.base}/logs/warnLog.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${catalina.base}/logs/warnLog.%d{yyyy-MM-dd}.zip</fileNamePattern>
+            <fileNamePattern>provider/${catalina.base}/logs/warnLog.%d{yyyy-MM-dd}.zip</fileNamePattern>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
 

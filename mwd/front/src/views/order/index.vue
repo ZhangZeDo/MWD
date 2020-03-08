@@ -15,10 +15,19 @@
             }
         },
         created() {
-            this.$axios.get('http://localhost:8081/user/selectUserByAccount').then(function (resp) {
-                this.userName = resp.data.userName
-            })
-
+            this.getUser()
+        },
+        methods:{
+            getUser(){
+                this.axios({
+                    method: 'get',
+                    url: '/user/selectUserByAccount',
+                    data: {
+                        firstName: 'Fred',
+                        lastName: 'Flintstone'
+                    }
+                });
+            }
         }
     }
 </script>

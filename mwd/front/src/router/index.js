@@ -37,34 +37,6 @@ const routers = new Router({
                 }
             ]
         },
-        // {
-        //     path:'/homePage',
-        //     name:'homePage',
-        //     component: () => import('@/views/homePage'),
-        //     // redirect:'/homePage/index',
-        //     // children:[
-        //     //     {
-        //     //         path: '/index',
-        //     //         component: () => import('@/views/homePage'),
-        //     //     }
-        //     // ]
-        // },
-        // {
-        //     path:'/personalCenter',
-        //     name:'personalCenter',
-        //     component:() =>import('@/views/personalCenter'),
-        //     // children: [
-        //     //     {
-        //     //         path:'/index',
-        //     //         component:() =>import('@/views/personalCenter'),
-        //     //     }
-        //     // ]
-        // },
-        // {
-        //     path:'/order',
-        //     name:'order',
-        //     component:()=>import('@/views/order')
-        // }
     ]
 })
 
