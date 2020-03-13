@@ -15,7 +15,7 @@ import javax.annotation.Resource;
  * @describe
  */
 @RestController
-@RequestMapping("user")
+@RequestMapping("/user")
 public class UserController {
     private Logger logger = LoggerFactory.getLogger(UserController.class);
 

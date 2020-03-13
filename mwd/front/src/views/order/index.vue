@@ -6,7 +6,7 @@
 </template>
 
 <script>
-
+    import axios from 'axios'
     export default {
         name: "order",
         data(){
@@ -19,13 +19,16 @@
         },
         methods:{
             getUser(){
-                this.axios({
-                    method: 'get',
-                    url: '/user/selectUserByAccount',
+                axios({
+                    method: 'GET',
+                    url: 'http://localhost:8083/user/selectUserByAccount',
                     data: {
-                        firstName: 'Fred',
-                        lastName: 'Flintstone'
+
                     }
+                }).then(resp=>{
+                    window.console.log(resp)
+                    this.userName = resp.data.data.userName;
+                    window.console.log(this.userName)
                 });
             }
         }
