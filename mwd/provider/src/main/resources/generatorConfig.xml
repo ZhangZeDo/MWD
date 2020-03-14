@@ -19,7 +19,7 @@
                 driverClass="com.mysql.jdbc.Driver"
                 connectionURL="jdbc:mysql://127.0.0.1:3306/mwd?useSSL=false&amp;nullNamePatternMatchesAll=true"
                 userId="root"
-                password="root">
+                password="123456">
         </jdbcConnection>
 
         <!-- 非必需，类型处理器，在数据库类型和java类型之间的转换控制-->
@@ -55,8 +55,13 @@
         <!-- schema即为数据库名 tableName为对应的数据库表 domainObjectName是要生成的实体类 enable*ByExample
             是否生成 example类 -->
 
-        <table schema="mwd" tableName="t_user"
+        <!--<table schema="mwd" tableName="t_user"
                domainObjectName="TUser" enableCountByExample="true"
+               enableDeleteByExample="true" enableSelectByExample="true"
+               enableUpdateByExample="true">
+        </table>-->
+        <table schema="mwd" tableName="t_media_work"
+               domainObjectName="TMediaWork" enableCountByExample="true"
                enableDeleteByExample="true" enableSelectByExample="true"
                enableUpdateByExample="true">
         </table>

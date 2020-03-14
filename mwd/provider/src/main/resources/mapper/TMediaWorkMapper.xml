@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzd.api.dao.TMediaWorkMapper" >
+  <resultMap id="BaseResultMap" type="com.zzd.api.domain.TMediaWork" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="media_name" property="mediaName" jdbcType="VARCHAR" />
+    <result column="media_remark" property="mediaRemark" jdbcType="VARCHAR" />
+    <result column="media_cover" property="mediaCover" jdbcType="VARCHAR" />
+    <result column="media_url" property="mediaUrl" jdbcType="VARCHAR" />
+    <result column="media_type" property="mediaType" jdbcType="VARCHAR" />
+    <result column="popular_num" property="popularNum" jdbcType="INTEGER" />
+    <result column="recommend_num" property="recommendNum" jdbcType="INTEGER" />
+    <result column="discuss_num" property="discussNum" jdbcType="INTEGER" />
+    <result column="media_grade" property="mediaGrade" jdbcType="DOUBLE" />
+    <result column="upload_user" property="uploadUser" jdbcType="VARCHAR" />
+    <result column="approval_user" property="approvalUser" jdbcType="VARCHAR" />
+    <result column="approval_remark" property="approvalRemark" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="create_datetime" property="createDatetime" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+    <result column="update_datetime" property="updateDatetime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, media_name, media_remark, media_cover, media_url, media_type, popular_num, recommend_num,
+    discuss_num, media_grade, upload_user, approval_user, approval_remark, status, create_by,
+    create_datetime, update_by, update_datetime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zzd.api.domain.TMediaWorkExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_media_work
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from t_media_work
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_media_work
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zzd.api.domain.TMediaWorkExample" >
+    delete from t_media_work
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zzd.api.domain.TMediaWork" >
+    insert into t_media_work (id, media_name, media_remark,
+      media_cover, media_url, media_type,
+      popular_num, recommend_num, discuss_num,
+      media_grade, upload_user, approval_user,
+      approval_remark, status, create_by,
+      create_datetime, update_by, update_datetime
+      )
+    values (#{id,jdbcType=VARCHAR}, #{mediaName,jdbcType=VARCHAR}, #{mediaRemark,jdbcType=VARCHAR},
+      #{mediaCover,jdbcType=VARCHAR}, #{mediaUrl,jdbcType=VARCHAR}, #{mediaType,jdbcType=VARCHAR},
+      #{popularNum,jdbcType=INTEGER}, #{recommendNum,jdbcType=INTEGER}, #{discussNum,jdbcType=INTEGER},
+      #{mediaGrade,jdbcType=DOUBLE}, #{uploadUser,jdbcType=VARCHAR}, #{approvalUser,jdbcType=VARCHAR},
+      #{approvalRemark,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{createBy,jdbcType=VARCHAR},
+      #{createDatetime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateDatetime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zzd.api.domain.TMediaWork" >
+    insert into t_media_work
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="mediaName != null" >
+        media_name,
+      </if>
+      <if test="mediaRemark != null" >
+        media_remark,
+      </if>
+      <if test="mediaCover != null" >
+        media_cover,
+      </if>
+      <if test="mediaUrl != null" >
+        media_url,
+      </if>
+      <if test="mediaType != null" >
+        media_type,
+      </if>
+      <if test="popularNum != null" >
+        popular_num,
+      </if>
+      <if test="recommendNum != null" >
+        recommend_num,
+      </if>
+      <if test="discussNum != null" >
+        discuss_num,
+      </if>
+      <if test="mediaGrade != null" >
+        media_grade,
+      </if>
+      <if test="uploadUser != null" >
+        upload_user,
+      </if>
+      <if test="approvalUser != null" >
+        approval_user,
+      </if>
+      <if test="approvalRemark != null" >
+        approval_remark,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDatetime != null" >
+        create_datetime,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDatetime != null" >
+        update_datetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="mediaName != null" >
+        #{mediaName,jdbcType=VARCHAR},
+      </if>
+      <if test="mediaRemark != null" >
+        #{mediaRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="mediaCover != null" >
+        #{mediaCover,jdbcType=VARCHAR},
+      </if>
+      <if test="mediaUrl != null" >
+        #{mediaUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="mediaType != null" >
+        #{mediaType,jdbcType=VARCHAR},
+      </if>
+      <if test="popularNum != null" >
+        #{popularNum,jdbcType=INTEGER},
+      </if>
+      <if test="recommendNum != null" >
+        #{recommendNum,jdbcType=INTEGER},
+      </if>
+      <if test="discussNum != null" >
+        #{discussNum,jdbcType=INTEGER},
+      </if>
+      <if test="mediaGrade != null" >
+        #{mediaGrade,jdbcType=DOUBLE},
+      </if>
+      <if test="uploadUser != null" >
+        #{uploadUser,jdbcType=VARCHAR},
+      </if>
+      <if test="approvalUser != null" >
+        #{approvalUser,jdbcType=VARCHAR},
+      </if>
+      <if test="approvalRemark != null" >
+        #{approvalRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDatetime != null" >
+        #{createDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDatetime != null" >
+        #{updateDatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zzd.api.domain.TMediaWorkExample" resultType="java.lang.Integer" >
+    select count(*) from t_media_work
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_media_work
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mediaName != null" >
+        media_name = #{record.mediaName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mediaRemark != null" >
+        media_remark = #{record.mediaRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mediaCover != null" >
+        media_cover = #{record.mediaCover,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mediaUrl != null" >
+        media_url = #{record.mediaUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mediaType != null" >
+        media_type = #{record.mediaType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.popularNum != null" >
+        popular_num = #{record.popularNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.recommendNum != null" >
+        recommend_num = #{record.recommendNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.discussNum != null" >
+        discuss_num = #{record.discussNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.mediaGrade != null" >
+        media_grade = #{record.mediaGrade,jdbcType=DOUBLE},
+      </if>
+      <if test="record.uploadUser != null" >
+        upload_user = #{record.uploadUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.approvalUser != null" >
+        approval_user = #{record.approvalUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.approvalRemark != null" >
+        approval_remark = #{record.approvalRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createDatetime != null" >
+        create_datetime = #{record.createDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateDatetime != null" >
+        update_datetime = #{record.updateDatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_media_work
+    set id = #{record.id,jdbcType=VARCHAR},
+      media_name = #{record.mediaName,jdbcType=VARCHAR},
+      media_remark = #{record.mediaRemark,jdbcType=VARCHAR},
+      media_cover = #{record.mediaCover,jdbcType=VARCHAR},
+      media_url = #{record.mediaUrl,jdbcType=VARCHAR},
+      media_type = #{record.mediaType,jdbcType=VARCHAR},
+      popular_num = #{record.popularNum,jdbcType=INTEGER},
+      recommend_num = #{record.recommendNum,jdbcType=INTEGER},
+      discuss_num = #{record.discussNum,jdbcType=INTEGER},
+      media_grade = #{record.mediaGrade,jdbcType=DOUBLE},
+      upload_user = #{record.uploadUser,jdbcType=VARCHAR},
+      approval_user = #{record.approvalUser,jdbcType=VARCHAR},
+      approval_remark = #{record.approvalRemark,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=TINYINT},
+      create_by = #{record.createBy,jdbcType=VARCHAR},
+      create_datetime = #{record.createDatetime,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=VARCHAR},
+      update_datetime = #{record.updateDatetime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zzd.api.domain.TMediaWork" >
+    update t_media_work
+    <set >
+      <if test="mediaName != null" >
+        media_name = #{mediaName,jdbcType=VARCHAR},
+      </if>
+      <if test="mediaRemark != null" >
+        media_remark = #{mediaRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="mediaCover != null" >
+        media_cover = #{mediaCover,jdbcType=VARCHAR},
+      </if>
+      <if test="mediaUrl != null" >
+        media_url = #{mediaUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="mediaType != null" >
+        media_type = #{mediaType,jdbcType=VARCHAR},
+      </if>
+      <if test="popularNum != null" >
+        popular_num = #{popularNum,jdbcType=INTEGER},
+      </if>
+      <if test="recommendNum != null" >
+        recommend_num = #{recommendNum,jdbcType=INTEGER},
+      </if>
+      <if test="discussNum != null" >
+        discuss_num = #{discussNum,jdbcType=INTEGER},
+      </if>
+      <if test="mediaGrade != null" >
+        media_grade = #{mediaGrade,jdbcType=DOUBLE},
+      </if>
+      <if test="uploadUser != null" >
+        upload_user = #{uploadUser,jdbcType=VARCHAR},
+      </if>
+      <if test="approvalUser != null" >
+        approval_user = #{approvalUser,jdbcType=VARCHAR},
+      </if>
+      <if test="approvalRemark != null" >
+        approval_remark = #{approvalRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDatetime != null" >
+        create_datetime = #{createDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDatetime != null" >
+        update_datetime = #{updateDatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zzd.api.domain.TMediaWork" >
+    update t_media_work
+    set media_name = #{mediaName,jdbcType=VARCHAR},
+      media_remark = #{mediaRemark,jdbcType=VARCHAR},
+      media_cover = #{mediaCover,jdbcType=VARCHAR},
+      media_url = #{mediaUrl,jdbcType=VARCHAR},
+      media_type = #{mediaType,jdbcType=VARCHAR},
+      popular_num = #{popularNum,jdbcType=INTEGER},
+      recommend_num = #{recommendNum,jdbcType=INTEGER},
+      discuss_num = #{discussNum,jdbcType=INTEGER},
+      media_grade = #{mediaGrade,jdbcType=DOUBLE},
+      upload_user = #{uploadUser,jdbcType=VARCHAR},
+      approval_user = #{approvalUser,jdbcType=VARCHAR},
+      approval_remark = #{approvalRemark,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_datetime = #{createDatetime,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      update_datetime = #{updateDatetime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

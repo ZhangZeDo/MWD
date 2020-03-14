@@ -1,14 +1,12 @@
 package com.zzd.api.dao;
 
+
 import com.zzd.api.domain.TUser;
 import com.zzd.api.domain.TUserExample;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
-
 
 import java.util.List;
 
-@Repository
 public interface TUserMapper {
     int countByExample(TUserExample example);
 
