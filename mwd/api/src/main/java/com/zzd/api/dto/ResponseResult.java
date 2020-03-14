@@ -30,6 +30,12 @@ public class ResponseResult<T> {
         result.setData(data);
         return result;
     }
+
+    public static <T> ResponseResult<T> ok() {
+        ResponseResult<T> result = new ResponseResult<>(ErrCode.SUCCESS);
+        return result;
+    }
+
     public static <T> ResponseResult<T> build(String code, String msg,T data) {
         ResponseResult<T> result = new ResponseResult<>(code, msg);
         result.setData(data);

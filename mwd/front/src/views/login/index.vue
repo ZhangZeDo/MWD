@@ -1,36 +1,49 @@
 <template>
-    <div>
-        <button class="btn" @click="jump('index')">登录</button>
+    <div >
+        <div style="display: flex;justify-content: center;margin-top: 150px">
+                <el-form auto-complete="on" label-position="left">
+                    <h3 class="title" align="center">欢迎使用多媒体展示平台</h3>
+                    <el-card style="width: 450px;margin-top: 20px">
+                        <el-input style="margin-top: 30px" v-model="userAccount" placeholder="请输入用户号"></el-input>
+                        <el-input style="margin-top: 20px" v-model="userPassword" placeholder="请输入密码" show-password @keyup.enter.native="doLogin"></el-input>
+                        <el-button style="margin-top: 20px;width: 100%" type="primary" @click="doLogin">登录</el-button>
+                        <el-link style="margin-top: 10px;margin-bottom:10px;float: left"  type="primary">联系我们</el-link>
+                        <el-link style="margin-top: 10px;margin-bottom:10px;float: right"  type="primary" @click="doRegister">注册</el-link>
+                    </el-card>
+                </el-form>
+        </div>
     </div>
 </template>
-
 <script>
+    import axios from 'axios'
     export default {
         name: "login",
-        data(){
+        data() {
             return{
-
+                userAccount: '',
+                userPassword: '',
             }
         },
         methods:{
-          jump(path){
-            this.$router.push({name:path});
-          }
+            doLogin(){
+                axios({
+                    method: 'POST',
+                    url: 'http://localhost:8083/user/login',
+                    data: {
+                        userAccount:this.userAccount,
+                        userPassword:this.userPassword
+                    }
+                }).then(resp=>{
+                    if (resp.data.code == 200) {
+                        this.$router.push({name: 'index', params: {userInfo: resp.data.data}});
+                    }else{
+                        this.$message.error(resp.data.message);
+                    }
+                });
+            },
+            doRegister(){
+                this.$router.push({name: 'register'});
+            }
         }
     }
 </script>
-
-<style scoped>
-div{
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-btn{
-    width: 150px;
-    height: 20px;
-}
-</style>

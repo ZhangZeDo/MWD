@@ -15,6 +15,11 @@ const routers = new Router({
             component:()=>import('@/views/login')
         },
         {
+          path:'/register',
+          name:'register',
+          component:()=>import('@/views/login/register')
+        },
+        {
             path:'/index',
             name:'index',
             component:()=> import('@/views/index'),

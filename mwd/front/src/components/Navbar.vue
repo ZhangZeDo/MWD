@@ -39,12 +39,20 @@ export default {
   },
     data() {
         return {
-            activeIndex: '1'
+            activeIndex: '1',
         };
+    },
+    created() {
+        this.getUser()
     },
     methods: {
         jump(path){
             this.$router.push({path:path})
+        },
+
+        getUser(){
+          //this.user = this.$route.params.user
+            window.console.info(this.$route.params)
         }
     }
 }
