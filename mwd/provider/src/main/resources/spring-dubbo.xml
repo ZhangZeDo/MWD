@@ -17,4 +17,6 @@
 
     <bean id="userService" class="com.zzd.provider.serviceImpl.UserServiceImpl"/>
     <dubbo:service interface="com.zzd.api.service.UserService" ref="userService"/>
+    <bean id="loginService" class="com.zzd.provider.serviceImpl.LoginServiceImpl"/>
+    <dubbo:service interface="com.zzd.api.service.LoginService" ref="loginService"/>
 </beans>

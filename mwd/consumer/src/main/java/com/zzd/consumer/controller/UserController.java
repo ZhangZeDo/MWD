@@ -5,6 +5,7 @@ import com.zzd.api.domain.TUser;
 import com.zzd.api.dto.ResponseResult;
 import com.zzd.api.dto.UserDTO;
 import com.zzd.api.eunms.UserRoleType;
+import com.zzd.api.service.LoginService;
 import com.zzd.api.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -25,6 +26,8 @@ public class UserController {
 
     @Resource
     private UserService userService;
+    @Resource
+    private LoginService loginService;
 
     @RequestMapping(value = "selectUserByAccount",method = RequestMethod.GET)
     @ResponseBody
@@ -48,6 +51,18 @@ public class UserController {
             }else if(!StringUtils.equals(user.getUserPassword(),userDTO.getUserPassword())){
                 return ResponseResult.error("用户密码错误");
             }
+            loginService.createLoginInfo(user);
+            return ResponseResult.build(user);
+        }catch (Exception e){
+            return ResponseResult.error(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "getLoginInfo",method = RequestMethod.GET)
+    @ResponseBody
+    public Object getLoginInfo() {
+        try{
+            TUser user = loginService.getLoginInfo();
             return ResponseResult.build(user);
         }catch (Exception e){
             return ResponseResult.error(e.getMessage());

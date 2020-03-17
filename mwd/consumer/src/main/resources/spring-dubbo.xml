@@ -13,4 +13,6 @@
 
     <dubbo:reference id="userService" check="false" interface="com.zzd.api.service.UserService"/>
     <dubbo:annotation package="com.zzd.consumer.controller"/>
+    <dubbo:reference id="loginService" check="false" interface="com.zzd.api.service.LoginService"/>
+    <dubbo:annotation package="com.zzd.consumer.controller"/>
 </beans>

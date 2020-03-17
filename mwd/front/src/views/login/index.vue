@@ -35,7 +35,7 @@
                     }
                 }).then(resp=>{
                     if (resp.data.code == 200) {
-                        this.$router.push({name: 'index', params: {userInfo: resp.data.data}});
+                        this.$router.push({name: 'index'});
                     }else{
                         this.$message.error(resp.data.message);
                     }
