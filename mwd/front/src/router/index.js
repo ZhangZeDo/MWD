@@ -31,9 +31,9 @@ const routers = new Router({
                     component: () => import('@/views/homePage'),
                 },
                 {
-                    path:'/personalCenter',
-                    name:'personalCenter',
-                    component:() =>import('@/views/personalCenter'),
+                    path:'/userInfo',
+                    name:'userInfo',
+                    component:() =>import('@/views/personalCenter/userInfo'),
                 },
                 {
                     path:'/order',

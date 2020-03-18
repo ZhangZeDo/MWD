@@ -8,6 +8,7 @@ import com.zzd.api.domain.TUser;
 import com.zzd.api.domain.TUserExample;
 import com.zzd.api.dto.UserDTO;
 import com.zzd.api.exceptions.BussException;
+import com.zzd.api.service.LoginService;
 import com.zzd.api.service.UserService;
 import com.zzd.provider.utils.UniqIdUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -29,6 +30,8 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     private TUserMapper userMapper;
+    @Resource
+    private LoginService loginService;
 
     /**
      * 根据用户账号获取用户信息
@@ -114,8 +117,13 @@ public class UserServiceImpl implements UserService {
             }
             BeanUtil.copyProperties(userDTO,user);
             resetUserBase(user,operator);
-
             userMapper.updateByPrimaryKey(user);
+
+            if (StringUtils.equals(userDTO.getUserAccount(),operator)){
+                TUser newUser = selectUserByAccount(userDTO.getUserAccount(),EntityStatus.Valid.getCode());
+                loginService.createLoginInfo(newUser);
+            }
+
         }catch (Exception e){
             logger.error("更新用户信息异常，原因：",e);
             throw new BussException("更新用户信息失败");

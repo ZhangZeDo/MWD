@@ -11,4 +11,6 @@ public interface LoginService {
     void createLoginInfo(TUser user);
 
     TUser getLoginInfo();
+
+    void loginOut();
 }

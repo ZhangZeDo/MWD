@@ -21,7 +21,7 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("/user")
-public class UserController {
+public class UserController extends BaseController{
     private Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Resource
@@ -58,6 +58,17 @@ public class UserController {
         }
     }
 
+    @RequestMapping(value = "loginOut",method = RequestMethod.POST)
+    @ResponseBody
+    public Object loginOut() {
+        try{
+            loginService.loginOut();
+            return ResponseResult.ok();
+        }catch (Exception e){
+            return ResponseResult.error(e.getMessage());
+        }
+    }
+
     @RequestMapping(value = "getLoginInfo",method = RequestMethod.GET)
     @ResponseBody
     public Object getLoginInfo() {
@@ -78,6 +89,21 @@ public class UserController {
             }else{
 
             }
+            return ResponseResult.ok();
+        }catch (Exception e){
+            return ResponseResult.error(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "updateUserInfo",method = RequestMethod.POST)
+    @ResponseBody
+    public Object updateUserInfo(@RequestBody UserDTO userDTO) {
+        try{
+            if (StringUtils.isBlank(userDTO.getUserName())){
+                ResponseResult.error("用户信息为空，更新失败");
+            }
+            String operator = getOperator();
+            userService.updateUser(userDTO,operator);
             return ResponseResult.ok();
         }catch (Exception e){
             return ResponseResult.error(e.getMessage());

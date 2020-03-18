@@ -43,4 +43,15 @@ public class LoginServiceImpl implements LoginService {
             throw new BussException("登录异常，请重新登录");
         }
     }
+
+    @Override
+    public void loginOut() {
+        try {
+            if (redisUtil.hasKey("LoginInfo")){
+                redisUtil.del("LoginInfo");
+            }
+        }catch (Exception e){
+            throw new BussException("登录异常，请重新登录");
+        }
+    }
 }
