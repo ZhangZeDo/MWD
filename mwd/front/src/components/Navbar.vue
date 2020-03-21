@@ -15,10 +15,10 @@
               <el-menu-item index="4" @click="jump('order')">订单管理</el-menu-item>
               <el-submenu index="5">
                   <template slot="title">个人中心</template>
-                  <el-menu-item index="5-1"  @click="jump('userInfo')">个人信息</el-menu-item>
-                  <el-menu-item index="5-2">我的收藏</el-menu-item>
-                  <el-menu-item index="5-3">我的上传</el-menu-item>
-                  <el-menu-item index="5-3" @click="loginOut">退出登录</el-menu-item>
+                  <el-menu-item index="5-1" @click="jump('userInfo')">个人信息</el-menu-item>
+                  <el-menu-item index="5-2" @click="jump('bookmark')">我的收藏</el-menu-item>
+                  <el-menu-item index="5-3" @click="jump('fileUpload')">我的上传</el-menu-item>
+                  <el-menu-item index="5-4" @click="loginOut">退出登录</el-menu-item>
               </el-submenu>
               <el-submenu v-if="user.roleType != 'ordinary'" index="6">
                   <template slot="title">系统管理</template>

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.zzd.api.domain.TMediaWork;
 import com.zzd.api.domain.TMediaWorkExample;
+import com.zzd.api.dto.MediaWorkDTO;
 import org.apache.ibatis.annotations.Param;
 
 
@@ -29,4 +30,8 @@ public interface TMediaWorkMapper {
     int updateByPrimaryKeySelective(TMediaWork record);
 
     int updateByPrimaryKey(TMediaWork record);
+
+    int selectByMediaWorkTotal(@Param("param") MediaWorkDTO mediaWorkDTO);
+
+    List<TMediaWork> selectByMediaWorkDTO(@Param("param")MediaWorkDTO mediaWorkDTO);
 }

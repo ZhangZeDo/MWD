@@ -5,10 +5,10 @@ Vue.use(Router)
 
 const routers = new Router({
     routes:[
-        {
+        /*{
             path:'/',
             redirect: '/login',
-        },
+        },*/
         {
             path:'/login',
             name:'login',
@@ -34,6 +34,16 @@ const routers = new Router({
                     path:'/userInfo',
                     name:'userInfo',
                     component:() =>import('@/views/personalCenter/userInfo'),
+                },
+                {
+                    path:'/fileUpload',
+                    name:'fileUpload',
+                    component:() =>import('@/views/personalCenter/fileUpload'),
+                },
+                {
+                    path:'/bookmark',
+                    name:'bookmark',
+                    component:() =>import('@/views/personalCenter/bookmark'),
                 },
                 {
                     path:'/order',

@@ -15,4 +15,8 @@
     <dubbo:annotation package="com.zzd.consumer.controller"/>
     <dubbo:reference id="loginService" check="false" interface="com.zzd.api.service.LoginService"/>
     <dubbo:annotation package="com.zzd.consumer.controller"/>
+    <dubbo:reference id="mediaTypeService" check="false" interface="com.zzd.api.service.MediaTypeService"/>
+    <dubbo:annotation package="com.zzd.consumer.controller"/>
+    <dubbo:reference id="mediaWorkService" check="false" interface="com.zzd.api.service.MediaWorkService"/>
+    <dubbo:annotation package="com.zzd.consumer.controller"/>
 </beans>

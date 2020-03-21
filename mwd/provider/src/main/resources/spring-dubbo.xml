@@ -19,4 +19,8 @@
     <dubbo:service interface="com.zzd.api.service.UserService" ref="userService"/>
     <bean id="loginService" class="com.zzd.provider.serviceImpl.LoginServiceImpl"/>
     <dubbo:service interface="com.zzd.api.service.LoginService" ref="loginService"/>
+    <bean id="mediaTypeService" class="com.zzd.provider.serviceImpl.MediaTypeServiceImpl"/>
+    <dubbo:service interface="com.zzd.api.service.MediaTypeService" ref="mediaTypeService"/>
+    <bean id="mediaWorkService" class="com.zzd.provider.serviceImpl.MediaWorkServiceImpl"/>
+    <dubbo:service interface="com.zzd.api.service.MediaWorkService" ref="mediaWorkService"/>
 </beans>

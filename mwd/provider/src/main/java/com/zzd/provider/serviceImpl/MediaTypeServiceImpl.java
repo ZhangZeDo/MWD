@@ -1,0 +1,98 @@
+package com.zzd.provider.serviceImpl;
+
+import com.alibaba.dubbo.config.annotation.Service;
+import com.zzd.api.dao.TMediaTypeMapper;
+import com.zzd.api.domain.TMediaType;
+import com.zzd.api.domain.TMediaTypeExample;
+import com.zzd.api.eunms.EntityStatus;
+import com.zzd.api.exceptions.BussException;
+import com.zzd.api.service.MediaTypeService;
+import com.zzd.provider.utils.UniqIdUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * @author
+ * @date
+ * @describe
+ */
+@Service
+public class MediaTypeServiceImpl implements MediaTypeService {
+    private Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
+    @Resource
+    private TMediaTypeMapper mediaTypeMapper;
+
+    @Override
+    public List<TMediaType> getAllMediaType(byte status) {
+        try {
+            List<TMediaType> mediaTypeList = new ArrayList<>();
+            TMediaTypeExample example = new TMediaTypeExample();
+            if (status == EntityStatus.All.getCode()){
+                example.createCriteria();
+            }else {
+                example.createCriteria().andStatusEqualTo(status);
+            }
+            mediaTypeList = mediaTypeMapper.selectByExample(example);
+            return mediaTypeList;
+        }catch (Exception e){
+            logger.error("获取所有作品类型失败，原因：",e);
+            throw new BussException("获取所有作品类型失败");
+        }
+    }
+
+    @Override
+    public void addMediaType(TMediaType mediaType,String operator) {
+        try {
+            mediaType.setId(UniqIdUtil.getUniqId());
+            mediaType.setStatus(EntityStatus.Valid.getCode());
+            resetMediaTypeInfo(mediaType,operator);
+
+            mediaTypeMapper.insertSelective(mediaType);
+        }catch (Exception e){
+            logger.error("新增作品类型失败，原因：",e);
+            throw new BussException("新增作品类型失败");
+        }
+    }
+
+    @Override
+    public void changeMediaTypeStatus(TMediaType mediaType,String operator) {
+        try {
+            byte status= mediaType.getStatus();
+            mediaType = mediaTypeMapper.selectByPrimaryKey(mediaType.getId());
+            mediaType.setStatus(status);
+            resetMediaTypeInfo(mediaType,operator);
+            mediaTypeMapper.updateByPrimaryKeySelective(mediaType);
+        }catch (Exception e){
+            logger.error("修改作品类型状态失败，原因：",e);
+            throw new BussException("修改作品类型状态失败");
+        }
+    }
+
+    @Override
+    public TMediaType queryMediaTypeById(String mediaTypeId) {
+        try {
+            TMediaType mediaType = new TMediaType();
+            mediaType = mediaTypeMapper.selectByPrimaryKey(mediaTypeId);
+            return mediaType;
+        }catch (Exception e){
+            logger.error("查询作品类型失败，原因：",e);
+            throw new BussException("查询作品类型失败");
+        }
+    }
+
+    private void resetMediaTypeInfo(TMediaType mediaType,String operator){
+        if (StringUtils.isBlank(mediaType.getCreateBy())){
+            mediaType.setCreateBy(operator);
+            mediaType.setCreateDatetime(new Date());
+        }
+        mediaType.setUpdateBy(operator);
+        mediaType.setUpdateDatetime(new Date());
+    }
+}
