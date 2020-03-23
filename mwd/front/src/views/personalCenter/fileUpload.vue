@@ -30,8 +30,7 @@
                     <el-row>
                         <el-col :span="8" v-for="index in mediaWorks" :key="index.id" >
                             <el-card style="margin:10px 20px;width: 500px;height: 150px;float: left">
-                                <!--<img src="../static/a.png" class="image">-->
-                                <img src="/img/a.png" class="image">
+                                <img :src="index.mediaCover" class="image">
                             </el-card>
                         </el-col>
                     </el-row>

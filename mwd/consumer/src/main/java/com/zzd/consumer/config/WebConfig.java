@@ -40,7 +40,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("../img/**")
+        registry.addResourceHandler("../static/**")
                 .addResourceLocations("D:/Program Files/fileDepository/");
     }
 }
