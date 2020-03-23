@@ -15,7 +15,7 @@
     </div>
 </template>
 <script>
-    import axios from 'axios'
+    /*import axios from 'axios'*/
     export default {
         name: "login",
         data() {
@@ -26,19 +26,14 @@
         },
         methods:{
             doLogin(){
-                axios({
-                    method: 'POST',
-                    url: 'http://localhost:8083/user/login',
-                    data: {
+                this.$axios.post(
+                    '/user/login',
+                    {
                         userAccount:this.userAccount,
                         userPassword:this.userPassword
-                    }
-                }).then(resp=>{
-                    if (resp.data.code == 200) {
+                    }).then(resp=>{
+                        window.console.info(resp)
                         this.$router.push({name: 'index'});
-                    }else{
-                        this.$message.error(resp.data.message);
-                    }
                 });
             },
             doRegister(){

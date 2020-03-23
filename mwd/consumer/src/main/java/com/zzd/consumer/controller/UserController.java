@@ -13,6 +13,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * @author
@@ -43,7 +47,7 @@ public class UserController extends BaseController{
 
     @RequestMapping(value = "login",method = RequestMethod.POST)
     @ResponseBody
-    public Object login(@RequestBody UserDTO userDTO) {
+    public Object login(@RequestBody UserDTO userDTO, HttpServletRequest request, HttpServletResponse response) {
         try{
             TUser user = userService.selectUserByAccount(userDTO.getUserAccount(), EntityStatus.Valid.getCode());
             if (user==null){
@@ -51,7 +55,8 @@ public class UserController extends BaseController{
             }else if(!StringUtils.equals(user.getUserPassword(),userDTO.getUserPassword())){
                 return ResponseResult.error("用户密码错误");
             }
-            loginService.createLoginInfo(user);
+            HttpSession session = request.getSession();
+            session.setAttribute("userInfo",user);
             return ResponseResult.build(user);
         }catch (Exception e){
             return ResponseResult.error(e.getMessage());

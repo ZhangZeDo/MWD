@@ -1,13 +1,11 @@
 package com.zzd.consumer.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import javax.annotation.Resource;
-import javax.servlet.Filter;
 
 /**
  * @author
@@ -15,7 +13,10 @@ import javax.servlet.Filter;
  * @describe
  */
 @Configuration
-public class CorsConfig implements WebMvcConfigurer {
+public class WebConfig implements WebMvcConfigurer {
+
+    @Autowired
+    private LoginInterceptor loginInterceptor;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -30,16 +31,16 @@ public class CorsConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new BaseInterceptor())
-                .addPathPatterns("/static/**")
-                .excludePathPatterns("/login")
-                .excludePathPatterns("/file/**");
+        registry.addInterceptor(loginInterceptor)
+                .addPathPatterns("/**")
+                .excludePathPatterns("/user/login")
+                .excludePathPatterns("/static/**")
+                .excludePathPatterns("/img/**");
     }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        /*registry.addResourceHandler("/images/**").addResourceLocations("file:D://Program Files//fileDepository/");*/
-        registry.addResourceHandler("/static/**")
-                .addResourceLocations("classpath:/static/");
+        registry.addResourceHandler("../img/**")
+                .addResourceLocations("D:/Program Files/fileDepository/");
     }
 }

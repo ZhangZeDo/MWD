@@ -8,6 +8,7 @@ import com.zzd.api.service.ErrorCode;
  * @describe
  */
 public enum ErrCode implements ErrorCode {
+    LOGIN_ERROR("-1","登录异常"),
     ILLEGAL_ARGUMENT("403", "非法参数!"),
     SYS_ERROR("444","系统异常, 请重试"),
     BAD_USER_PASSWORD("446", "用户名或密码错误!"),
