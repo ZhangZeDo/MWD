@@ -60,8 +60,8 @@
                enableDeleteByExample="true" enableSelectByExample="true"
                enableUpdateByExample="true">
         </table>-->
-        <table schema="mwd" tableName="t_media_work"
-               domainObjectName="TMediaWork" enableCountByExample="true"
+        <table schema="mwd" tableName="t_job"
+               domainObjectName="TJob" enableCountByExample="true"
                enableDeleteByExample="true" enableSelectByExample="true"
                enableUpdateByExample="true">
         </table>

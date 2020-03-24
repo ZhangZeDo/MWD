@@ -39,7 +39,6 @@
 </template>
 
 <script>
-    import axios from 'axios'
     export default {
         name: 'Navbar',
         data() {
@@ -57,12 +56,10 @@
             },
 
             getLoginInfo(){
-                axios({
-                    method: 'GET',
-                    url: 'http://localhost:8083/user/getLoginInfo',
+                this.$axios.post('/user/getLoginInfo',{
                 }).then(resp=>{
-                    if (resp.data.code == 200) {
-                        this.user = resp.data.data
+                    if (resp.code == 200) {
+                        this.user = resp.data
                     }else{
                         this.$message.error(resp.data.message);
                     }
@@ -70,9 +67,8 @@
             },
 
             loginOut(){
-                axios({
-                    method: 'GET',
-                    url: 'http://localhost:8083/user/loginOut',
+                this.$axios.post('/user/loginOut',{
+
                 }).then(
                     this.$router.push({name: 'login'})
                 );

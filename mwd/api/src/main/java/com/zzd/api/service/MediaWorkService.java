@@ -15,4 +15,8 @@ public interface MediaWorkService {
     void addMediaWork(TMediaWork mediaWork, String operator);
 
     void approvalMediaWork(TMediaWork mediaWork,String operator);
+
+    void changeMediaWorkStatus(TMediaWork mediaWork,String operator);
+
+    TMediaWork selectMediaWorkById(String id);
 }

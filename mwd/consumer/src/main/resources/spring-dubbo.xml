@@ -19,4 +19,6 @@
     <dubbo:annotation package="com.zzd.consumer.controller"/>
     <dubbo:reference id="mediaWorkService" check="false" interface="com.zzd.api.service.MediaWorkService"/>
     <dubbo:annotation package="com.zzd.consumer.controller"/>
+    <dubbo:reference id="jobService" check="false" interface="com.zzd.api.service.JobService"/>
+    <dubbo:annotation package="com.zzd.consumer.controller"/>
 </beans>

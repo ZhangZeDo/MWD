@@ -7,6 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * @author
@@ -16,11 +18,9 @@ import javax.annotation.Resource;
 public class BaseController {
     private Logger logger = LoggerFactory.getLogger(BaseController.class);
 
-    @Resource
-    private LoginService loginService;
-
-    public String getOperator(){
-        TUser user = loginService.getLoginInfo();
+    public String getOperator(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        TUser user = (TUser) session.getAttribute("userInfo");
         return user.getUserAccount();
     }
 }

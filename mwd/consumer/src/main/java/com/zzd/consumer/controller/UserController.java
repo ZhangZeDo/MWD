@@ -11,9 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -33,7 +31,7 @@ public class UserController extends BaseController{
     @Resource
     private LoginService loginService;
 
-    @RequestMapping(value = "selectUserByAccount",method = RequestMethod.GET)
+    @RequestMapping(value = "selectUserByAccount",method = RequestMethod.POST)
     @ResponseBody
     public Object selectUserByAccount() {
         try{
@@ -47,7 +45,7 @@ public class UserController extends BaseController{
 
     @RequestMapping(value = "login",method = RequestMethod.POST)
     @ResponseBody
-    public Object login(@RequestBody UserDTO userDTO, HttpServletRequest request, HttpServletResponse response) {
+    public Object login(@RequestBody UserDTO userDTO, HttpServletRequest request) {
         try{
             TUser user = userService.selectUserByAccount(userDTO.getUserAccount(), EntityStatus.Valid.getCode());
             if (user==null){
@@ -65,20 +63,22 @@ public class UserController extends BaseController{
 
     @RequestMapping(value = "loginOut",method = RequestMethod.POST)
     @ResponseBody
-    public Object loginOut() {
+    public Object loginOut(HttpServletRequest request) {
         try{
-            loginService.loginOut();
+            HttpSession session = request.getSession();
+            session.setAttribute("userInfo",null);
             return ResponseResult.ok();
         }catch (Exception e){
             return ResponseResult.error(e.getMessage());
         }
     }
 
-    @RequestMapping(value = "getLoginInfo",method = RequestMethod.GET)
+    @RequestMapping(value = "getLoginInfo",method = RequestMethod.POST)
     @ResponseBody
-    public Object getLoginInfo() {
+    public Object getLoginInfo(HttpServletRequest request) {
         try{
-            TUser user = loginService.getLoginInfo();
+            HttpSession session = request.getSession();
+            TUser user = (TUser) session.getAttribute("userInfo");
             return ResponseResult.build(user);
         }catch (Exception e){
             return ResponseResult.error(e.getMessage());
@@ -87,12 +87,13 @@ public class UserController extends BaseController{
 
     @RequestMapping(value = "register",method = RequestMethod.POST)
     @ResponseBody
-    public Object register(@RequestBody UserDTO userDTO) {
+    public Object register(@RequestBody UserDTO userDTO,HttpServletRequest request) {
         try{
             if (StringUtils.equals(userDTO.getRoleType(), UserRoleType.Ordinary.getType())){
                 userService.addUser(userDTO,"system");
             }else{
-
+                String operator = getOperator(request);
+                userService.addUser(userDTO,operator);
             }
             return ResponseResult.ok();
         }catch (Exception e){
@@ -102,12 +103,12 @@ public class UserController extends BaseController{
 
     @RequestMapping(value = "updateUserInfo",method = RequestMethod.POST)
     @ResponseBody
-    public Object updateUserInfo(@RequestBody UserDTO userDTO) {
+    public Object updateUserInfo(@RequestBody UserDTO userDTO,HttpServletRequest request) {
         try{
             if (StringUtils.isBlank(userDTO.getUserName())){
                 ResponseResult.error("用户信息为空，更新失败");
             }
-            String operator = getOperator();
+            String operator = getOperator(request);
             userService.updateUser(userDTO,operator);
             return ResponseResult.ok();
         }catch (Exception e){

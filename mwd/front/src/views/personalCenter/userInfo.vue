@@ -19,7 +19,6 @@
 </template>
 
 <script>
-    import axios from 'axios'
     export default {
         name: "userInfo",
         data(){
@@ -37,14 +36,13 @@
         },
         methods:{
             getLoginInfo(){
-                axios({
-                    method: 'GET',
-                    url: 'http://localhost:8083/user/getLoginInfo',
+                this.$axios.post('/user/getLoginInfo',{
+
                 }).then(resp=>{
-                    if (resp.data.code == 200) {
-                        this.ruleForm = resp.data.data
+                    if (resp.code == 200) {
+                        this.ruleForm = resp.data
                     }else{
-                        this.$message.error(resp.data.message);
+                        this.$message.error(resp.message);
                     }
                 });
             },
@@ -52,15 +50,16 @@
                 if (this.ruleForm.userName ==null || this.ruleForm.userName == ''){
                     this.$message.warning("用户姓名不能为空");
                 } else{
-                    axios({
-                        method: 'POST',
-                        url: 'http://localhost:8083/user/updateUserInfo',
-                        data:this.ruleForm
+                    this.$axios.post('/user/updateUserInfo',{
+                        userAccount:this.ruleForm.userAccount,
+                        userName:this.ruleForm.userName,
+                        userMail:this.ruleForm.userMail,
+                        userPhone:this.ruleForm.userPhone
                     }).then(resp=>{
-                        if (resp.data.code == 200) {
+                        if (resp.code == 200) {
                             this.$message.success("更新成功");
                         }else{
-                            this.$message.error(resp.data.message);
+                            this.$message.error(resp.message);
                         }
                     });
                 }

@@ -2,10 +2,12 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:task="http://www.springframework.org/schema/task"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://code.alibabatech.com/schema/dubbo
-       http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+       http://code.alibabatech.com/schema/dubbo/dubbo.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
 
     <dubbo:application name="provider"/>
     <!-- 注册中心的ip地址 -->
@@ -23,4 +25,6 @@
     <dubbo:service interface="com.zzd.api.service.MediaTypeService" ref="mediaTypeService"/>
     <bean id="mediaWorkService" class="com.zzd.provider.serviceImpl.MediaWorkServiceImpl"/>
     <dubbo:service interface="com.zzd.api.service.MediaWorkService" ref="mediaWorkService"/>
+    <bean id="jobService" class="com.zzd.provider.serviceImpl.JobServiceImpl"/>
+    <dubbo:service interface="com.zzd.api.service.JobService" ref="jobService"/>
 </beans>

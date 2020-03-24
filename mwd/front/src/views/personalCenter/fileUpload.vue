@@ -30,7 +30,18 @@
                     <el-row>
                         <el-col :span="8" v-for="index in mediaWorks" :key="index.id" >
                             <el-card style="margin:10px 20px;width: 500px;height: 150px;float: left">
-                                <img :src="index.mediaCover" class="image">
+                                <div style="float: left">
+                                    <img style="width: 150px;height: 110px" :src="index.mediaCover" class="image">
+                                </div>
+                                <div style="float: left;width: 250px;padding-left: 5px">
+                                    <span>{{index.mediaName}}</span><br><br>
+                                    <span>评分:{{index.mediaGrade}}</span><br><br>
+                                    <span v-if="index.mediaRemark.length < 35" style="font-size: x-small">{{index.mediaRemark}}</span>
+                                    <span v-else style="font-size: x-small">{{index.mediaRemark.substring(0,35)}}...</span>
+                                </div>
+                                <div style="float: right;padding-top: 90px">
+                                    <el-button type="text" @click="open(index.id)">移除</el-button>
+                                </div>
                             </el-card>
                         </el-col>
                     </el-row>
@@ -136,6 +147,7 @@
                 mediaFileList:[],
                 mediaWorks:[],
                 queryForm:{
+                    status:1,
                     mediaType:'',
                     searchInput:'',
                     pageSize:12,
@@ -161,6 +173,19 @@
           this.queryData();
         },
         methods: {
+            open(index) {
+                this.$confirm('此操作将永久删除该作品, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.$axios.post('/mediaWork/changeMediaWorkStatus', {
+                            id:index,
+                            status:0
+                        }).then(
+                    );
+                })
+            },
             handleSizeChange(val) {
                 this.queryForm.pageSize = val
                 this.queryData()

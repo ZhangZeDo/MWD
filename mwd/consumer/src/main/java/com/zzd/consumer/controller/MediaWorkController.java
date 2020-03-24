@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author
@@ -29,11 +30,11 @@ public class MediaWorkController extends BaseController{
 
     @RequestMapping(value = "mediaWorkList",method = RequestMethod.POST)
     @ResponseBody
-    public Object mediaWorkList(@RequestBody MediaWorkDTO mediaWorkDTO) {
+    public Object mediaWorkList(@RequestBody MediaWorkDTO mediaWorkDTO,HttpServletRequest request) {
         try{
             logger.info("分页查询多媒体作品列表");
             PageResponseResult result = new PageResponseResult();
-            result = mediaWorkService.mediaWorkList(mediaWorkDTO,getOperator());
+            result = mediaWorkService.mediaWorkList(mediaWorkDTO,getOperator(request));
             return ResponseResult.build(result);
         }catch (Exception e){
             return ResponseResult.error(e.getMessage());
@@ -46,24 +47,40 @@ public class MediaWorkController extends BaseController{
                                    @RequestParam(value = "mediaFile", required = false) MultipartFile mediaFile,
                                    @RequestParam("mediaName") String mediaName,
                                    @RequestParam("mediaRemark") String mediaRemark,
-                                   @RequestParam("mediaType") String mediaType) {
+                                   @RequestParam("mediaType") String mediaType,
+                                   HttpServletRequest request) {
         try{
             if (coverFile == null || mediaFile==null) {
                 return ResponseResult.error("上传文件为空，上传失败");
             }
             String coverUrl = FileUtil.uploadFile("cover",coverFile.getInputStream(),coverFile.getOriginalFilename());
+            coverUrl.replace("D:\\Program Files\\fileDepository\\","http://localhost:8083/");
             String mediaUrl = FileUtil.uploadFile("media",mediaFile.getInputStream(),mediaFile.getOriginalFilename());
+            mediaUrl.replace("D:\\Program Files\\fileDepository\\","http://localhost:8083/");
             TMediaWork mediaWork = new TMediaWork();
             mediaWork.setMediaCover(coverUrl);
             mediaWork.setMediaUrl(mediaUrl);
             mediaWork.setMediaName(mediaName);
             mediaWork.setMediaRemark(mediaRemark);
             mediaWork.setMediaType(mediaType);
-            mediaWorkService.addMediaWork(mediaWork,getOperator());
+            mediaWorkService.addMediaWork(mediaWork,getOperator(request));
             return ResponseResult.ok();
         }catch (Exception e){
             return ResponseResult.error(e.getMessage());
         }
     }
+
+    @RequestMapping(value = "changeMediaWorkStatus",method = RequestMethod.POST)
+    @ResponseBody
+    public Object changeMediaWorkStatus(@RequestBody TMediaWork mediaWork, HttpServletRequest request) {
+        try{
+            logger.info("开始修改用户作品：{}状态",mediaWork.getId());
+            mediaWorkService.changeMediaWorkStatus(mediaWork,getOperator(request));
+            return ResponseResult.ok();
+        }catch (Exception e){
+            return ResponseResult.error(e.getMessage());
+        }
+    }
+
 
 }

@@ -74,7 +74,7 @@ function checkStatus(response) {
             Message({
                 type:'error',
                 showClose: true,
-                message:'网络异常，请检查网络连接是否正常！'
+                message:'系统异常，请稍后重试！'
             })
         }
     });

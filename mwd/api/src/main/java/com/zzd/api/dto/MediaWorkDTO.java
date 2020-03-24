@@ -8,6 +8,8 @@ import com.zzd.api.domain.Pager;
  * @describe
  */
 public class MediaWorkDTO extends Pager {
+    private String id;
+
     private String mediaType;
 
     private String searchInput;
@@ -15,6 +17,16 @@ public class MediaWorkDTO extends Pager {
     private boolean belongTo;
 
     private String uploadUser;
+
+    private byte status;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getMediaType() {
         return mediaType;
@@ -46,5 +58,13 @@ public class MediaWorkDTO extends Pager {
 
     public void setUploadUser(String uploadUser) {
         this.uploadUser = uploadUser;
+    }
+
+    public byte getStatus() {
+        return status;
+    }
+
+    public void setStatus(byte status) {
+        this.status = status;
     }
 }

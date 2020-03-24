@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,9 +39,9 @@ public class MediaTypeController extends BaseController{
 
     @RequestMapping(value = "addMediaType",method = RequestMethod.POST)
     @ResponseBody
-    public Object addMediaType(@RequestBody TMediaType mediaType) {
+    public Object addMediaType(@RequestBody TMediaType mediaType, HttpServletRequest request) {
         try{
-            String operator = getOperator();
+            String operator = getOperator(request);
             mediaTypeService.addMediaType(mediaType,operator);
             return ResponseResult.ok();
         }catch (Exception e){
@@ -50,9 +51,9 @@ public class MediaTypeController extends BaseController{
 
     @RequestMapping(value = "changeMediaTypeStatus",method = RequestMethod.POST)
     @ResponseBody
-    public Object changeMediaTypeStatus(@RequestBody TMediaType mediaType) {
+    public Object changeMediaTypeStatus(@RequestBody TMediaType mediaType,HttpServletRequest request) {
         try{
-            String operator = getOperator();
+            String operator = getOperator(request);
             mediaTypeService.addMediaType(mediaType,operator);
             return ResponseResult.ok();
         }catch (Exception e){
@@ -62,9 +63,9 @@ public class MediaTypeController extends BaseController{
 
     @RequestMapping(value = "queryMediaTypeById",method = RequestMethod.POST)
     @ResponseBody
-    public Object queryMediaTypeById(@RequestBody TMediaType mediaType) {
+    public Object queryMediaTypeById(@RequestBody TMediaType mediaType,HttpServletRequest request) {
         try{
-            String operator = getOperator();
+            String operator = getOperator(request);
             mediaType = mediaTypeService.queryMediaTypeById(mediaType.getId());
             return ResponseResult.build(mediaType);
         }catch (Exception e){

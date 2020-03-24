@@ -18,7 +18,6 @@
 </template>
 
 <script>
-    import axios from 'axios'
     export default {
         name: "register",
         data() {
@@ -36,12 +35,16 @@
         },
         methods:{
             doRegister(){
-                axios({
-                    method: 'POST',
-                    url: 'http://localhost:8083/user/register',
-                    data: this.ruleForm
+                this.$axios.post('/user/register',{
+                    userAccount:this.ruleForm.userAccount,
+                    userName:this.ruleForm.userName,
+                    userPassword:this.ruleForm.userPassword,
+                    userMail:this.ruleForm.userMail,
+                    userPhone:this.ruleForm.userPhone,
+                    roleType:this.ruleForm.roleType,
                 }).then(resp=>{
-                    if (resp.data.code == 200) {
+                    window.console.info(resp)
+                    if (resp.code == 200) {
                         this.$message.success("注册成功");
                         this.$router.push({name: 'login'});
                     }else{

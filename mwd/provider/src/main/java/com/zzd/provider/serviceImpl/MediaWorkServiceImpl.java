@@ -3,6 +3,7 @@ package com.zzd.provider.serviceImpl;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.zzd.api.dao.TMediaWorkMapper;
 import com.zzd.api.domain.TMediaWork;
+import com.zzd.api.domain.TMediaWorkExample;
 import com.zzd.api.dto.MediaWorkDTO;
 import com.zzd.api.dto.PageResponseResult;
 import com.zzd.api.eunms.EntityStatus;
@@ -85,6 +86,25 @@ public class MediaWorkServiceImpl implements MediaWorkService {
             logger.error("文件上传记录保存失败，原因：",e);
             throw new BussException("上传失败");
         }
+    }
+
+    @Override
+    public void changeMediaWorkStatus(TMediaWork mediaWork, String operator) {
+        byte status = mediaWork.getStatus();
+        mediaWork = this.selectMediaWorkById(mediaWork.getId());
+        if (mediaWork==null){
+            throw new BussException("作品已不存在，修改失败!");
+        }
+        mediaWork.setStatus(status);
+        resetMediaWorkInfo(mediaWork,operator);
+        mediaWorkMapper.updateByPrimaryKeySelective(mediaWork);
+    }
+
+    @Override
+    public TMediaWork selectMediaWorkById(String id) {
+        TMediaWork mediaWork = new TMediaWork();
+        mediaWork = mediaWorkMapper.selectByPrimaryKey(id);
+        return mediaWork;
     }
 
     private void resetMediaWorkInfo(TMediaWork mediaWork, String operator){

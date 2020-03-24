@@ -433,6 +433,9 @@
             <if test="param.mediaType!=null and param.mediaType!=''">
                 AND media_type = #{param.mediaType}
             </if>
+            <if test="param.status != null" >
+                status = #{param.status,jdbcType=TINYINT}
+            </if>
         </trim>
     </sql>
 

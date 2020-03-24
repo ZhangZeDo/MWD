@@ -137,6 +137,26 @@ CREATE TABLE `t_information` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
+###定时任务表
+CREATE TABLE `t_job` (
+  `id` char(19) NOT NULL COMMENT '主键',
+  `job_name` varchar(50) NOT NULL COMMENT '任务名称',
+  `job_group` varchar(50) NOT NULL COMMENT '任务组',
+  `method_name` varchar(150) NOT NULL COMMENT '要执行的方法',
+  `bean_clazz` varchar(200) NOT NULL COMMENT '定时任务所在的类路径',
+  `status` tinyint(4) NOT NULL DEFAULT '1' COMMENT '任务状态 1：启用  0：禁用',
+  `cron_expression` varchar(50) NOT NULL COMMENT '时间表达式',
+  `params` varchar(2000) DEFAULT NULL COMMENT '参数',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+  `create_datetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `created_by` varchar(50) NOT NULL COMMENT '创建人(冗余账号和姓名)',
+  `update_datetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `updated_by` varchar(50) NOT NULL COMMENT '更新人(冗余账号和姓名)',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_t_job_name_and_group` (`job_name`,`job_group`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='定时任务表';
+
+
 
 
 
