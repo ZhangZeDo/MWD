@@ -61,7 +61,7 @@
                     if (resp.code == 200) {
                         this.user = resp.data
                     }else{
-                        this.$message.error(resp.data.message);
+                        this.$message.error(resp.message);
                     }
                 });
             },

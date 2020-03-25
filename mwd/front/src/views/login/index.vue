@@ -32,8 +32,11 @@
                         userAccount:this.userAccount,
                         userPassword:this.userPassword
                     }).then(resp=>{
-                        window.console.info(resp)
-                        this.$router.push({name: 'index'});
+                        if (resp.code == 200){
+                            this.$router.push({name: 'index'});
+                        }else{
+                            this.$message.error(resp.message)
+                        }
                 });
             },
             doRegister(){
