@@ -21,4 +21,6 @@
     <dubbo:annotation package="com.zzd.consumer.controller"/>
     <dubbo:reference id="jobService" check="false" interface="com.zzd.api.service.JobService"/>
     <dubbo:annotation package="com.zzd.consumer.controller"/>
+    <dubbo:reference id="underRankService" check="false" interface="com.zzd.api.service.UnderRankService"/>
+    <dubbo:annotation package="com.zzd.consumer.controller"/>
 </beans>

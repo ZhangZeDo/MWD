@@ -23,10 +23,13 @@ public class FileUtil {
             String baseUrl = "";
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
             String date = simpleDateFormat.format(new Date());
+            String result = "http://localhost:8083/";
             if (StringUtils.equals(type, "cover")) {
                 baseUrl = coverBaseUrl+"\\"+date;
+                result = result + "cover/"+date;
             } else if (StringUtils.equals(type, "media")) {
                 baseUrl = mediaBaseUrl+"\\"+date;
+                result = result + "media/"+date;
             } else {
                 throw new BussException("保存文件失败");
             }
@@ -41,7 +44,9 @@ public class FileUtil {
             }
             String routeDir = baseUrl+"\\"+name;
             FileUtils.copyInputStreamToFile(inputStream, new File(routeDir));
-            return routeDir;
+
+            result = result + "/" + name;
+            return result;
         }catch (Exception e){
             throw new BussException("保存文件失败");
         }

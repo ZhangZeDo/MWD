@@ -2,38 +2,120 @@
     <div >
         <div style="width: 1000px; height: 300px;padding-top: 20px; margin: 0 auto">
             <el-carousel trigger="click">
-                <el-carousel-item v-for="item in 4" :key="item">
-                    <img style="width: 1000px; height: 300px;" src="http://localhost:8083/cover/20200324/a.png"/>
+                <el-carousel-item v-for="item in underRankMedias.slice(0,7)" :key="item.id">
+                    <img style="width: 1000px; height: 300px;" :src="item.mediaCover"/>
                 </el-carousel-item>
             </el-carousel>
         </div>
         <div style="width: 1022px; height: 200px;padding-top: 20px; margin: 0 auto">
-            <img style="height: 200px;width: 326px; padding-left: 11px" src="http://localhost:8083/cover/20200324/a.png"/>
-            <img style="height: 200px;width: 326px; padding-left: 11px" src="http://localhost:8083/cover/20200324/a.png"/>
-            <img style="height: 200px;width: 326px; padding-left: 11px" src="http://localhost:8083/cover/20200324/a.png"/>
+            <el-row>
+                <el-col :span="8" v-for="item in underRankMedias.slice(7,10)" :key="item.id" >
+                    <img style="height: 200px;width: 326px; padding-left: 11px" :src="item.mediaCover" @click="showDetail(item.id)"/>
+                </el-col>
+            </el-row>
         </div>
-        <div style="width: 1022px; height: 200px;padding-top: 30px; margin: 0 auto">
+        <div style="width: 1022px;padding-top: 30px; margin: 0 auto">
             <div>
-                <el-tabs v-model="activeName" @tab-click="handleClick" stretch="true" style="width: 200px;margin: auto">
-                    <el-tab-pane  label="首页推荐" name="first"></el-tab-pane>
-                    <el-tab-pane label="最新发布" name="second"></el-tab-pane>
+                <el-tabs v-model="order" style="width: 200px;margin: auto;" :stretch="true" @tab-click="changeOrder">
+                    <el-tab-pane  label="首页推荐" name="popular_num"></el-tab-pane>
+                    <el-tab-pane label="最新发布" name="create_datetime"></el-tab-pane>
                 </el-tabs>
             </div>
-            <div style="padding-top: 10px">
-                <img style="height: 200px;width: 326px; padding-left: 11px" src="http://localhost:8083/cover/20200324/a.png"/>
-                <img style="height: 200px;width: 326px; padding-left: 11px" src="http://localhost:8083/cover/20200324/a.png"/>
-                <img style="height: 200px;width: 326px; padding-left: 11px" src="http://localhost:8083/cover/20200324/a.png"/>
+            <div style="padding-top: 5px;padding-left: 10px">
+                <el-row>
+                    <el-col :span="8" v-for="index in mediaWorks" :key="index.id" >
+                        <el-card style="padding-top:5px; margin-top:15px;width: 326px;height: 350px;float: left">
+                            <div style="float: left">
+                                <img style="width: 295px;height: 200px" :src="index.mediaCover" class="image">
+                            </div>
+                            <div style="float: left;width: 250px;padding-left: 5px">
+                                <span>{{index.mediaName}}</span><br>
+                                <!--<div>
+                                    <img style="width: 20px;height:20px" src="../static/img/popular.svg"> <span title="dd">{{index.mediaName}}</span>
+                                </div>-->
+                            </div>
+                            <!--<div style="float: left;width: 250px;padding-left: 5px">
+                                <span>{{index.mediaName}}</span><br><br>
+                            </div>-->
+                        </el-card>
+                    </el-col>
+                </el-row>
+                <div align="center" style="margin-bottom: 10px;padding-top: 20px">
+                    <div class="block" style="padding: 0 32px">
+                        <el-pagination
+                                @size-change="handleSizeChange"
+                                @current-change="handleCurrentChange"
+                                :current-page="page"
+                                :page-sizes="[6, 9, 15, 21]"
+                                :page-size="pageSize"
+                                layout="total, sizes, prev, pager, next, jumper"
+                                :total="total">
+                        </el-pagination>
+                    </div>
+                </div>
             </div>
-            <!--<img style="height: 200px;width: 326px; padding-left: 11px" src="http://localhost:8083/cover/20200324/a.png"/>
-            <img style="height: 200px;width: 326px; padding-left: 11px" src="http://localhost:8083/cover/20200324/a.png"/>
-            <img style="height: 200px;width: 326px; padding-left: 11px" src="http://localhost:8083/cover/20200324/a.png"/>-->
         </div>
     </div>
 </template>
 
 <script>
     export default {
-        name: "home"
+        name: "home",
+        data(){
+            return{
+                underRankMedias:[],
+                mediaWorks:[],
+                order:'popular_num',
+                pageSize:6,
+                page:1,
+                total:20,
+            }
+        },
+        created() {
+            this.queryUnderRankList()
+            this.queryMediaWorksList()
+        },
+        methods:{
+           queryUnderRankList(){
+               this.$axios.post('/underRank/queryAllUnderMedia',{
+                    status:1
+               }).then(resp =>{
+                   this.underRankMedias = resp.data
+               })
+           },
+
+           queryMediaWorksList(){
+               this.$axios.post('/mediaWork/mediaWorkList',{
+                   status:1,
+                   page:this.page,
+                   pageSize:this.pageSize,
+               }).then(resp=>{
+                   if (resp.code == 200) {
+                       this.mediaWorks = resp.data.items;
+                       this.total = resp.data.total;
+                   }else{
+                       this.$message.error(resp.data.message);
+                   }
+               });
+           },
+
+            handleSizeChange(val) {
+                this.pageSize = val
+                this.queryMediaWorksList()
+            },
+            handleCurrentChange(val) {
+                this.page = val
+                this.queryMediaWorksList()
+            },
+            changeOrder(val){
+                this.order = val.name
+                this.queryMediaWorksList()
+            },
+            showDetail(val){
+               window.console.info(val)
+               this.$router.push({path:'/mediaDetail',query:{"mediaId":val}})
+            }
+        }
     }
 </script>
 
@@ -52,9 +134,5 @@
 
     .el-carousel__item:nth-child(2n+1) {
         background-color: #d3dce6;
-    }
-
-    .img{
-        background-image: ;
     }
 </style>

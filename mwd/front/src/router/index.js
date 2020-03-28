@@ -31,6 +31,11 @@ const routers = new Router({
                     component: () => import('@/views/homePage'),
                 },
                 {
+                    path:'/mediaDetail',
+                    name:'mediaDetail',
+                    component: () => import('@/views/homePage/mediaDetail'),
+                },
+                {
                     path:'/userInfo',
                     name:'userInfo',
                     component:() =>import('@/views/personalCenter/userInfo'),

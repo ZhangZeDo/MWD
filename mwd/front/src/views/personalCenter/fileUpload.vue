@@ -183,6 +183,7 @@
                             id:index,
                             status:0
                         }).then(
+                        this.queryData()
                     );
                 })
             },

@@ -54,9 +54,7 @@ public class MediaWorkController extends BaseController{
                 return ResponseResult.error("上传文件为空，上传失败");
             }
             String coverUrl = FileUtil.uploadFile("cover",coverFile.getInputStream(),coverFile.getOriginalFilename());
-            coverUrl.replace("D:\\Program Files\\fileDepository\\","http://localhost:8083/");
             String mediaUrl = FileUtil.uploadFile("media",mediaFile.getInputStream(),mediaFile.getOriginalFilename());
-            mediaUrl.replace("D:\\Program Files\\fileDepository\\","http://localhost:8083/");
             TMediaWork mediaWork = new TMediaWork();
             mediaWork.setMediaCover(coverUrl);
             mediaWork.setMediaUrl(mediaUrl);
@@ -77,6 +75,19 @@ public class MediaWorkController extends BaseController{
             logger.info("开始修改用户作品：{}状态",mediaWork.getId());
             mediaWorkService.changeMediaWorkStatus(mediaWork,getOperator(request));
             return ResponseResult.ok();
+        }catch (Exception e){
+            return ResponseResult.error(e.getMessage());
+        }
+    }
+
+
+    @RequestMapping(value = "queryMediaWorkById",method = RequestMethod.POST)
+    @ResponseBody
+    public Object queryMediaWorkById(@RequestBody TMediaWork mediaWork) {
+        try{
+            logger.info("获取作品ID:{}详细信息",mediaWork.getId());
+            mediaWork =  mediaWorkService.selectMediaWorkById(mediaWork.getId());
+            return ResponseResult.build(mediaWork);
         }catch (Exception e){
             return ResponseResult.error(e.getMessage());
         }

@@ -20,6 +20,8 @@ public class MediaWorkDTO extends Pager {
 
     private byte status;
 
+    private String order;
+
     public String getId() {
         return id;
     }
@@ -66,5 +68,13 @@ public class MediaWorkDTO extends Pager {
 
     public void setStatus(byte status) {
         this.status = status;
+    }
+
+    public String getOrder() {
+        return order;
+    }
+
+    public void setOrder(String order) {
+        this.order = order;
     }
 }

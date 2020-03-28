@@ -156,6 +156,38 @@ CREATE TABLE `t_job` (
   UNIQUE KEY `idx_t_job_name_and_group` (`job_name`,`job_group`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='定时任务表';
 
+###作品排名前十表
+CREATE TABLE `t_under_rank` (
+  `id` varchar(20) NOT NULL COMMENT '主键',
+  `media_id` varchar(20) NOT NULL COMMENT '作品id',
+  `media_user` varchar(20) NOT NULL COMMENT '作品作者账号',
+  `send_result` tinyint(2) DEFAULT NULL COMMENT '发送消息结果',
+  `status` tinyint(2) DEFAULT NULL COMMENT '状态',
+  `create_by` varchar(20) DEFAULT NULL COMMENT '创建人',
+  `create_datetime` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(20) DEFAULT NULL COMMENT '更新人',
+  `update_datetime` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+###用户评分记录表
+CREATE TABLE `t_score_record` (
+  `id` varchar(20) NOT NULL COMMENT '主键',
+  `user_account` varchar(20) NOT NULL COMMENT '评分用户',
+  `media_id` varchar(20) NOT NULL COMMENT '作品id',
+  `score` double(255,0) DEFAULT NULL COMMENT '分数',
+  `create_by` varchar(255) DEFAULT NULL COMMENT '创建人',
+  `create_datetime` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(255) DEFAULT NULL COMMENT '更新人',
+  `update_datetime` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+###前端组件安装
+>npm install vue-video-player --save
+
+
 
 
 

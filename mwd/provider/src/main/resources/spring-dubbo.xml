@@ -27,4 +27,6 @@
     <dubbo:service interface="com.zzd.api.service.MediaWorkService" ref="mediaWorkService"/>
     <bean id="jobService" class="com.zzd.provider.serviceImpl.JobServiceImpl"/>
     <dubbo:service interface="com.zzd.api.service.JobService" ref="jobService"/>
+    <bean id="underRanService" class="com.zzd.provider.serviceImpl.UnderRankServiceImpl"/>
+    <dubbo:service interface="com.zzd.api.service.UnderRankService" ref="underRanService"/>
 </beans>
