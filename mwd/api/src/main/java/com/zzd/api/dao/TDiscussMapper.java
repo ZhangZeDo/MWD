@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.zzd.api.domain.TDiscuss;
 import com.zzd.api.domain.TDiscussExample;
+import com.zzd.api.dto.DiscussDTO;
 import org.apache.ibatis.annotations.Param;
 
 public interface TDiscussMapper {
@@ -29,4 +30,8 @@ public interface TDiscussMapper {
     int updateByPrimaryKeySelective(TDiscuss record);
 
     int updateByPrimaryKey(TDiscuss record);
+
+    List<TDiscuss> selectByDiscussDTO(@Param("param")DiscussDTO discussDTO);
+
+    int selectByDiscussDTOTotal(@Param("param")DiscussDTO discussDTO);
 }

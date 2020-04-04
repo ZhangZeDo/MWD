@@ -108,12 +108,6 @@
                 this.queryForm.page = val
                 this.queryData()
             },
-            onChangeCover(coverFileList,fileList){
-                this.coverFileList = fileList;
-            },
-            onChangeMedia(mediaFileList,fileList){
-                this.mediaFileList = fileList;
-            },
             getAllMediaType(){
                 axios({
                     method: 'POST',
@@ -124,26 +118,6 @@
                 }).then(resp=>{
                     if (resp.data.code == 200) {
                         this.mediaTypeList = resp.data.data
-                    }else{
-                        this.$message.error(resp.data.message);
-                    }
-                });
-            },
-            submitForm(){
-                let formData = new FormData();
-                formData.append("coverFile",this.coverFileList[0].raw);
-                formData.append("mediaFile",this.mediaFileList[0].raw);
-                formData.append("mediaName",this.ruleForm.mediaName);
-                formData.append("mediaRemark",this.ruleForm.mediaRemark);
-                formData.append("mediaType",this.ruleForm.mediaType);
-                axios({
-                    method: 'POST',
-                    url: 'http://localhost:8083/mediaWork/uploadMediaWork',
-                    data:formData
-                }).then(resp=>{
-                    if (resp.data.code == 200) {
-                        this.$message.success("上传成功");
-                        this.centerDialogVisible = false
                     }else{
                         this.$message.error(resp.data.message);
                     }
@@ -163,74 +137,13 @@
                     }
                 });
             },
-            handleRemove(file) {
-                window.console.log(file);
-            },
-            handlePreview(file) {
-                window.console.log(file);
-            },
-            handleExceed() {
-                this.$message.warning(`只能选择一个文件`);
-            },
-            beforeRemove(file) {
-                window.console.log(file);
-                return this.$confirm(`确定移除 ${ file.name }？`);
-            }
         }
     }
 </script>
 
 <style scoped>
-    .avatar-uploader .el-upload {
-        border: 1px dashed #363a45;
-        border-radius: 6px;
-        cursor: pointer;
-        position: relative;
-        overflow: hidden;
-    }
-    .avatar-uploader .el-upload:hover {
-        border-color: #409EFF;
-    }
-    .avatar-uploader-icon {
-        font-size: 28px;
-        color: #8c939d;
-        width: 178px;
-        height: 178px;
-        line-height: 178px;
-        text-align: center;
-    }
-    .avatar {
-        width: 178px;
-        height: 178px;
-        display: block;
-    }
-    .time {
-        font-size: 13px;
-        color: #999;
-    }
-
-    .bottom {
-        margin-top: 13px;
-        line-height: 12px;
-    }
-
-    .button {
-        padding: 0;
-        float: right;
-    }
-
     .image {
         width: 100%;
         display: block;
-    }
-
-    .clearfix:before,
-    .clearfix:after {
-        display: table;
-        content: "";
-    }
-
-    .clearfix:after {
-        clear: both
     }
 </style>

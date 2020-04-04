@@ -68,7 +68,7 @@
                 order:'popular_num',
                 pageSize:6,
                 page:1,
-                total:20,
+                total:0,
             }
         },
         created() {
@@ -89,6 +89,7 @@
                    status:1,
                    page:this.page,
                    pageSize:this.pageSize,
+                   order:this.order
                }).then(resp=>{
                    if (resp.code == 200) {
                        this.mediaWorks = resp.data.items;
@@ -112,7 +113,6 @@
                 this.queryMediaWorksList()
             },
             showDetail(val){
-               window.console.info(val)
                this.$router.push({path:'/mediaDetail',query:{"mediaId":val}})
             }
         }

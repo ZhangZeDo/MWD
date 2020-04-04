@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.zzd.api.dao.TDiscussMapper" >
-  <resultMap id="BaseResultMap" type="com.zzd.api.domain.TDiscuss" >
+<mapper namespace="com.zzd.api.dao.TRecommendMapper" >
+  <resultMap id="BaseResultMap" type="com.zzd.api.domain.TRecommend" >
     <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_account" property="userAccount" jdbcType="VARCHAR" />
     <result column="media_id" property="mediaId" jdbcType="VARCHAR" />
-    <result column="discuss_user" property="discussUser" jdbcType="VARCHAR" />
-    <result column="content" property="content" jdbcType="VARCHAR" />
-    <result column="status" property="status" jdbcType="TINYINT" />
     <result column="create_by" property="createBy" jdbcType="VARCHAR" />
     <result column="create_datetime" property="createDatetime" jdbcType="TIMESTAMP" />
     <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
@@ -71,16 +69,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, media_id, discuss_user, content, status, create_by, create_datetime, update_by,
-    update_datetime
+    id, user_account, media_id, create_by, create_datetime, update_by, update_datetime
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zzd.api.domain.TDiscussExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zzd.api.domain.TRecommendExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from t_discuss
+    from t_recommend
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -91,46 +88,38 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select
     <include refid="Base_Column_List" />
-    from t_discuss
+    from t_recommend
     where id = #{id,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
-    delete from t_discuss
+    delete from t_recommend
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByExample" parameterType="com.zzd.api.domain.TDiscussExample" >
-    delete from t_discuss
+  <delete id="deleteByExample" parameterType="com.zzd.api.domain.TRecommendExample" >
+    delete from t_recommend
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.zzd.api.domain.TDiscuss" >
-    insert into t_discuss (id, media_id, discuss_user,
-      content, status, create_by,
-      create_datetime, update_by, update_datetime
-      )
-    values (#{id,jdbcType=VARCHAR}, #{mediaId,jdbcType=VARCHAR}, #{discussUser,jdbcType=VARCHAR},
-      #{content,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{createBy,jdbcType=VARCHAR},
-      #{createDatetime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateDatetime,jdbcType=TIMESTAMP}
-      )
+  <insert id="insert" parameterType="com.zzd.api.domain.TRecommend" >
+    insert into t_recommend (id, user_account, media_id,
+      create_by, create_datetime, update_by,
+      update_datetime)
+    values (#{id,jdbcType=VARCHAR}, #{userAccount,jdbcType=VARCHAR}, #{mediaId,jdbcType=VARCHAR},
+      #{createBy,jdbcType=VARCHAR}, #{createDatetime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR},
+      #{updateDatetime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.zzd.api.domain.TDiscuss" >
-    insert into t_discuss
+  <insert id="insertSelective" parameterType="com.zzd.api.domain.TRecommend" >
+    insert into t_recommend
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
       </if>
+      <if test="userAccount != null" >
+        user_account,
+      </if>
       <if test="mediaId != null" >
         media_id,
-      </if>
-      <if test="discussUser != null" >
-        discuss_user,
-      </if>
-      <if test="content != null" >
-        content,
-      </if>
-      <if test="status != null" >
-        status,
       </if>
       <if test="createBy != null" >
         create_by,
@@ -149,17 +138,11 @@
       <if test="id != null" >
         #{id,jdbcType=VARCHAR},
       </if>
+      <if test="userAccount != null" >
+        #{userAccount,jdbcType=VARCHAR},
+      </if>
       <if test="mediaId != null" >
         #{mediaId,jdbcType=VARCHAR},
-      </if>
-      <if test="discussUser != null" >
-        #{discussUser,jdbcType=VARCHAR},
-      </if>
-      <if test="content != null" >
-        #{content,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null" >
-        #{status,jdbcType=TINYINT},
       </if>
       <if test="createBy != null" >
         #{createBy,jdbcType=VARCHAR},
@@ -175,29 +158,23 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.zzd.api.domain.TDiscussExample" resultType="java.lang.Integer" >
-    select count(*) from t_discuss
+  <select id="countByExample" parameterType="com.zzd.api.domain.TRecommendExample" resultType="java.lang.Integer" >
+    select count(*) from t_recommend
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update t_discuss
+    update t_recommend
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=VARCHAR},
       </if>
+      <if test="record.userAccount != null" >
+        user_account = #{record.userAccount,jdbcType=VARCHAR},
+      </if>
       <if test="record.mediaId != null" >
         media_id = #{record.mediaId,jdbcType=VARCHAR},
-      </if>
-      <if test="record.discussUser != null" >
-        discuss_user = #{record.discussUser,jdbcType=VARCHAR},
-      </if>
-      <if test="record.content != null" >
-        content = #{record.content,jdbcType=VARCHAR},
-      </if>
-      <if test="record.status != null" >
-        status = #{record.status,jdbcType=TINYINT},
       </if>
       <if test="record.createBy != null" >
         create_by = #{record.createBy,jdbcType=VARCHAR},
@@ -217,12 +194,10 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update t_discuss
+    update t_recommend
     set id = #{record.id,jdbcType=VARCHAR},
+      user_account = #{record.userAccount,jdbcType=VARCHAR},
       media_id = #{record.mediaId,jdbcType=VARCHAR},
-      discuss_user = #{record.discussUser,jdbcType=VARCHAR},
-      content = #{record.content,jdbcType=VARCHAR},
-      status = #{record.status,jdbcType=TINYINT},
       create_by = #{record.createBy,jdbcType=VARCHAR},
       create_datetime = #{record.createDatetime,jdbcType=TIMESTAMP},
       update_by = #{record.updateBy,jdbcType=VARCHAR},
@@ -231,20 +206,14 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.zzd.api.domain.TDiscuss" >
-    update t_discuss
+  <update id="updateByPrimaryKeySelective" parameterType="com.zzd.api.domain.TRecommend" >
+    update t_recommend
     <set >
+      <if test="userAccount != null" >
+        user_account = #{userAccount,jdbcType=VARCHAR},
+      </if>
       <if test="mediaId != null" >
         media_id = #{mediaId,jdbcType=VARCHAR},
-      </if>
-      <if test="discussUser != null" >
-        discuss_user = #{discussUser,jdbcType=VARCHAR},
-      </if>
-      <if test="content != null" >
-        content = #{content,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null" >
-        status = #{status,jdbcType=TINYINT},
       </if>
       <if test="createBy != null" >
         create_by = #{createBy,jdbcType=VARCHAR},
@@ -261,44 +230,14 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.zzd.api.domain.TDiscuss" >
-    update t_discuss
-    set media_id = #{mediaId,jdbcType=VARCHAR},
-      discuss_user = #{discussUser,jdbcType=VARCHAR},
-      content = #{content,jdbcType=VARCHAR},
-      status = #{status,jdbcType=TINYINT},
+  <update id="updateByPrimaryKey" parameterType="com.zzd.api.domain.TRecommend" >
+    update t_recommend
+    set user_account = #{userAccount,jdbcType=VARCHAR},
+      media_id = #{mediaId,jdbcType=VARCHAR},
       create_by = #{createBy,jdbcType=VARCHAR},
       create_datetime = #{createDatetime,jdbcType=TIMESTAMP},
       update_by = #{updateBy,jdbcType=VARCHAR},
       update_datetime = #{updateDatetime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
-
-    <sql id="queryByCaluse">
-        <trim prefix="WHERE" prefixOverrides="AND | OR ">
-            <if test="param.mediaId!=null and param.mediaId!=''">
-                AND media_id = #{param.mediaId}
-            </if>
-            <if test="param.status!=null">
-                AND status = #{param.status,jdbcType=TINYINT}
-            </if>
-        </trim>
-    </sql>
-    <select id="selectByDiscussDTO" parameterType="com.zzd.api.dto.DiscussDTO" resultMap="BaseResultMap" >
-        SELECT *
-        FROM t_discuss
-        <include refid="queryByCaluse"/>
-        <if test="param.startNum >= 0" >
-            limit ${param.startNum},${param.pageSize}
-        </if>
-
-    </select>
-    <select id="selectByDiscussDTOTotal" resultType="int">
-        SELECT count(1)
-        FROM t_discuss
-        <include refid="queryByCaluse"/>
-    </select>
-
-
-
 </mapper>

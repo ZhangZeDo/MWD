@@ -26,9 +26,7 @@
 
                     }
                 }).then(resp=>{
-                    window.console.log(resp)
                     this.userName = resp.data.data.userName;
-                    window.console.log(this.userName)
                 });
             }
         }

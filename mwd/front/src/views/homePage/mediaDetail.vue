@@ -1,8 +1,8 @@
 <template>
     <div>
-        <div style="width: 1000px;margin: 0 auto;padding-top: 20px">
+        <div style="width: 1000px;height:500px;margin: 0 auto;padding-top: 20px">
             <div style="width: 930px;float: left">
-                <div style="height: 80px;width: 250px">
+                <div v-if="mediaWork.mediaRemark" style="height: 80px;width: 250px">
                     <span style="">{{mediaWork.mediaName}}</span><br><br>
                     <span v-if="mediaWork.mediaRemark.length < 35" style="font-size: x-small">{{mediaWork.mediaRemark}}</span>
                     <span v-else style="font-size: x-small" >{{mediaWork.mediaRemark.substring(0,35)}}...</span>
@@ -16,17 +16,51 @@
                     </video-player>
                 </div>
             </div>
-            <div style="float: right;width: 40px;height:300px;padding-left: 30px;padding-top: 415px">
-                <img style="width: 40px;height:40px;padding-top: 20px" src="../static/img/discuss.svg" @click="addBookmark">
-                <img v-if="isInBookMark" style="width: 40px;height:40px;padding-top: 20px" src="../static/img/bookmark.svg" @click="addBookmark">
+            <div style="float: right;width: 40px;height:200px;padding-left: 30px;padding-top: 415px">
+                <img style="width: 40px;height:40px;padding-top: 20px" src="../static/img/discuss.svg" @click="focusclick">
+                <img v-if="isInBookMark" style="width: 40px;height:40px;padding-top: 20px" src="../static/img/bookmark.svg" @click="removeBookmark">
                 <img v-else style="width: 40px;height:40px;padding-top: 20px" src="../static/img/notBookmark.svg" @click="addBookmark">
-                <img v-if="isInRecommend" style="width: 40px;height:40px;padding-top: 20px" src="../static/img/recommend.svg" @click="addBookmark">
-                <img v-else style="width: 40px;height:40px;padding-top: 20px" src="../static/img/notRecommend.svg" @click="addBookmark">
+                <img v-if="isInRecommend" style="width: 40px;height:40px;padding-top: 20px" src="../static/img/recommend.svg" @click="removeRecommend">
+                <img v-else style="width: 40px;height:40px;padding-top: 20px" src="../static/img/notRecommend.svg" @click="addRecommend">
+            </div>
+        </div>
+        <div style="padding-top: 140px;margin: 0 auto;width: 1000px" >
+            <div>{{mediaWork.discussNum}} 评论 </div>
+            <div style="width: 1000px;padding-top: 20px">
+                <el-input id="contentInput" style="float: left;width: 885px" placeholder="发表你的评论"  v-model="content" clearable @blur="focusState = false" v-focus="focusState"></el-input>
+                <el-button style="float: left;margin-left: 15px;" type="info" @click="sendDiscuss">发表评论</el-button>
+            </div>
+        </div>
+        <div style="padding-top: 50px;margin: 0 auto;width: 1000px">
+            <div style="padding-top: 10px">
+                <el-row v-for="index in discussList" :key="index.id" style="height: 100px;width:1000px;">
+                    <el-col style="width: 70px">
+                        <el-avatar style="width: 65px;height: 60px" src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+                    </el-col>
+                    <el-col style="width: 920px ;padding-left: 10px;margin-top: 10px">
+                        <span>{{index.discussUser}}</span><br><br>
+                        <span style="font-size: x-small">{{index.content}}</span>
+                        <el-divider content-position="left" style="margin-bottom: 0px"></el-divider>
+                    </el-col>
+                </el-row>
+                <el-row style="height: 100px;width:1000px;padding-top: 30px">
+                    <el-col>
+                        <el-pagination
+                                @size-change="handleSizeChange"
+                                @current-change="handleCurrentChange"
+                                :current-page="page"
+                                :page-sizes="[6, 9, 15, 21]"
+                                :page-size="pageSize"
+                                layout="total, sizes, prev, pager, next, jumper"
+                                :total="total">
+                        </el-pagination>
+                    </el-col>
+                </el-row>
+                <br>
             </div>
         </div>
 
     </div>
-
 </template>
 
 <script>
@@ -73,15 +107,39 @@
                 mediaWork:'',
                 isInBookMark:false,
                 isInRecommend:false,
-
+                content:'',
+                discussList:'',
+                page:1,
+                pageSize:6,
+                total:0,
+                focusState:false
             }
         },
         created() {
             this.mediaId = this.$route.query.mediaId;
-            this.queryMediaWork()
-            this.judgeBookmark()
+            this.queryMediaWork();
+            this.judgeBookmark();
+            this.judgeRecommend();
+            this.queryDiscuss();
+        },
+        directives: {
+            focus: {
+                update: function (el, {value}) {
+                    if (value) {
+                        el.focus()
+                    }
+                }
+            }
         },
         methods:{
+            handleSizeChange(val) {
+                this.pageSize = val
+                this.queryMediaWorksList()
+            },
+            handleCurrentChange(val) {
+                this.page = val
+                this.queryMediaWorksList()
+            },
             queryMediaWork(){
                 this.$axios.post('/mediaWork/queryMediaWorkById',{
                     id:this.mediaId
@@ -96,18 +154,81 @@
                     mediaId:this.mediaId
                 }).then(resp =>{
                     this.isInBookMark = resp.data
-                    window.console.info(this.isInBookMark)
                 })
             },
-
+            judgeRecommend(){
+                this.$axios.post('/recommend/isInRecommend',{
+                    mediaId:this.mediaId
+                }).then(resp =>{
+                    this.isInRecommend = resp.data
+                })
+            },
             addBookmark(){
                 this.$axios.post('/bookmark/addBookmark',{
                     mediaId:this.mediaId
                 }).then(resp =>{
                     if (resp.code == 200){
                         this.judgeBookmark()
+                        this.$message.success("收藏成功")
                     }
                 })
+            },
+            removeBookmark(){
+                this.$axios.post('/bookmark/removeBookmark',{
+                    mediaId:this.mediaId
+                }).then(resp =>{
+                    if (resp.code == 200){
+                        this.judgeBookmark()
+                        this.$message.success("已从收藏夹移除")
+                    }
+                })
+            },
+            addRecommend(){
+                this.$axios.post('/recommend/addRecommend',{
+                    mediaId:this.mediaId
+                }).then(resp =>{
+                    if (resp.code == 200){
+                        this.judgeRecommend()
+                        this.$message.success("你称赞了该作品")
+                    }
+                })
+            },
+            removeRecommend(){
+                this.$axios.post('/recommend/removeRecommend',{
+                    mediaId:this.mediaId
+                }).then(resp =>{
+                    if (resp.code == 200){
+                        this.judgeRecommend()
+                    }
+                })
+            },
+            sendDiscuss(){
+                this.$axios.post('/discuss/sendDiscuss',{
+                    mediaId:this.mediaId,
+                    content:this.content
+                }).then(resp =>{
+                    if (resp.code == 200){
+                        this.$message.success("发表成功");
+                        this.content = '';
+                        this.queryDiscuss();
+                    }
+                })
+            },
+            queryDiscuss(){
+                this.$axios.post('/discuss/selectDiscussList',{
+                    mediaId:this.mediaId,
+                    page:this.page,
+                    pageSize:this.pageSize,
+                    status:1,
+                }).then(resp =>{
+                    if (resp.code == 200){
+                        this.discussList = resp.data.items;
+                        this.total = resp.data.total;
+                    }
+                })
+            },
+            focusclick () {
+                this.focusState = true
             }
         }
     }

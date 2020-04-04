@@ -25,5 +25,9 @@
     <dubbo:annotation package="com.zzd.consumer.controller"/>
     <dubbo:reference id="bookmarkService" check="false" interface="com.zzd.api.service.BookmarkService"/>
     <dubbo:annotation package="com.zzd.consumer.controller"/>
+    <dubbo:reference id="recommendService" check="false" interface="com.zzd.api.service.RecommendService"/>
+    <dubbo:annotation package="com.zzd.consumer.controller"/>
+    <dubbo:reference id="discussService" check="false" interface="com.zzd.api.service.DiscussService"/>
+    <dubbo:annotation package="com.zzd.consumer.controller"/>
 
 </beans>
