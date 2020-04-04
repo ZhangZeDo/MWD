@@ -10,6 +10,26 @@
     <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
     <result column="update_datetime" property="updateDatetime" jdbcType="TIMESTAMP" />
   </resultMap>
+    <resultMap id="MediaWorkResultMap" type="com.zzd.api.domain.TMediaWork" >
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="media_name" property="mediaName" jdbcType="VARCHAR" />
+        <result column="media_remark" property="mediaRemark" jdbcType="VARCHAR" />
+        <result column="media_cover" property="mediaCover" jdbcType="VARCHAR" />
+        <result column="media_url" property="mediaUrl" jdbcType="VARCHAR" />
+        <result column="media_type" property="mediaType" jdbcType="VARCHAR" />
+        <result column="popular_num" property="popularNum" jdbcType="INTEGER" />
+        <result column="recommend_num" property="recommendNum" jdbcType="INTEGER" />
+        <result column="discuss_num" property="discussNum" jdbcType="INTEGER" />
+        <result column="media_grade" property="mediaGrade" jdbcType="DOUBLE" />
+        <result column="upload_user" property="uploadUser" jdbcType="VARCHAR" />
+        <result column="approval_user" property="approvalUser" jdbcType="VARCHAR" />
+        <result column="approval_remark" property="approvalRemark" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="TINYINT" />
+        <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+        <result column="create_datetime" property="createDatetime" jdbcType="TIMESTAMP" />
+        <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+        <result column="update_datetime" property="updateDatetime" jdbcType="TIMESTAMP" />
+    </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >
@@ -240,4 +260,34 @@
       update_datetime = #{updateDatetime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+    <sql id="queryByCaluse">
+        <trim prefix="WHERE" prefixOverrides="AND | OR ">
+            tb.media_id = tm.id
+            <if test="param.searchInput !=null and param.searchInput !='' ">
+                and (tm.media_name LIKE #{param.searchInput} or tm.media_remark LIKE #{param.searchInput})
+            </if>
+            <if test="param.userAccount!=null and param.userAccount!=''">
+                AND tb.user_account = #{param.userAccount}
+            </if>
+            <if test="param.mediaType!=null and param.mediaType!=''">
+                AND tm.media_type = #{param.mediaType}
+            </if>
+        </trim>
+    </sql>
+    <select id="selectMediaWorkByBookMark" parameterType="com.zzd.api.dto.BookmarkDTO" resultMap="MediaWorkResultMap" >
+     SELECT tm.*
+     FROM t_bookmark tb,t_media_work tm
+     <include refid="queryByCaluse"/>
+     <if test="param.startNum >= 0" >
+        limit ${param.startNum},${param.pageSize}
+     </if>
+
+  </select>
+    <select id="selectMediaWorkByBookMarkTotal" resultType="int">
+     SELECT count(1)
+     FROM t_bookmark tb,t_media_work tm
+     <include refid="queryByCaluse"/>
+  </select>
+
 </mapper>

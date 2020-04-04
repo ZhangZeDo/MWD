@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.zzd.api.domain.TBookmark;
 import com.zzd.api.domain.TBookmarkExample;
+import com.zzd.api.domain.TMediaWork;
+import com.zzd.api.dto.BookmarkDTO;
 import org.apache.ibatis.annotations.Param;
 
 public interface TBookmarkMapper {
@@ -28,4 +30,8 @@ public interface TBookmarkMapper {
     int updateByPrimaryKeySelective(TBookmark record);
 
     int updateByPrimaryKey(TBookmark record);
+
+    List<TMediaWork> selectMediaWorkByBookMark(@Param("param") BookmarkDTO bookmarkDTO);
+
+    int selectMediaWorkByBookMarkTotal(@Param("param") BookmarkDTO bookmarkDTO);
 }

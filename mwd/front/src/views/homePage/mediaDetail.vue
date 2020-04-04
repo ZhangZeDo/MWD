@@ -17,9 +17,11 @@
                 </div>
             </div>
             <div style="float: right;width: 40px;height:300px;padding-left: 30px;padding-top: 415px">
-                <img style="width: 40px;height:40px;padding-top: 20px" src="../static/img/bookmark.svg" @click="addBookmark">
                 <img style="width: 40px;height:40px;padding-top: 20px" src="../static/img/discuss.svg" @click="addBookmark">
-                <img style="width: 40px;height:40px;padding-top: 20px" src="../static/img/recommend.svg" @click="addBookmark">
+                <img v-if="isInBookMark" style="width: 40px;height:40px;padding-top: 20px" src="../static/img/bookmark.svg" @click="addBookmark">
+                <img v-else style="width: 40px;height:40px;padding-top: 20px" src="../static/img/notBookmark.svg" @click="addBookmark">
+                <img v-if="isInRecommend" style="width: 40px;height:40px;padding-top: 20px" src="../static/img/recommend.svg" @click="addBookmark">
+                <img v-else style="width: 40px;height:40px;padding-top: 20px" src="../static/img/notRecommend.svg" @click="addBookmark">
             </div>
         </div>
 
@@ -69,11 +71,15 @@
                 },
                 mediaId:'',
                 mediaWork:'',
+                isInBookMark:false,
+                isInRecommend:false,
+
             }
         },
         created() {
             this.mediaId = this.$route.query.mediaId;
             this.queryMediaWork()
+            this.judgeBookmark()
         },
         methods:{
             queryMediaWork(){
@@ -85,8 +91,23 @@
                     //this.playerOptions.sources[0].src = this.mediaWork.mediaUrl
                 })
             },
+            judgeBookmark(){
+                this.$axios.post('/bookmark/isInBookmark',{
+                    mediaId:this.mediaId
+                }).then(resp =>{
+                    this.isInBookMark = resp.data
+                    window.console.info(this.isInBookMark)
+                })
+            },
+
             addBookmark(){
-                window.console.info("111111111111111")
+                this.$axios.post('/bookmark/addBookmark',{
+                    mediaId:this.mediaId
+                }).then(resp =>{
+                    if (resp.code == 200){
+                        this.judgeBookmark()
+                    }
+                })
             }
         }
     }

@@ -29,4 +29,6 @@
     <dubbo:service interface="com.zzd.api.service.JobService" ref="jobService"/>
     <bean id="underRanService" class="com.zzd.provider.serviceImpl.UnderRankServiceImpl"/>
     <dubbo:service interface="com.zzd.api.service.UnderRankService" ref="underRanService"/>
+    <bean id="bookmarkService" class="com.zzd.provider.serviceImpl.BookmarkServiceImpl"/>
+    <dubbo:service interface="com.zzd.api.service.BookmarkService" ref="bookmarkService"/>
 </beans>

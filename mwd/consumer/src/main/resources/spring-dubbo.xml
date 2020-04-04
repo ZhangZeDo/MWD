@@ -23,4 +23,7 @@
     <dubbo:annotation package="com.zzd.consumer.controller"/>
     <dubbo:reference id="underRankService" check="false" interface="com.zzd.api.service.UnderRankService"/>
     <dubbo:annotation package="com.zzd.consumer.controller"/>
+    <dubbo:reference id="bookmarkService" check="false" interface="com.zzd.api.service.BookmarkService"/>
+    <dubbo:annotation package="com.zzd.consumer.controller"/>
+
 </beans>

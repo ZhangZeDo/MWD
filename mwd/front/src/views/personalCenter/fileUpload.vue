@@ -7,7 +7,7 @@
             <div slot="header" style="height: 30px">
                 <el-button type="primary" style="float: left" @click="centerDialogVisible = true">新建上传</el-button>
                 <div style="float: right">
-                    <el-button size="small" >搜索</el-button>
+                    <el-button size="small" @click="queryData">搜索</el-button>
                 </div>
                 <div style="float: right;margin-right: 10px">
                     <el-input size="small" placeholder="搜索标题/描述" v-model="queryForm.searchInput">
@@ -15,7 +15,7 @@
                     </el-input>
                 </div>
                 <div style="float: right;margin-right: 10px">
-                    <el-select size="small" v-model="queryForm.mediaType" placeholder="请选择作品类型">
+                    <el-select size="small" v-model="queryForm.mediaType" clearable placeholder="请选择作品类型">
                         <el-option
                                 v-for="item in mediaTypeList"
                                 :key="item.id"
@@ -182,9 +182,12 @@
                     this.$axios.post('/mediaWork/changeMediaWorkStatus', {
                             id:index,
                             status:0
-                        }).then(
-                        this.queryData()
-                    );
+                        }).then(resp=>{
+                            if (resp.code == 200) {
+                                this.$message.success("操作成功");
+                                this.queryData()
+                            }
+                        });
                 })
             },
             handleSizeChange(val) {
