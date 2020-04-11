@@ -1,6 +1,7 @@
 package com.zzd.api.service;
 
 import com.zzd.api.domain.TUser;
+import com.zzd.api.dto.PageResponseResult;
 import com.zzd.api.dto.UserDTO;
 
 import java.util.List;
@@ -22,6 +23,12 @@ public interface UserService {
 
     //更新用户信息
     void updateUser(UserDTO userDTO,String operator);
+
+    PageResponseResult queryUserList(UserDTO userDTO);
+
+    void changeUserStatus(UserDTO userDTO,String operator);
+
+    void changeUserPassword(UserDTO userDTO,String operator);
 
 
 }

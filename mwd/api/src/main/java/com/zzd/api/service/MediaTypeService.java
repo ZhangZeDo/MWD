@@ -1,6 +1,8 @@
 package com.zzd.api.service;
 
 import com.zzd.api.domain.TMediaType;
+import com.zzd.api.dto.MediaTypeDTO;
+import com.zzd.api.dto.PageResponseResult;
 
 import java.util.List;
 
@@ -17,4 +19,6 @@ public interface MediaTypeService {
     void changeMediaTypeStatus(TMediaType mediaType,String operator);
 
     TMediaType queryMediaTypeById(String mediaTypeId);
+
+    PageResponseResult queryMediaTypeListByDTO(MediaTypeDTO mediaTypeDTO);
 }

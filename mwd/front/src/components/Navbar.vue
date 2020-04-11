@@ -22,19 +22,26 @@
               </el-submenu>
               <el-submenu v-if="user.roleType != 'ordinary'" index="6">
                   <template slot="title">系统管理</template>
-                  <el-menu-item index="6-1" style="" >选项1</el-menu-item>
-                  <el-menu-item index="6-2">选项2</el-menu-item>
-                  <el-menu-item index="6-3">选项3</el-menu-item>
+                  <el-submenu index="6-1">
+                      <template slot="title">人员管理</template>
+                      <el-menu-item index="6-1-1" @click="jump('adminManage')">管理员管理</el-menu-item><!--v-if="user.roleType == 'superAdmin'"-->
+                      <el-menu-item index="6-1-2" @click="jump('userManage')">用户管理</el-menu-item>
+                      <el-menu-item index="6-1-3" @click="jump('userMsgManage')">用户消息</el-menu-item>
+                  </el-submenu>
+                  <el-submenu index="6-2">
+                      <template slot="title">作品管理</template>
+                      <el-menu-item index="6-2-2" @click="jump('mediaTypeManage')">作品类型</el-menu-item>
+                      <el-menu-item index="6-2-3" @click="jump('mediaList')">作品列表</el-menu-item>
+                  </el-submenu>
+                  <el-menu-item index="6-3" @click="jump('newsList')">新闻管理</el-menu-item>
                   <el-submenu index="6-4">
-                      <template slot="title">选项4</template>
-                      <el-menu-item index="6-4-1">选项1</el-menu-item>
-                      <el-menu-item index="2-4-2">选项2</el-menu-item>
-                      <el-menu-item index="2-4-3">选项3</el-menu-item>
+                      <template slot="title">系统配置</template>
+                      <el-menu-item index="6-4-1" @click="jump('timingTask')">定时任务</el-menu-item>
+                      <el-menu-item index="6-4-1" @click="jump('variableConfig')">变量配置</el-menu-item>
                   </el-submenu>
               </el-submenu>
           </el-menu>
       </div>
-
   </div>
 </template>
 

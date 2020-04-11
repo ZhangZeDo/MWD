@@ -66,10 +66,17 @@ axios.defaults.headers.post["X-Requested-With"] = "XMLHttpRequest";
 axios.defaults.timeout = 6000; //设置请求超时时间
 
 function checkStatus(response) {
-    return new Promise((resolve, reject) => {
-        window.console.info(reject)
+    return new Promise((resolve) => {
         if(response && (response.status === 200 || response.status === 304 || response.status === 400)){
-            resolve(response.data);
+            if (response.data.code === "200"){
+                resolve(response.data);
+            } else{
+                Message({
+                    type:'error',
+                    showClose: true,
+                    message:response.data.message
+                })
+            }
         } else{
             Message({
                 type:'error',

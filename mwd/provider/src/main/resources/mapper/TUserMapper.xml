@@ -320,4 +320,32 @@
       update_by = #{updateBy,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+    <sql id="queryByCaluse">
+        <trim prefix="WHERE" prefixOverrides="AND | OR ">
+            <if test="param.searchInput !=null and param.searchInput !='' ">
+                and (tu.user_account LIKE #{param.searchInput} or tu.user_name LIKE #{param.searchInput})
+            </if>
+            <if test="param.status!=null and param.status!=''">
+                AND tu.status = #{param.status}
+            </if>
+            <if test="param.roleType!=null and param.roleType!=''">
+                AND tu.role_type = #{param.roleType}
+            </if>
+        </trim>
+    </sql>
+    <select id="selectUserByDTO" parameterType="com.zzd.api.dto.UserDTO" resultMap="BaseResultMap" >
+        SELECT tu.*
+        FROM t_user tu
+        <include refid="queryByCaluse"/>
+        <if test="param.startNum >= 0" >
+            limit ${param.startNum},${param.pageSize}
+        </if>
+
+    </select>
+    <select id="selectUserTotalByDTO" resultType="int">
+        SELECT count(1)
+        FROM t_user tu
+        <include refid="queryByCaluse"/>
+    </select>
 </mapper>

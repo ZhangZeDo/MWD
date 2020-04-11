@@ -49,7 +49,7 @@
                                 @size-change="handleSizeChange"
                                 @current-change="handleCurrentChange"
                                 :current-page="page"
-                                :page-sizes="[6, 9, 15, 21]"
+                                :page-sizes="[5, 10, 15, 20]"
                                 :page-size="pageSize"
                                 layout="total, sizes, prev, pager, next, jumper"
                                 :total="total">
@@ -110,7 +110,7 @@
                 content:'',
                 discussList:'',
                 page:1,
-                pageSize:6,
+                pageSize:5,
                 total:0,
                 focusState:false
             }
@@ -134,11 +134,11 @@
         methods:{
             handleSizeChange(val) {
                 this.pageSize = val
-                this.queryMediaWorksList()
+                this.queryDiscuss()
             },
             handleCurrentChange(val) {
                 this.page = val
-                this.queryMediaWorksList()
+                this.queryDiscuss()
             },
             queryMediaWork(){
                 this.$axios.post('/mediaWork/queryMediaWorkById',{

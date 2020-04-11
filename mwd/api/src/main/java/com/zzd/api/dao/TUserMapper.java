@@ -3,6 +3,7 @@ package com.zzd.api.dao;
 
 import com.zzd.api.domain.TUser;
 import com.zzd.api.domain.TUserExample;
+import com.zzd.api.dto.UserDTO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -29,4 +30,8 @@ public interface TUserMapper {
     int updateByPrimaryKeySelective(TUser record);
 
     int updateByPrimaryKey(TUser record);
+
+    List<TUser> selectUserByDTO(@Param("param") UserDTO userDTO);
+
+    int selectUserTotalByDTO(@Param("param") UserDTO userDTO);
 }

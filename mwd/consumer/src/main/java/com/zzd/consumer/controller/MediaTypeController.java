@@ -1,6 +1,8 @@
 package com.zzd.consumer.controller;
 
 import com.zzd.api.domain.TMediaType;
+import com.zzd.api.dto.MediaTypeDTO;
+import com.zzd.api.dto.PageResponseResult;
 import com.zzd.api.dto.ResponseResult;
 import com.zzd.api.service.MediaTypeService;
 import org.slf4j.Logger;
@@ -24,6 +26,19 @@ public class MediaTypeController extends BaseController{
 
     @Resource
     private MediaTypeService mediaTypeService;
+
+
+    @RequestMapping(value = "queryMediaTypeList",method = RequestMethod.POST)
+    @ResponseBody
+    public Object queryMediaTypeList(@RequestBody MediaTypeDTO mediaTypeDTO) {
+        try{
+            PageResponseResult result = new PageResponseResult();
+            result = mediaTypeService.queryMediaTypeListByDTO(mediaTypeDTO);
+            return ResponseResult.build(result);
+        }catch (Exception e){
+            return ResponseResult.error(e.getMessage());
+        }
+    }
 
     @RequestMapping(value = "getAllMediaType",method = RequestMethod.POST)
     @ResponseBody
@@ -54,7 +69,7 @@ public class MediaTypeController extends BaseController{
     public Object changeMediaTypeStatus(@RequestBody TMediaType mediaType,HttpServletRequest request) {
         try{
             String operator = getOperator(request);
-            mediaTypeService.addMediaType(mediaType,operator);
+            mediaTypeService.changeMediaTypeStatus(mediaType,operator);
             return ResponseResult.ok();
         }catch (Exception e){
             return ResponseResult.error(e.getMessage());

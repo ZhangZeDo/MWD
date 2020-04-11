@@ -4,6 +4,8 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.zzd.api.dao.TMediaTypeMapper;
 import com.zzd.api.domain.TMediaType;
 import com.zzd.api.domain.TMediaTypeExample;
+import com.zzd.api.dto.MediaTypeDTO;
+import com.zzd.api.dto.PageResponseResult;
 import com.zzd.api.eunms.EntityStatus;
 import com.zzd.api.exceptions.BussException;
 import com.zzd.api.service.MediaTypeService;
@@ -66,7 +68,13 @@ public class MediaTypeServiceImpl implements MediaTypeService {
         try {
             byte status= mediaType.getStatus();
             mediaType = mediaTypeMapper.selectByPrimaryKey(mediaType.getId());
-            mediaType.setStatus(status);
+            if (status == EntityStatus.InValid.getCode()){
+                mediaType.setStatus(EntityStatus.Valid.getCode());
+            }else if (status == EntityStatus.Valid.getCode()){
+                mediaType.setStatus(EntityStatus.InValid.getCode());
+            }else{
+                throw new BussException("作品类型状态异常");
+            }
             resetMediaTypeInfo(mediaType,operator);
             mediaTypeMapper.updateByPrimaryKeySelective(mediaType);
         }catch (Exception e){
@@ -85,6 +93,28 @@ public class MediaTypeServiceImpl implements MediaTypeService {
             logger.error("查询作品类型失败，原因：",e);
             throw new BussException("查询作品类型失败");
         }
+    }
+
+    @Override
+    public PageResponseResult queryMediaTypeListByDTO(MediaTypeDTO mediaTypeDTO) {
+        Integer page = mediaTypeDTO.getPage();
+        if (page == null || mediaTypeDTO.getPageSize() == null) {
+            throw new RuntimeException("非法入参");
+        }
+        //构建limit start
+        if (page > 0) {
+            mediaTypeDTO.setStartNum((page - 1) * mediaTypeDTO.getPageSize());
+        } else {
+            mediaTypeDTO.setStartNum(0);
+        }
+        if(StringUtils.isNotBlank(mediaTypeDTO.getSearchInput())){
+            mediaTypeDTO.setSearchInput("%"+mediaTypeDTO.getSearchInput()+"%");
+        }
+
+        List<TMediaType> mediaTypeList = mediaTypeMapper.selectMediaTypeListByDTO(mediaTypeDTO);
+        int total = mediaTypeMapper.selectMediaTypeTotalByDTO(mediaTypeDTO);
+
+        return new PageResponseResult(total,mediaTypeList);
     }
 
     private void resetMediaTypeInfo(TMediaType mediaType,String operator){

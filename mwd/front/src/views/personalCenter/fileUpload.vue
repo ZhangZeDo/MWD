@@ -10,7 +10,7 @@
                     <el-button size="small" @click="queryData">搜索</el-button>
                 </div>
                 <div style="float: right;margin-right: 10px">
-                    <el-input size="small" placeholder="搜索标题/描述" v-model="queryForm.searchInput">
+                    <el-input size="small" placeholder="搜索标题/描述" v-model="queryForm.searchInput" clearable>
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
                     </el-input>
                 </div>
@@ -54,7 +54,8 @@
                             @current-change="handleCurrentChange"
                             :current-page="queryForm.page"
                             :page-size="queryForm.pageSize"
-                            layout="total, prev, pager, next, jumper"
+                            :page-sizes="[6,9,12,15]"
+                            layout="total,sizes , prev, pager, next, jumper"
                             :total="total">
                     </el-pagination>
                 </div>
@@ -150,7 +151,7 @@
                     status:1,
                     mediaType:'',
                     searchInput:'',
-                    pageSize:12,
+                    pageSize:6,
                     page:1,
                 },
                 total:0,

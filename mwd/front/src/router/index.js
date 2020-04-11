@@ -54,7 +54,48 @@ const routers = new Router({
                     path:'/order',
                     name:'order',
                     component:()=>import('@/views/order')
-                }
+                },
+                {
+                    path:'/adminManage',
+                    name:'adminManage',
+                    component:()=>import('@/views/personManage/adminManage')
+                },
+                {
+                    path:'/userManage',
+                    name:'userManage',
+                    component:()=>import('@/views/personManage/userManage')
+                },
+                {
+                    path:'/userMsgManage',
+                    name:'userMsgManage',
+                    component:()=>import('@/views/personManage/userMsgManage')
+                },
+                {
+                    path:'/mediaList',
+                    name:'mediaList',
+                    component:()=>import('@/views/mediaManage/mediaList')
+                },
+                {
+                    path:'/mediaTypeManage',
+                    name:'mediaTypeManage',
+                    component:()=>import('@/views/mediaManage/mediaTypeManage')
+                },
+                {
+                    path:'/timingTask',
+                    name:'timingTask',
+                    component:()=>import('@/views/system/timingTask')
+                },
+                {
+                    path:'/variableConfig',
+                    name:'variableConfig',
+                    component:()=>import('@/views/system/variableConfig')
+                },
+                {
+                    path:'/newsList',
+                    name:'newsList',
+                    component:()=>import('@/views/newsManage/newsList')
+                },
+
             ]
         },
     ]

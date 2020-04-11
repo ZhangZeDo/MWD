@@ -240,4 +240,29 @@
       update_datetime = #{updateDatetime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+    <sql id="queryByCaluse">
+        <trim prefix="WHERE" prefixOverrides="AND | OR ">
+            <if test="param.searchInput !=null and param.searchInput !='' ">
+                (type_name LIKE #{param.searchInput})
+            </if>
+            <if test="param.status != null and param.status !=''" >
+                and status = #{param.status}
+            </if>
+        </trim>
+    </sql>
+
+    <select id="selectMediaTypeListByDTO" resultMap="BaseResultMap" parameterType="com.zzd.api.dto.MediaTypeDTO">
+        select
+        <include refid="Base_Column_List" />
+        from t_media_type
+        <include refid="queryByCaluse"/>
+        <if test="param.startNum >= 0" >
+            limit ${param.startNum},${param.pageSize}
+        </if>
+    </select>
+    <select id="selectMediaTypeTotalByDTO" resultType="int">
+        select count(1) from t_media_type
+        <include refid="queryByCaluse"/>
+    </select>
 </mapper>

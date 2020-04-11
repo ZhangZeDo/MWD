@@ -1,5 +1,6 @@
 package com.zzd.consumer.controller;
 
+import com.zzd.api.dto.PageResponseResult;
 import com.zzd.api.eunms.EntityStatus;
 import com.zzd.api.domain.TUser;
 import com.zzd.api.dto.ResponseResult;
@@ -111,6 +112,49 @@ public class UserController extends BaseController{
             String operator = getOperator(request);
             userService.updateUser(userDTO,operator);
             return ResponseResult.ok();
+        }catch (Exception e){
+            return ResponseResult.error(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "changeUserStatus",method = RequestMethod.POST)
+    @ResponseBody
+    public Object changeUserStatus(@RequestBody UserDTO userDTO,HttpServletRequest request) {
+        try{
+            if (StringUtils.isBlank(userDTO.getId()) && StringUtils.isBlank(userDTO.getStatus())){
+                ResponseResult.error("非法入参");
+            }
+            String operator = getOperator(request);
+            userService.changeUserStatus(userDTO,operator);
+            return ResponseResult.ok();
+        }catch (Exception e){
+            return ResponseResult.error(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "changeUserPassword",method = RequestMethod.POST)
+    @ResponseBody
+    public Object changeUserPassword(@RequestBody UserDTO userDTO,HttpServletRequest request) {
+        try{
+            if (StringUtils.isBlank(userDTO.getUserAccount()) && StringUtils.isBlank(userDTO.getUserPassword())){
+                ResponseResult.error("非法入参");
+            }
+            String operator = getOperator(request);
+            userService.changeUserPassword(userDTO,operator);
+            return ResponseResult.ok();
+        }catch (Exception e){
+            return ResponseResult.error(e.getMessage());
+        }
+    }
+
+
+    @RequestMapping(value = "queryUserList",method = RequestMethod.POST)
+    @ResponseBody
+    public Object queryUserList(@RequestBody UserDTO userDTO){
+        try{
+            PageResponseResult result = new PageResponseResult();
+            result = userService.queryUserList(userDTO);
+            return ResponseResult.build(result);
         }catch (Exception e){
             return ResponseResult.error(e.getMessage());
         }

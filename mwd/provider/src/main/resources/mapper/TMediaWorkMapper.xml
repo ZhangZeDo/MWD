@@ -433,8 +433,8 @@
             <if test="param.mediaType!=null and param.mediaType!=''">
                 AND media_type = #{param.mediaType}
             </if>
-            <if test="param.status != null" >
-                and status = #{param.status,jdbcType=TINYINT}
+            <if test="param.status != null and param.status!=''" >
+                and status = #{param.status}
             </if>
         </trim>
         <if test="param.order !=null and param.order!=''">

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.zzd.api.domain.TMediaType;
 import com.zzd.api.domain.TMediaTypeExample;
+import com.zzd.api.dto.MediaTypeDTO;
 import org.apache.ibatis.annotations.Param;
 
 public interface TMediaTypeMapper {
@@ -28,4 +29,8 @@ public interface TMediaTypeMapper {
     int updateByPrimaryKeySelective(TMediaType record);
 
     int updateByPrimaryKey(TMediaType record);
+
+    List<TMediaType> selectMediaTypeListByDTO(@Param("param")MediaTypeDTO mediaTypeDTO);
+
+    int selectMediaTypeTotalByDTO(@Param("param")MediaTypeDTO mediaTypeDTO);
 }
