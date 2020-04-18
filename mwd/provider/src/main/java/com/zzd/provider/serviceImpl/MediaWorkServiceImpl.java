@@ -9,6 +9,7 @@ import com.zzd.api.dto.PageResponseResult;
 import com.zzd.api.eunms.EntityStatus;
 import com.zzd.api.exceptions.BussException;
 import com.zzd.api.service.MediaWorkService;
+import com.zzd.provider.utils.RedisUtil;
 import com.zzd.provider.utils.UniqIdUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -29,6 +30,9 @@ public class MediaWorkServiceImpl implements MediaWorkService {
 
     @Resource
     private TMediaWorkMapper mediaWorkMapper;
+
+    @Resource
+    private RedisUtil redisUtil;
 
 
     @Override
@@ -105,6 +109,37 @@ public class MediaWorkServiceImpl implements MediaWorkService {
         TMediaWork mediaWork = new TMediaWork();
         mediaWork = mediaWorkMapper.selectByPrimaryKey(id);
         return mediaWork;
+    }
+
+    @Override
+    public void updateMediaWork(TMediaWork mediaWork) {
+        mediaWorkMapper.updateByPrimaryKeySelective(mediaWork);
+    }
+
+    @Override
+    public void addMediaPopular(TMediaWork mediaWork) {
+        mediaWork = selectMediaWorkById(mediaWork.getId());
+        if (mediaWork.getPopularNum() == null){
+            mediaWork.setPopularNum(0);
+        }
+        mediaWork.setPopularNum(mediaWork.getPopularNum()+1);
+        updateMediaWork(mediaWork);
+    }
+
+    @Override
+    public void executeSortMediaWork(String params) {
+        try{
+            if (!redisUtil.hasKey("executeSortMediaWork")){
+                logger.info(params);
+                logger.info("=======================================================");
+            }
+        }catch (Exception e){
+            logger.error("对作品排序调度任务执行失败，原因：{}",e);
+        }finally {
+            if (redisUtil.hasKey("executeSortMediaWork")){
+                redisUtil.del("executeSortMediaWork");
+            }
+        }
     }
 
     private void resetMediaWorkInfo(TMediaWork mediaWork, String operator){

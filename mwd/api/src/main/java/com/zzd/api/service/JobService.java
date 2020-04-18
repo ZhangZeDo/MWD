@@ -1,6 +1,8 @@
 package com.zzd.api.service;
 
 import com.zzd.api.domain.TJob;
+import com.zzd.api.dto.JobDTO;
+import com.zzd.api.dto.PageResponseResult;
 
 /**
  * @author
@@ -8,11 +10,16 @@ import com.zzd.api.domain.TJob;
  * @describe
  */
 public interface JobService {
-    void insert(TJob tJob);
+    void insert(TJob tJob,String operator);
 
-    int update(TJob tJob);
+    void update(TJob tJob,String operator);
 
     TJob findByJobName(String jobName);
 
     void updateJob(TJob tJob);
+
+    /* 查询所有的定时任务 */
+    PageResponseResult queryJobList(JobDTO jobDTO);
+
+    void runOnce(TJob tJob);
 }

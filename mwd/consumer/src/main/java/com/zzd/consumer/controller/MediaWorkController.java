@@ -93,5 +93,18 @@ public class MediaWorkController extends BaseController{
         }
     }
 
+    @RequestMapping(value = "addMediaPopular",method = RequestMethod.POST)
+    @ResponseBody
+    public Object addMediaPopular(@RequestBody TMediaWork mediaWork) {
+        try{
+            mediaWorkService.addMediaPopular(mediaWork);
+            return ResponseResult.ok();
+        }catch (Exception e){
+            return ResponseResult.error(e.getMessage());
+        }
+    }
+
+
+
 
 }

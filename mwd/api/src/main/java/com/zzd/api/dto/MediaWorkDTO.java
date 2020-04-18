@@ -18,7 +18,7 @@ public class MediaWorkDTO extends Pager {
 
     private String uploadUser;
 
-    private byte status;
+    private String status;
 
     private String order;
 
@@ -62,11 +62,11 @@ public class MediaWorkDTO extends Pager {
         this.uploadUser = uploadUser;
     }
 
-    public byte getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(byte status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

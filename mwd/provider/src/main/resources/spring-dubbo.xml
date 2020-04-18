@@ -35,5 +35,7 @@
     <dubbo:service interface="com.zzd.api.service.RecommendService" ref="recommendService"/>
     <bean id="discussService" class="com.zzd.provider.serviceImpl.DiscussServiceImpl"/>
     <dubbo:service interface="com.zzd.api.service.DiscussService" ref="discussService"/>
+    <bean id="scoreRecordService" class="com.zzd.provider.serviceImpl.ScoreRecordImpl"/>
+    <dubbo:service interface="com.zzd.api.service.ScoreRecordService" ref="scoreRecordService"/>
 
 </beans>

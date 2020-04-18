@@ -10,10 +10,13 @@ import com.zzd.api.dto.PageResponseResult;
 import com.zzd.api.eunms.EntityStatus;
 import com.zzd.api.exceptions.BussException;
 import com.zzd.api.service.DiscussService;
+import com.zzd.api.service.MediaWorkService;
 import com.zzd.provider.utils.UniqIdUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -30,6 +33,9 @@ public class DiscussServiceImpl implements DiscussService {
 
     @Resource
     private TDiscussMapper discussMapper;
+
+    @Resource
+    private MediaWorkService mediaWorkService;
 
     @Override
     public PageResponseResult selectDiscussList(DiscussDTO discussDTO) {
@@ -50,12 +56,21 @@ public class DiscussServiceImpl implements DiscussService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void sendDiscuss(TDiscuss discuss, String operator) {
         discuss.setId(UniqIdUtil.getUniqId());
         discuss.setDiscussUser(operator);
         discuss.setStatus(EntityStatus.Valid.getCode());
         resetDiscussInfo(discuss,operator);
         discussMapper.insertSelective(discuss);
+
+        //同时在作品表视频评论+1
+        TMediaWork mediaWork =  mediaWorkService.selectMediaWorkById(discuss.getMediaId());
+        if (mediaWork.getDiscussNum() == null){
+            mediaWork.setDiscussNum(0);
+        }
+        mediaWork.setDiscussNum(mediaWork.getDiscussNum()+1);
+        mediaWorkService.updateMediaWork(mediaWork);
     }
 
     @Override

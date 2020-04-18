@@ -19,4 +19,10 @@ public interface MediaWorkService {
     void changeMediaWorkStatus(TMediaWork mediaWork,String operator);
 
     TMediaWork selectMediaWorkById(String id);
+
+    void updateMediaWork(TMediaWork mediaWork);
+
+    void addMediaPopular(TMediaWork mediaWork);
+
+    void executeSortMediaWork(String params);
 }

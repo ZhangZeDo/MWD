@@ -2,6 +2,7 @@ package com.zzd.api.dao;
 
 import com.zzd.api.domain.TJob;
 import com.zzd.api.domain.TJobExample;
+import com.zzd.api.dto.JobDTO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -34,4 +35,8 @@ public interface TJobMapper {
     TJob findByJobId(@Param("id") String id);
 
     int updateById(TJob tJob);
+
+    List<TJob> selectByJobDTO(@Param("param") JobDTO jobDTO);
+
+    int selectByJobDTOTotal(@Param("param")JobDTO jobDTO);
 }

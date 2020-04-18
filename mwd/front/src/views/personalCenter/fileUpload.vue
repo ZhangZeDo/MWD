@@ -31,7 +31,7 @@
                         <el-col :span="8" v-for="index in mediaWorks" :key="index.id" >
                             <el-card style="margin:10px 20px;width: 500px;height: 150px;float: left">
                                 <div style="float: left">
-                                    <img style="width: 150px;height: 110px" :src="index.mediaCover" class="image">
+                                    <img style="width: 150px;height: 110px" :src="index.mediaCover" class="image" @click="showDetail(index.id)"/>
                                 </div>
                                 <div style="float: left;width: 250px;padding-left: 5px">
                                     <span>{{index.mediaName}}</span><br><br>
@@ -266,6 +266,9 @@
             beforeRemove(file) {
                 window.console.log(file);
                 return this.$confirm(`确定移除 ${ file.name }？`);
+            },
+            showDetail(val){
+                this.$router.push({path:'/mediaDetail',query:{"mediaId":val}})
             }
         }
     }

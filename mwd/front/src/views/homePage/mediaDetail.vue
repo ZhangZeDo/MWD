@@ -2,17 +2,20 @@
     <div>
         <div style="width: 1000px;height:500px;margin: 0 auto;padding-top: 20px">
             <div style="width: 930px;float: left">
-                <div v-if="mediaWork.mediaRemark" style="height: 80px;width: 250px">
-                    <span style="">{{mediaWork.mediaName}}</span><br><br>
-                    <span v-if="mediaWork.mediaRemark.length < 35" style="font-size: x-small">{{mediaWork.mediaRemark}}</span>
-                    <span v-else style="font-size: x-small" >{{mediaWork.mediaRemark.substring(0,35)}}...</span>
+                <div style="height: 80px;width: 930px;">
+                    <div v-if="mediaWork.mediaRemark" style="height: 80px;width: 250px;float: left">
+                        <span style="">{{mediaWork.mediaName}}</span><br><br>
+                        <span v-if="mediaWork.mediaRemark.length < 35" style="font-size: x-small">{{mediaWork.mediaRemark}}</span>
+                        <span v-else style="font-size: x-small" >{{mediaWork.mediaRemark.substring(0,35)}}...</span>
+                    </div>
                 </div>
                 <div>
                     <video-player class="video-player vjs-custom-skin"
                                   style="width: 930px;height: 300px"
                                   ref="videoPlayer"
                                   :playsinline="true"
-                                  :options="playerOptions">
+                                  :options="playerOptions"
+                                   @ended="onPlayerEnded()">
                     </video-player>
                 </div>
             </div>
@@ -25,7 +28,7 @@
             </div>
         </div>
         <div style="padding-top: 140px;margin: 0 auto;width: 1000px" >
-            <div>{{mediaWork.discussNum}} 评论 </div>
+            <div>共{{this.total}} 评论 </div>
             <div style="width: 1000px;padding-top: 20px">
                 <el-input id="contentInput" style="float: left;width: 885px" placeholder="发表你的评论"  v-model="content" clearable @blur="focusState = false" v-focus="focusState"></el-input>
                 <el-button style="float: left;margin-left: 15px;" type="info" @click="sendDiscuss">发表评论</el-button>
@@ -59,7 +62,22 @@
                 <br>
             </div>
         </div>
-
+        <el-dialog
+                title="打个分吧"
+                :visible.sync="addScoreDialog"
+                width="20%"
+                center>
+            <div align="center">
+                <el-rate
+                        v-model="score"
+                        show-score allow-half>
+                </el-rate>
+            </div>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="addScoreDialog = false" size="mini">不用了,下次吧!</el-button>
+                <el-button type="primary" @click="submitForm" size="mini" >确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -108,15 +126,18 @@
                 isInBookMark:false,
                 isInRecommend:false,
                 content:'',
-                discussList:'',
+                discussList:[],
                 page:1,
                 pageSize:5,
                 total:0,
-                focusState:false
+                focusState:false,
+                addScoreDialog:false,
+                score:'',
             }
         },
         created() {
             this.mediaId = this.$route.query.mediaId;
+            this.addMediaPopular();
             this.queryMediaWork();
             this.judgeBookmark();
             this.judgeRecommend();
@@ -229,6 +250,31 @@
             },
             focusclick () {
                 this.focusState = true
+            },
+            addMediaPopular(){
+                this.$axios.post('/mediaWork/addMediaPopular',{
+                    mediaId:this.mediaId,
+                })
+            },
+            onPlayerEnded(){
+                this.$axios.post('/scoreRecord/isInScoreRecord',{
+                    mediaId:this.mediaId,
+                }).then(resp=>{
+                    if (resp.data == false){
+                        this.addScoreDialog = true
+                    }
+                })
+            },
+            submitForm(){
+                this.$axios.post('/scoreRecord/addScoreRecord',{
+                    mediaId:this.mediaId,
+                    score:this.score
+                }).then(resp=>{
+                    if (resp.code == 200){
+                        this.$message.success("谢谢的评分！")
+                        this.addScoreDialog = false
+                    }
+                })
             }
         }
     }

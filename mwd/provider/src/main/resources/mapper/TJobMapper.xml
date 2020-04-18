@@ -335,4 +335,26 @@
       updated_by = #{updatedBy,jdbcType=VARCHAR}
     where id = #{id,jdbcType=CHAR}
   </update>
+
+    <sql id="queryByCaluse">
+        <trim prefix="WHERE" prefixOverrides="AND | OR ">
+            <if test="param.searchInput !=null and param.searchInput !='' ">
+                (job_name LIKE #{param.searchInput})
+            </if>
+        </trim>
+    </sql>
+
+    <select id="selectByJobDTO" resultMap="BaseResultMap" parameterType="com.zzd.api.dto.JobDTO">
+        select
+        <include refid="Base_Column_List" />
+        from t_job
+        <include refid="queryByCaluse"/>
+        <if test="param.startNum >= 0" >
+            limit ${param.startNum},${param.pageSize}
+        </if>
+    </select>
+    <select id="selectByJobDTOTotal" resultType="int">
+        select count(1) from t_job
+        <include refid="queryByCaluse"/>
+    </select>
 </mapper>

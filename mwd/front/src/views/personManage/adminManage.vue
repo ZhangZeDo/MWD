@@ -178,8 +178,9 @@
                     data:this.userForm
                 }).then(resp=>{
                     if (resp.data.code == 200) {
-                        this.$message.success("管理员创建成功,初始密码为000000,请联系管理员完善信息");
+                        this.$message.success("管理员创建成功,初始密码为000000,请联系该管理员完善信息");
                     }
+                    this.queryData()
                     this.createDialog = false
                 });
             },

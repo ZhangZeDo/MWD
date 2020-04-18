@@ -15,7 +15,6 @@
     </div>
 </template>
 <script>
-    /*import axios from 'axios'*/
     export default {
         name: "login",
         data() {
@@ -26,16 +25,13 @@
         },
         methods:{
             doLogin(){
-                this.$axios.post(
-                    '/user/login',
+                this.$axios.post('/user/login',
                     {
                         userAccount:this.userAccount,
                         userPassword:this.userPassword
                     }).then(resp=>{
                         if (resp.code == 200){
                             this.$router.push({name: 'index'});
-                        }else{
-                            this.$message.error(resp.message)
                         }
                 });
             },

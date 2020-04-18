@@ -26,7 +26,11 @@
                 </div>
                 <div>
                     <el-table :data="meidaList" style="width: 100%" stripe>
-                        <el-table-column prop="mediaName" label="类型名称" style="width: 15%"></el-table-column>
+                        <el-table-column  label="作品名称" style="width: 15%" @click="showDetail(id)">
+                            <template slot-scope="scope">
+                                <span @click="showDetail(scope.row.id)" style="color: #3a8ee6">{{(scope.row.mediaName)}}</span>
+                            </template>
+                        </el-table-column>
                         <el-table-column prop="createBy" label="上传人" style="width: 15%"></el-table-column>
                         <el-table-column prop="approvalUser" label="审批人" style="width: 15%"></el-table-column>
                         <el-table-column label="状态" style="width: 15%">
@@ -145,6 +149,9 @@
                 this.queryForm.page = val
                 this.queryData()
             },
+            showDetail(val){
+                this.$router.push({path:'/mediaDetail',query:{"mediaId":val}})
+            }
         }
     }
 </script>

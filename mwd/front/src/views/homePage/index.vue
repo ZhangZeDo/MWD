@@ -3,7 +3,7 @@
         <div style="width: 1000px; height: 300px;padding-top: 20px; margin: 0 auto">
             <el-carousel trigger="click">
                 <el-carousel-item v-for="item in underRankMedias.slice(0,7)" :key="item.id">
-                    <img style="width: 1000px; height: 300px;" :src="item.mediaCover"/>
+                    <img style="width: 1000px; height: 300px;" :src="item.mediaCover" @click="showDetail(item.id)"/>
                 </el-carousel-item>
             </el-carousel>
         </div>
@@ -26,17 +26,11 @@
                     <el-col :span="8" v-for="index in mediaWorks" :key="index.id" >
                         <el-card style="padding-top:5px; margin-top:15px;width: 326px;height: 350px;float: left">
                             <div style="float: left">
-                                <img style="width: 295px;height: 200px" :src="index.mediaCover" class="image">
+                                <img style="width: 295px;height: 200px" :src="index.mediaCover" class="image" @click="showDetail(index.id)"/>
                             </div>
                             <div style="float: left;width: 250px;padding-left: 5px">
                                 <span>{{index.mediaName}}</span><br>
-                                <!--<div>
-                                    <img style="width: 20px;height:20px" src="../static/img/popular.svg"> <span title="dd">{{index.mediaName}}</span>
-                                </div>-->
                             </div>
-                            <!--<div style="float: left;width: 250px;padding-left: 5px">
-                                <span>{{index.mediaName}}</span><br><br>
-                            </div>-->
                         </el-card>
                     </el-col>
                 </el-row>

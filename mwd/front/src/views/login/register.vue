@@ -75,8 +75,6 @@
                         if (resp.code == 200) {
                             this.$message.success("注册成功");
                             this.$router.push({name: 'login'});
-                        }else{
-                            this.$message.error(resp.data.message);
                         }
                     });
                 }
