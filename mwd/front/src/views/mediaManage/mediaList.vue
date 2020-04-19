@@ -128,7 +128,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$axios.post('/mediaType/changeMediaTypeStatus',{
+                    this.$axios.post('/mediaWork/changeMediaWorkStatus',{
                         id:row.id,
                         status: row.status
                     }).then(resp=>{

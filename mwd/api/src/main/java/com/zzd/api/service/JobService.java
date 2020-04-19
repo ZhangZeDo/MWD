@@ -16,6 +16,8 @@ public interface JobService {
 
     TJob findByJobName(String jobName);
 
+    TJob findByJobId(String jobId);
+
     void updateJob(TJob tJob);
 
     /* 查询所有的定时任务 */

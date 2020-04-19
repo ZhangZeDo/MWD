@@ -2,12 +2,13 @@ package com.zzd.provider.serviceImpl;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.zzd.api.dao.TUnderRankMapper;
-import com.zzd.api.domain.TMediaWork;
-import com.zzd.api.domain.TUnderRank;
-import com.zzd.api.domain.TUnderRankExample;
+import com.zzd.api.domain.*;
 import com.zzd.api.eunms.EntityStatus;
+import com.zzd.api.exceptions.BussException;
 import com.zzd.api.service.MediaWorkService;
 import com.zzd.api.service.UnderRankService;
+import com.zzd.api.service.UserService;
+import com.zzd.provider.utils.MailSendUtils;
 import com.zzd.provider.utils.UniqIdUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -31,6 +32,10 @@ public class UnderRankServiceImpl implements UnderRankService {
     private TUnderRankMapper underRankMapper;
     @Resource
     private MediaWorkService mediaWorkService;
+    @Resource
+    private MailSendUtils mailSendUtils;
+    @Resource
+    private UserService userService;
 
     @Override
     public void addUnderMedia(List<TMediaWork> mediaWorkList, String operator) {
@@ -43,8 +48,31 @@ public class UnderRankServiceImpl implements UnderRankService {
             underRank.setSendResult(EntityStatus.InValid.getCode());
             resetUnderRankInfo(underRank,operator);
             underRankMapper.insertSelective(underRank);
-            //todo 异步发送消息给创建人，并修改发送消息状态
+            try {
+                sendEmailToOwner(mediaWork);
+                logger.info("邮件通知发送成功，修改消息状态为成功");
+                underRank.setSendResult(EntityStatus.Valid.getCode());
+                underRankMapper.updateByPrimaryKey(underRank);
+            }catch (Exception e){
+                logger.info("邮件通知发送失败,原因：{}",e);
+            }
         }
+    }
+
+    private void sendEmailToOwner(TMediaWork mediaWork){
+        String owner = mediaWork.getUploadUser();
+        TUser user = userService.selectUserByAccount(owner,EntityStatus.All.getCode());
+        if (user == null || user.getUserMail()==null){
+            logger.error("邮件通知是，收件人信息或邮箱信息为空！");
+            throw new BussException("邮件通知是，收件人信息或邮箱信息为空！");
+        }
+        EmailModel emailModel = new EmailModel();
+        emailModel.setEmailTheme("系统通知");
+        emailModel.setRecieverName(user.getUserName());
+        String content = String.format("%s您好，恭喜您，你的作品%s被选中为优秀作品之一，快登陆系统查看吧！",user.getUserName(),mediaWork.getMediaName());
+        emailModel.setEmailContent(content);
+        emailModel.setRecieverEmailAddress(user.getUserMail());
+        mailSendUtils.sendEmailAsText(emailModel);
     }
 
     @Override

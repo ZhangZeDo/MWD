@@ -1,6 +1,6 @@
 <template>
   <div>
-      <div>
+      <div style="background-color:#545c64;">
           <el-menu
                   :default-active="activeIndex"
                   class="el-menu-demo"
@@ -8,7 +8,7 @@
                   background-color="#545c64"
                   text-color="#fff"
                   active-text-color="#ffd04b"
-                  style="padding-left: 38%">
+                  style="padding-left: 33%;">
               <el-menu-item index="1" @click="jump('homePage')" >首页</el-menu-item>
               <el-menu-item index="2" @click="jump('homePage')" >新闻公告</el-menu-item>
               <el-menu-item index="3">消息中心</el-menu-item>

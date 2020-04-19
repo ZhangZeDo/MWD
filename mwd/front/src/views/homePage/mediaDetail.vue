@@ -253,7 +253,7 @@
             },
             addMediaPopular(){
                 this.$axios.post('/mediaWork/addMediaPopular',{
-                    mediaId:this.mediaId,
+                    id:this.mediaId,
                 })
             },
             onPlayerEnded(){
@@ -271,7 +271,7 @@
                     score:this.score
                 }).then(resp=>{
                     if (resp.code == 200){
-                        this.$message.success("谢谢的评分！")
+                        this.$message.success("谢谢你的评分！")
                         this.addScoreDialog = false
                     }
                 })

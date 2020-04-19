@@ -30,12 +30,6 @@ public interface TJobMapper {
 
     int updateByPrimaryKey(TJob record);
 
-    TJob findByJobName(@Param("jobName") String jobName);
-
-    TJob findByJobId(@Param("id") String id);
-
-    int updateById(TJob tJob);
-
     List<TJob> selectByJobDTO(@Param("param") JobDTO jobDTO);
 
     int selectByJobDTOTotal(@Param("param")JobDTO jobDTO);

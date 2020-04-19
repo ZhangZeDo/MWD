@@ -34,7 +34,8 @@ public class QuartzJobFactory implements Job {
         Method method = null;
         try {
             if (StringUtils.isNotBlank(job.getBeanClazz())) {
-                object = applicationContext.getBean(job.getBeanClazz());
+                //object = applicationContext.getBean(job.getBeanClazz());
+                object = SpringContextJobUtil.getBean(job.getBeanClazz());
             }
             if (object != null) {
                 method = object.getClass().getDeclaredMethod(job.getMethodName(),String.class);

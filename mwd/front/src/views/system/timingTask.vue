@@ -20,10 +20,9 @@
             </div>
             <div>
                 <el-table :data="jobList" style="width: 100%" stripe>
-                    <el-table-column align="center" prop="jobName" label="任务名称" style="width: 15%"></el-table-column>
-                    <el-table-column align="center" prop="jobGroup" label="任务组" style="width: 15%"></el-table-column>
-                    <el-table-column align="center" prop="cronExpression" label="时间表达式" style="width: 15%"></el-table-column>
-                    <el-table-column align="center" label="状态" style="width: 15%">
+                    <el-table-column align="center" prop="jobName" label="任务名称" style="width: 10%"></el-table-column>
+                    <el-table-column align="center" prop="cronExpression" label="时间表达式" style="width: 10%"></el-table-column>
+                    <el-table-column align="center" label="状态" style="width: 5%">
                         <template slot-scope="scope">
                             <el-button v-if="scope.row.status == 0" size="mini" type="success"
                                        @click="updateJobStatus(scope.row)">启用
@@ -33,9 +32,9 @@
                             </el-button>
                         </template>
                     </el-table-column>
-                    <el-table-column align="center" prop="methodName" label="方法名称"></el-table-column>
-                    <el-table-column align="center" prop="beanClazz" label="beanId"></el-table-column>
-                    <el-table-column align="center" prop="params" label="参数">
+                    <el-table-column align="center" prop="methodName" label="方法名称" style="width: 10%"></el-table-column>
+                    <el-table-column align="center" prop="beanClazz" label="beanId" style="width: 10%"></el-table-column>
+                    <el-table-column align="center" prop="params" label="参数" style="width: 5%">
                         <template slot-scope="scope">
                             <el-popover placement="bottom" width="800" trigger="click">
                                 <div>
@@ -45,19 +44,10 @@
                             </el-popover>
                         </template>
                     </el-table-column>
-                    <el-table-column align="center" prop="remark" label="备注">
+
+                    <el-table-column align="center" label="操作" style="width: 40%">
                         <template slot-scope="scope">
-                            <el-popover placement="bottom" width="800" trigger="click">
-                                <div>
-                                    {{scope.row.remark}}
-                                </div>
-                                <el-button type="text" slot="reference">{{ shortCut(scope.row.remark,10) }}</el-button>
-                            </el-popover>
-                        </template>
-                    </el-table-column>
-                    <el-table-column align="center" label="操作" style="width: 10%">
-                        <template slot-scope="scope">
-                            <el-button  @click="changeUserStatus(scope.row,'启用')"  type="primary" size="mini">编辑</el-button>
+                            <el-button  @click="showEditJobDialog(scope.row)"  type="primary" size="mini">编辑</el-button>
                             <el-button  @click="runJob(scope.row)"  type="primary" size="mini">立即执行</el-button>
                         </template>
                     </el-table-column>
@@ -109,6 +99,40 @@
                 <el-button type="primary" @click="submitCreateForm">确 定</el-button>
             </span>
             </el-dialog>
+
+            <el-dialog
+                    title="编辑定时任务"
+                    :visible.sync="editJobDialog"
+                    width="50%"
+                    center>
+                <el-form :model="editForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+                    <el-form-item label="任务名称" prop="jobName">
+                        <el-input v-model="editForm.jobName" placeholder="请输入任务名称"></el-input>
+                    </el-form-item>
+                    <el-form-item label="任务组" prop="jobGroup">
+                        <el-input v-model="editForm.jobGroup" placeholder="请输入任务组"></el-input>
+                    </el-form-item>
+                    <el-form-item label="时间表达式" prop="cronExpression">
+                        <el-input v-model="editForm.cronExpression" placeholder="请输入时间表达式"></el-input>
+                    </el-form-item>
+                    <el-form-item label="方法名称" prop="methodName">
+                        <el-input v-model="editForm.methodName" placeholder="请输入方法名称"></el-input>
+                    </el-form-item>
+                    <el-form-item label="beanId" prop="beanId">
+                        <el-input v-model="editForm.beanClazz" placeholder="请输入beanId"></el-input>
+                    </el-form-item>
+                    <el-form-item label="参数" prop="params">
+                        <el-input type="textarea" :rows="6" v-model="editForm.params" placeholder="请输入参数，以json格式"></el-input>
+                    </el-form-item>
+                    <el-form-item label="备注" prop="remark">
+                        <el-input type="textarea" :rows="4" v-model="editForm.remark" placeholder="请输入备注"></el-input>
+                    </el-form-item>
+                </el-form>
+                <span slot="footer" class="dialog-footer">
+                <el-button @click="editJobDialog = false">取 消</el-button>
+                <el-button type="primary" @click="submitEditForm">确 定</el-button>
+            </span>
+            </el-dialog>
         </el-card>
     </div>
 </template>
@@ -120,6 +144,7 @@
         data(){
             return{
                 createJobDialog:false,
+                editJobDialog:false,
                 queryForm:{
                     page:1,
                     pageSize:5,
@@ -128,6 +153,7 @@
                 total:0,
                 jobList:[],
                 ruleForm:{
+                    id:'',
                     jobName:'',
                     jobGroup:'',
                     cronExpression:'',
@@ -135,7 +161,16 @@
                     beanClazz:'',
                     params:'',
                     remark:''
-
+                },
+                editForm:{
+                    id:'',
+                    jobName:'',
+                    jobGroup:'',
+                    cronExpression:'',
+                    methodName:'',
+                    beanClazz:'',
+                    params:'',
+                    remark:''
                 },
                 rules:{
                     jobName: [
@@ -179,8 +214,16 @@
                     }
                 });
             },
-            updateJobStatus(val){
-                window.console.info(val)
+            updateJobStatus(row){
+                this.$axios.post('/job/updateJobStatus',{
+                    id:row.id,
+                    status:row.status,
+                }).then(resp=>{
+                    if (resp.code == 200){
+                        this.$message.success("操作成功")
+                    }
+                    this.queryData()
+                })
             },
             shortCut(src,size){
                 if (src && src.length > size){
@@ -207,6 +250,31 @@
                         this.queryData()
                         this.createJobDialog = false
                     }
+                    this.queryData()
+                })
+            },
+            showEditJobDialog(row){
+                this.editForm = row
+                this.editJobDialog = true
+            },
+            submitEditForm(){
+                this.$axios.post('/job/editJob',{
+                    id:this.editForm.id,
+                    jobName:this.editForm.jobName,
+                    jobGroup:this.editForm.jobGroup,
+                    status:this.editForm.status,
+                    cronExpression:this.editForm.cronExpression,
+                    methodName:this.editForm.methodName,
+                    beanClazz:this.editForm.beanClazz,
+                    params:this.editForm.params,
+                    remark:this.editForm.remark,
+                }).then(resp=>{
+                    if (resp.code == 200){
+                        this.$message.success("编辑成功")
+                        this.queryData()
+                        this.editJobDialog = false
+                    }
+                    this.queryData()
                 })
             },
             handleSizeChange(val) {
@@ -226,7 +294,7 @@
                         this.$message.success("操作成功，后台正在执行")
                     }
                 })
-            }
+            },
         }
     }
 </script>

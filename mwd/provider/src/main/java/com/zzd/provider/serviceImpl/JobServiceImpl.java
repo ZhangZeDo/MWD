@@ -168,7 +168,7 @@ public class JobServiceImpl implements JobService {
     }
 
     private TJob getJob(String id) {
-        return jobMapper.findByJobId(id);
+        return jobMapper.selectByPrimaryKey(id);
     }
 
     private List<TJob> listByAll() {
@@ -196,7 +196,7 @@ public class JobServiceImpl implements JobService {
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void update(TJob tJob,String operator) {
         resetJobInfo(tJob,operator);
-        jobMapper.updateById(tJob);
+        jobMapper.updateByPrimaryKey(tJob);
         updateJob(tJob);
     }
 
@@ -229,7 +229,20 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public TJob findByJobName(String jobName) {
-        return jobMapper.findByJobName(jobName);
+        TJobExample example = new TJobExample();
+        example.createCriteria().andJobNameEqualTo(jobName);
+        List<TJob> jobList = jobMapper.selectByExample(example);
+        if (jobList==null || jobList.size()>0){
+            return null;
+        }
+        return jobList.get(0);
+    }
+
+    @Override
+    public TJob findByJobId(String jobId) {
+        TJob job = new TJob();
+        job = jobMapper.selectByPrimaryKey(jobId);
+        return job;
     }
 
     private void resetJobInfo(TJob job,String operator){
