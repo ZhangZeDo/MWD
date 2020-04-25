@@ -60,8 +60,8 @@
                enableDeleteByExample="true" enableSelectByExample="true"
                enableUpdateByExample="true">
         </table>-->
-        <table schema="mwd" tableName="t_recommend"
-               domainObjectName="TRecommend" enableCountByExample="true"
+        <table schema="mwd" tableName="t_news"
+               domainObjectName="TNews" enableCountByExample="true"
                enableDeleteByExample="true" enableSelectByExample="true"
                enableUpdateByExample="true">
         </table>

@@ -65,11 +65,13 @@ axios.defaults.headers.post["Content-Type"] = "application/json";
 axios.defaults.headers.post["X-Requested-With"] = "XMLHttpRequest";
 axios.defaults.timeout = 6000; //设置请求超时时间
 
-function checkStatus(response) {
+function checkStatus(response,type) {
     return new Promise((resolve) => {
         if(response && (response.status === 200 || response.status === 304 || response.status === 400)){
             if (response.data.code === "200"){
                 resolve(response.data);
+            } else if (type && type === "blob"){
+                resolve(response.data)
             } else{
                 Message({
                     type:'error',
@@ -95,6 +97,16 @@ export default {
             data: params
         }).then(response => {
             return checkStatus(response);
+        });
+    },
+    postWithBlob(url,params){
+        return axios({
+            method: "post",
+            url,
+            data: params,
+            responseType: 'blob'
+        }).then(response => {
+            return checkStatus(response,"blob");
         });
     },
     get(url, params) {

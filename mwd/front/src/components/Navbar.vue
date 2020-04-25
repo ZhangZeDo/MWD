@@ -10,9 +10,8 @@
                   active-text-color="#ffd04b"
                   style="padding-left: 33%;">
               <el-menu-item index="1" @click="jump('homePage')" >首页</el-menu-item>
-              <el-menu-item index="2" @click="jump('homePage')" >新闻公告</el-menu-item>
-              <el-menu-item index="3">消息中心</el-menu-item>
-              <el-menu-item index="4" @click="jump('order')">订单管理</el-menu-item>
+              <el-menu-item index="2" @click="jump('search')" >发现</el-menu-item>
+              <el-menu-item index="3" @click="jump('news')" >新闻公告</el-menu-item>
               <el-submenu index="5">
                   <template slot="title">个人中心</template>
                   <el-menu-item index="5-1" @click="jump('userInfo')">个人信息</el-menu-item>

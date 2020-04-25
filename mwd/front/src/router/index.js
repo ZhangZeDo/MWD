@@ -31,6 +31,16 @@ const routers = new Router({
                     component: () => import('@/views/homePage'),
                 },
                 {
+                    path:'/news',
+                    name:'news',
+                    component: () => import('@/views/homePage/news'),
+                },
+                {
+                    path:'/search',
+                    name:'search',
+                    component: () => import('@/views/homePage/search'),
+                },
+                {
                     path:'/mediaDetail',
                     name:'mediaDetail',
                     component: () => import('@/views/homePage/mediaDetail'),
@@ -51,11 +61,6 @@ const routers = new Router({
                     component:() =>import('@/views/personalCenter/bookmark'),
                 },
                 {
-                    path:'/order',
-                    name:'order',
-                    component:()=>import('@/views/order')
-                },
-                {
                     path:'/adminManage',
                     name:'adminManage',
                     component:()=>import('@/views/personManage/adminManage')
@@ -64,11 +69,6 @@ const routers = new Router({
                     path:'/userManage',
                     name:'userManage',
                     component:()=>import('@/views/personManage/userManage')
-                },
-                {
-                    path:'/userMsgManage',
-                    name:'userMsgManage',
-                    component:()=>import('@/views/personManage/userMsgManage')
                 },
                 {
                     path:'/mediaList',

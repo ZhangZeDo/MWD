@@ -10,6 +10,7 @@ import com.zzd.api.dto.PageResponseResult;
 import com.zzd.api.eunms.EntityStatus;
 import com.zzd.api.exceptions.BussException;
 import com.zzd.api.service.NewsService;
+import com.zzd.provider.utils.UniqIdUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,6 +75,15 @@ public class NewsServiceImpl implements NewsService {
             return null;
         }
         return newsList.get(0);
+    }
+
+    @Override
+    public void addNews(TNews news, String operator) {
+        news.setId(UniqIdUtil.getUniqId());
+        news.setPublishUser(operator);
+        news.setStatus(EntityStatus.Valid.getCode());
+        resetNewsInfo(news,operator);
+        newsMapper.insertSelective(news);
     }
 
     private void resetNewsInfo(TNews news,String operator){

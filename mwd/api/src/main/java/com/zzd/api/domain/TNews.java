@@ -1,12 +1,15 @@
 package com.zzd.api.domain;
 
-import com.zzd.api.domain.BaseEntity;
 import java.util.Date;
 
 public class TNews extends BaseEntity {
     private String id;
 
     private String publishUser;
+
+    private String title;
+
+    private String content;
 
     private String duration;
 
@@ -19,8 +22,6 @@ public class TNews extends BaseEntity {
     private String updateBy;
 
     private Date updateDatetime;
-
-    private byte[] content;
 
     public String getId() {
         return id;
@@ -36,6 +37,22 @@ public class TNews extends BaseEntity {
 
     public void setPublishUser(String publishUser) {
         this.publishUser = publishUser == null ? null : publishUser.trim();
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title == null ? null : title.trim();
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content == null ? null : content.trim();
     }
 
     public String getDuration() {
@@ -84,13 +101,5 @@ public class TNews extends BaseEntity {
 
     public void setUpdateDatetime(Date updateDatetime) {
         this.updateDatetime = updateDatetime;
-    }
-
-    public byte[] getContent() {
-        return content;
-    }
-
-    public void setContent(byte[] content) {
-        this.content = content;
     }
 }

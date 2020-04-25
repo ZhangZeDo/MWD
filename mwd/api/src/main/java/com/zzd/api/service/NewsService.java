@@ -15,4 +15,6 @@ public interface NewsService {
     void deleteNewsById(String newsId,String operator);
 
     TNews selectNewsById(String newsId);
+
+    void addNews(TNews news,String operator);
 }

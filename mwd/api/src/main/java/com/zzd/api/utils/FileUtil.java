@@ -16,6 +16,7 @@ import java.util.Date;
 public class FileUtil {
     private static final String coverBaseUrl = "D:\\Program Files\\fileDepository\\cover";
     private static final String mediaBaseUrl = "D:\\Program Files\\fileDepository\\media";
+    private static final String newsBaseUrl = "D:\\Program Files\\fileDepository\\news";
 
     public static String uploadFile(String type, InputStream inputStream,String fileName){
         try {
@@ -29,7 +30,10 @@ public class FileUtil {
             } else if (StringUtils.equals(type, "media")) {
                 baseUrl = mediaBaseUrl+"\\"+date;
                 result = result + "media/"+date;
-            } else {
+            } else if (StringUtils.equals(type,"news")){
+                baseUrl = newsBaseUrl+"\\"+date;
+                result = result + "news/"+date;
+            }else {
                 throw new BussException("保存文件失败");
             }
             simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");

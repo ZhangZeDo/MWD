@@ -14,16 +14,15 @@
                     </el-input>
                 </div>
                 <div style="float: right;margin-right: 10px">
-                    <el-button type="primary" size="mini">新增</el-button>
+                    <el-button type="primary" size="mini" @click="showCreateNewsDialog()">新增</el-button>
                 </div>
             </div>
             <div>
                 <el-table :data="newsList" style="width: 100%" stripe>
-                    <el-table-column prop="userAccount" label="管理员账号" style="width: 15%"></el-table-column>
-                    <el-table-column prop="userName" label="管理员名称" style="width: 15%"></el-table-column>
-                    <el-table-column prop="userMail" label="邮箱地址" style="width: 15%"></el-table-column>
-                    <el-table-column prop="userPhone" label="联系方式" style="width: 15%"></el-table-column>
-                    <el-table-column  label="创建时间" style="width: 15%" >
+                    <el-table-column prop="title" label="新闻标题" style="width: 15%"></el-table-column>
+                    <el-table-column prop="content" label="具体内容" style="width: 15%" :show-overflow-tooltip="true"></el-table-column>
+                    <el-table-column prop="publishUser" label="发布人" style="width: 15%"></el-table-column>
+                    <el-table-column  label="发布时间" style="width: 15%" >
                         <template slot-scope="scope">
                             {{parseTime(scope.row.createDatetime) }}
                         </template>
@@ -49,6 +48,43 @@
                 </div>
             </div>
         </el-card>
+        <el-dialog
+                title="新建新闻公告"
+                :visible.sync="createNewsDialog"
+                width="40%"
+                center>
+            <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+                <el-form-item label="新闻标题" prop="title">
+                    <el-input v-model="ruleForm.title" placeholder="请输入新闻标题"></el-input>
+                </el-form-item>
+                <el-form-item label="新闻内容" prop="content">
+                    <el-input type="textarea" v-model="ruleForm.content"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <div style="float: left;">
+                        <el-upload
+                                class="upload-demo"
+                                ref="upload"
+                                action=""
+                                :on-preview="handlePreview"
+                                :on-remove="handleRemove"
+                                :before-remove="beforeRemove"
+                                multiple
+                                :limit="1"
+                                :on-exceed="handleExceed"
+                                :auto-upload="false"
+                                :on-change="onChangeFile"
+                                :file-list="newsFileList">
+                            <el-button size="small" type="primary">点击上传附件</el-button>
+                        </el-upload>
+                    </div>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="createNewsDialog = false">取 消</el-button>
+                <el-button type="primary" @click="submitForm">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -65,6 +101,21 @@
                 },
                 newsList:[],
                 total:0,
+                createNewsDialog:false,
+                ruleForm:{
+                    title:'',
+                    content:'',
+                },
+                rules: {
+                    title: [
+                        { required: true, message: '请输入新闻主题', trigger: 'blur' },
+                        { min: 3, max: 20, message: '长度在 3 到 20个字符', trigger: 'blur' }
+                    ],
+                    content: [
+                        { required: true, message: '请输入新闻内容', trigger: 'blur' }
+                    ],
+                },
+                newsFileList:[],
             }
         },
         created() {
@@ -101,9 +152,8 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$axios.post('/user/changeUserStatus',{
+                    this.$axios.post('/news/deleteNewsById',{
                         id:row.id,
-                        status: row.status
                     }).then(resp=>{
                         if (resp.code == 200){
                             this.$message.success("操作成功");
@@ -115,15 +165,24 @@
                 });
             },
             submitForm(){
+                let formData = new FormData();
+                if (this.newsFileList.length>0){
+                    formData.append("newsFile",this.newsFileList[0].raw);
+                }
+                formData.append("title",this.ruleForm.title);
+                formData.append("content",this.ruleForm.content);
                 axios({
                     method: 'POST',
-                    url: 'http://localhost:8083/user/register',
-                    data:this.userForm
+                    url: 'http://localhost:8083/news/addNews',
+                    data:formData
                 }).then(resp=>{
                     if (resp.data.code == 200) {
-                        this.$message.success("管理员创建成功,初始密码为000000,请联系管理员完善信息");
+                        this.$message.success("新建成功");
+                        this.createNewsDialog = false
+                        this.queryData()
+                    }else{
+                        this.$message.error(resp.data.message);
                     }
-                    this.createDialog = false
                 });
             },
             handleSizeChange(val) {
@@ -134,6 +193,28 @@
                 this.queryForm.page = val;
                 this.queryData()
             },
+            handleRemove(file) {
+                window.console.log(file);
+            },
+            handlePreview(file) {
+                window.console.log(file);
+            },
+            handleExceed() {
+                this.$message.warning(`只能选择一个文件`);
+            },
+            beforeRemove(file) {
+                window.console.log(file);
+                return this.$confirm(`确定移除 ${ file.name }？`);
+            },
+            onChangeFile(newsFileList,fileList){
+                this.newsFileList = fileList
+            },
+            showCreateNewsDialog(){
+                this.createNewsDialog = true;
+            },
+            downLoadFile(){
+                window.console.info("=============")
+            }
         }
 
     }
