@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.zzd.api.domain.TNews;
 import com.zzd.api.domain.TNewsExample;
+import com.zzd.api.dto.NewsDTO;
 import org.apache.ibatis.annotations.Param;
 
 public interface TNewsMapper {
@@ -34,4 +35,8 @@ public interface TNewsMapper {
     int updateByPrimaryKeyWithBLOBs(TNews record);
 
     int updateByPrimaryKey(TNews record);
+
+    List<TNews> selectByNewsDTO(@Param("param")NewsDTO newsDTO);
+
+    int selectByNewsDTOTotal(@Param("param")NewsDTO newsDTO);
 }

@@ -31,5 +31,9 @@
     <dubbo:annotation package="com.zzd.consumer.controller"/>
     <dubbo:reference id="scoreRecordService" check="false" interface="com.zzd.api.service.ScoreRecordService"/>
     <dubbo:annotation package="com.zzd.consumer.controller"/>
+    <dubbo:reference id="newsService" check="false" interface="com.zzd.api.service.NewsService"/>
+    <dubbo:annotation package="com.zzd.consumer.controller"/>
+    <dubbo:reference id="informationService" check="false" interface="com.zzd.api.service.InformationService"/>
+    <dubbo:annotation package="com.zzd.consumer.controller"/>
 
 </beans>

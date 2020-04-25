@@ -320,4 +320,28 @@
       update_datetime = #{updateDatetime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+
+    <sql id="queryByCaluse">
+        <trim prefix="WHERE" prefixOverrides="AND | OR ">
+            status = 1
+            <if test="param.searchInput!=null and param.searchInput!=''">
+                AND title = #{param.searchInput}
+            </if>
+        </trim>
+    </sql>
+    <select id="selectByNewsDTO" parameterType="com.zzd.api.dto.NewsDTO" resultMap="BaseResultMap" >
+        SELECT *
+        FROM t_news
+        <include refid="queryByCaluse"/>
+        <if test="param.startNum >= 0" >
+            limit ${param.startNum},${param.pageSize}
+        </if>
+
+    </select>
+    <select id="selectByNewsDTOTotal" resultType="int">
+        SELECT count(1)
+        FROM t_news
+        <include refid="queryByCaluse"/>
+    </select>
 </mapper>
