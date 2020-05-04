@@ -3,6 +3,7 @@ package com.zzd.provider.serviceImpl;
 import cn.hutool.core.bean.BeanUtil;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.zzd.api.dao.TUserMapper;
+import com.zzd.api.domain.EmailModel;
 import com.zzd.api.dto.PageResponseResult;
 import com.zzd.api.eunms.EntityStatus;
 import com.zzd.api.domain.TUser;
@@ -11,6 +12,8 @@ import com.zzd.api.dto.UserDTO;
 import com.zzd.api.exceptions.BussException;
 import com.zzd.api.service.LoginService;
 import com.zzd.api.service.UserService;
+import com.zzd.provider.utils.MailSendUtils;
+import com.zzd.provider.utils.RedisUtil;
 import com.zzd.provider.utils.UniqIdUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -19,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 /**
  * @author
@@ -33,6 +37,10 @@ public class UserServiceImpl implements UserService {
     private TUserMapper userMapper;
     @Resource
     private LoginService loginService;
+    @Resource
+    private RedisUtil redisUtil;
+    @Resource
+    private MailSendUtils mailSendUtils;
 
     /**
      * 根据用户账号获取用户信息
@@ -175,6 +183,56 @@ public class UserServiceImpl implements UserService {
         resetUserBase(user,operator);
         user.setUserPassword(password);
         userMapper.updateByPrimaryKeySelective(user);
+    }
+
+    @Override
+    public void setUserCode(UserDTO userDTO) {
+        if (StringUtils.isBlank(userDTO.getUserAccount())){
+            throw new BussException("非法入参");
+        }
+        String redisKey = userDTO.getUserAccount()+"_code";
+        Random random = new Random();
+        String value = "";
+        for (int i=0;i<6;i++){
+            int randomNum = random.nextInt(10);
+            value = value+String.valueOf(randomNum);
+        }
+        redisUtil.set(redisKey,value,120);
+
+        TUser user = new TUser();
+        user = selectUserByAccount(userDTO.getUserAccount(),EntityStatus.Valid.getCode());
+        if (user == null){
+            throw new BussException("未找到该用户！");
+        }
+        EmailModel emailModel = new EmailModel();
+        emailModel.setEmailTheme("系统验证码");
+        emailModel.setRecieverName(user.getUserName());
+        String content = String.format("%s您的操作动态验证码为%s,若不是你在操作，可以忽略！",user.getUserName(),value);
+        emailModel.setEmailContent(content);
+        emailModel.setRecieverEmailAddress(user.getUserMail());
+        mailSendUtils.sendEmailAsText(emailModel);
+    }
+
+    @Override
+    public void resetPassword(UserDTO userDTO) {
+        if (StringUtils.isBlank(userDTO.getUserAccount()) || StringUtils.isBlank(userDTO.getUserPassword()) || StringUtils.isBlank(userDTO.getCode())){
+            throw new BussException("非法入参");
+        }
+        TUser user = new TUser();
+        user = selectUserByAccount(userDTO.getUserAccount(),EntityStatus.Valid.getCode());
+        if (user == null){
+            throw new BussException("未找到该用户");
+        }
+        if (!redisUtil.hasKey(userDTO.getUserAccount()+"_code")){
+            throw new BussException("验证码状态异常，请重新发送");
+        }
+        if (!StringUtils.equals(userDTO.getCode(),(String)redisUtil.get(userDTO.getUserAccount()+"_code"))){
+            throw new BussException("验证码错误，请重新输入");
+        }
+        user.setUserPassword(userDTO.getUserPassword());
+        resetUserBase(user,userDTO.getUserAccount());
+        userMapper.updateByPrimaryKeySelective(user);
+
     }
 
     private void resetUserBase(TUser user,String operator){

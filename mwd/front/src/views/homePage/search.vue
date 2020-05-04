@@ -3,12 +3,16 @@
         <div style="width: 1400px; height: 100px;padding-top:40px; margin: 0 auto">
             <div align="center">
                 <el-input size="big" placeholder="请输入作品标题或备注" v-model="searchInput" class="input-with-select" style="width: 800px">
-                    <el-select v-model="mediaType" slot="prepend" placeholder="请选择" style="width: 100px">
-                        <el-option label="餐厅名" value="1"></el-option>
-                        <el-option label="订单号" value="2"></el-option>
-                        <el-option label="用户电话" value="3"></el-option>
+                    <el-select v-model="mediaType" slot="prepend" placeholder="请选择" style="width: 120px">
+                        <el-option value="" label="所有类型"></el-option>
+                        <el-option
+                                v-for="item in mediaTypeList"
+                                :key="item.id"
+                                :label="item.typeName"
+                                :value="item.id">
+                        </el-option>
                     </el-select>
-                    <el-button slot="append" icon="el-icon-search"></el-button>
+                    <el-button slot="append" icon="el-icon-search" @click="queryMediaWorksList"></el-button>
                 </el-input>
             </div>
         </div>
@@ -20,8 +24,23 @@
                             <div style="float: left">
                                 <img style="width: 395px;height: 200px" :src="index.mediaCover" class="image" @click="showDetail(index.id)"/>
                             </div>
-                            <div style="float: left;width: 250px;padding-left: 5px">
-                                <span >{{index.mediaName}}</span><br>
+                            <div style="float: left;width: 288px;height:95px;padding-left: 5px;">
+                                <span style="font-weight: bolder">{{index.mediaName}}</span><br>
+                                <span style="font-size: xx-small">{{parseString(index.mediaRemark) }}</span><br><br>
+                            </div>
+                            <div style="float: left;width: 288px;padding-left: 5px;">
+                                <div style="width: 50px;height: 20px;float: left">
+                                    <img style="width: 30px;height: 20px;float: left" src="../static/img/homePageEye.svg"/>
+                                    <span style="float: left;margin-top: 2px">{{index.popularNum}}</span>
+                                </div>
+                                <div style="width: 50px;height: 20px;float: left">
+                                    <img style="width: 30px;height: 20px;float: left" src="../static/img/hoemPageMsg.svg"/>
+                                    <span style="float: left;margin-top: 2px;padding-left: 3px">{{index.discussNum}}</span>
+                                </div>
+                                <div style="width: 50px;height: 20px;float: left" >
+                                    <img style="width: 30px;height: 20px;float: left" src="../static/img/homePageGood.svg"/>
+                                    <span style="float: left;margin-top: 2px;padding-left: 3px">{{index.recommendNum}}</span>
+                                </div>
                             </div>
                         </el-card>
                     </el-col>
@@ -45,31 +64,45 @@
 </template>
 
 <script>
+    import axios from 'axios'
     export default {
         name: "search",
         data(){
             return{
-                underRankMedias:[],
                 mediaWorks:[],
-                order:'popular_num',
                 pageSize:6,
                 page:1,
                 total:0,
                 searchInput:'',
                 mediaType:'',
+                mediaTypeList:[],
             }
         },
         created() {
-            this.queryUnderRankList()
+            this.getAllMediaType()
             this.queryMediaWorksList()
         },
         methods:{
-            queryUnderRankList(){
-                this.$axios.post('/underRank/queryAllUnderMedia',{
-                    status:1
-                }).then(resp =>{
-                    this.underRankMedias = resp.data
-                })
+            parseString(val){
+                if (val.length>60){
+                    val = val.substring(0,60)+"...";
+                }
+                return val
+            },
+            getAllMediaType(){
+                axios({
+                    method: 'POST',
+                    url: 'http://localhost:8083/mediaType/getAllMediaType',
+                    data:{
+                        status:'1'
+                    }
+                }).then(resp=>{
+                    if (resp.data.code == 200) {
+                        this.mediaTypeList = resp.data.data
+                    }else{
+                        this.$message.error(resp.data.message);
+                    }
+                });
             },
 
             queryMediaWorksList(){
@@ -77,7 +110,9 @@
                     status:1,
                     page:this.page,
                     pageSize:this.pageSize,
-                    order:this.order
+                    order:this.order,
+                    mediaType: this.mediaType,
+                    searchInput:this.searchInput
                 }).then(resp=>{
                     if (resp.code == 200) {
                         this.mediaWorks = resp.data.items;

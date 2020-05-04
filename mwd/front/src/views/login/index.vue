@@ -7,7 +7,7 @@
                         <el-input style="margin-top: 30px" v-model="userAccount" placeholder="请输入用户号"></el-input>
                         <el-input style="margin-top: 20px" v-model="userPassword" placeholder="请输入密码" show-password @keyup.enter.native="doLogin"></el-input>
                         <el-button style="margin-top: 20px;width: 100%" type="primary" @click="doLogin">登录</el-button>
-                        <el-link style="margin-top: 10px;margin-bottom:10px;float: left"  type="primary">联系我们</el-link>
+                        <el-link style="margin-top: 10px;margin-bottom:10px;float: left"  type="primary" @click="forgetPass">忘记密码</el-link>
                         <el-link style="margin-top: 10px;margin-bottom:10px;float: right"  type="primary" @click="doRegister">注册</el-link>
                     </el-card>
                 </el-form>
@@ -37,6 +37,10 @@
             },
             doRegister(){
                 this.$router.push({name: 'register'});
+            },
+
+            forgetPass(){
+                this.$router.push({name: 'forgetPass'});
             }
         }
     }

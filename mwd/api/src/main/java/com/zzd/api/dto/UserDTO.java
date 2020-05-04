@@ -14,6 +14,8 @@ public class UserDTO extends Pager {
 
     String userAccount;
 
+    String code;
+
     String userPassword;
 
     String userMail;
@@ -96,5 +98,13 @@ public class UserDTO extends Pager {
 
     public void setSearchInput(String searchInput) {
         this.searchInput = searchInput;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

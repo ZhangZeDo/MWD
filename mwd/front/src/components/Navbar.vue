@@ -25,7 +25,6 @@
                       <template slot="title">人员管理</template>
                       <el-menu-item index="6-1-1" @click="jump('adminManage')">管理员管理</el-menu-item><!--v-if="user.roleType == 'superAdmin'"-->
                       <el-menu-item index="6-1-2" @click="jump('userManage')">用户管理</el-menu-item>
-                      <el-menu-item index="6-1-3" @click="jump('userMsgManage')">用户消息</el-menu-item>
                   </el-submenu>
                   <el-submenu index="6-2">
                       <template slot="title">作品管理</template>

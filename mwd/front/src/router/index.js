@@ -20,6 +20,11 @@ const routers = new Router({
           component:()=>import('@/views/login/register')
         },
         {
+            path:'/forgetPass',
+            name:'forgetPass',
+            component:()=>import('@/views/login/forgetPass')
+        },
+        {
             path:'/index',
             name:'index',
             component:()=> import('@/views/index'),

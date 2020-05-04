@@ -30,5 +30,9 @@ public interface UserService {
 
     void changeUserPassword(UserDTO userDTO,String operator);
 
+    void setUserCode(UserDTO userDTO);
+
+    void resetPassword(UserDTO userDTO);
+
 
 }

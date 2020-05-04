@@ -160,6 +160,28 @@ public class UserController extends BaseController{
         }
     }
 
+    @RequestMapping(value = "getCode",method = RequestMethod.POST)
+    @ResponseBody
+    public Object getCode(@RequestBody UserDTO userDTO){
+        try{
+            userService.setUserCode(userDTO);
+            return ResponseResult.ok();
+        }catch (Exception e){
+            return ResponseResult.error(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "resetPassword",method = RequestMethod.POST)
+    @ResponseBody
+    public Object resetPassword(@RequestBody UserDTO userDTO,HttpServletRequest request){
+        try{
+            userService.resetPassword(userDTO);
+            return ResponseResult.ok();
+        }catch (Exception e){
+            return ResponseResult.error(e.getMessage());
+        }
+    }
+
 
 
 

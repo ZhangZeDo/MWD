@@ -28,8 +28,23 @@
                             <div style="float: left">
                                 <img style="width: 295px;height: 200px" :src="index.mediaCover" class="image" @click="showDetail(index.id)"/>
                             </div>
-                            <div style="float: left;width: 250px;padding-left: 5px">
-                                <span >{{index.mediaName}}</span><br>
+                            <div style="float: left;width: 288px;height:95px;padding-left: 5px;">
+                                <span style="font-weight: bolder">{{index.mediaName}}</span><br>
+                                <span style="font-size: xx-small">{{parseString(index.mediaRemark) }}</span><br><br>
+                            </div>
+                            <div style="float: left;width: 288px;padding-left: 5px;">
+                                <div style="width: 50px;height: 20px;float: left">
+                                    <img style="width: 30px;height: 20px;float: left" src="../static/img/homePageEye.svg"/>
+                                    <span style="float: left;margin-top: 2px">{{index.popularNum}}</span>
+                                </div>
+                                <div style="width: 50px;height: 20px;float: left">
+                                    <img style="width: 30px;height: 20px;float: left" src="../static/img/hoemPageMsg.svg"/>
+                                    <span style="float: left;margin-top: 2px;padding-left: 3px">{{index.discussNum}}</span>
+                                </div>
+                                <div style="width: 50px;height: 20px;float: left" >
+                                    <img style="width: 30px;height: 20px;float: left" src="../static/img/homePageGood.svg"/>
+                                    <span style="float: left;margin-top: 2px;padding-left: 3px">{{index.recommendNum}}</span>
+                                </div>
                             </div>
                         </el-card>
                     </el-col>
@@ -70,6 +85,12 @@
             this.queryMediaWorksList()
         },
         methods:{
+           parseString(val){
+                if (val.length>60){
+                    val = val.substring(0,60)+"...";
+                }
+                return val
+           },
            queryUnderRankList(){
                this.$axios.post('/underRank/queryAllUnderMedia',{
                     status:1
