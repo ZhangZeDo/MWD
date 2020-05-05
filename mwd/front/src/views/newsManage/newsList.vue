@@ -133,16 +133,14 @@
                 return year + "-" + month + "-" + day + " " + hour + ":" + min + ":" + second;
             },
             queryData(){
-                axios({
-                    method: 'POST',
-                    url: 'http://localhost:8083/news/queryNewsList',
-                    data:this.queryForm
+                this.$axios.post('/news/queryNewsList',{
+                    searchInput:this.queryForm.searchInput,
+                    pageSize:this.queryForm.pageSize,
+                    page:this.queryForm.page
                 }).then(resp=>{
-                    if (resp.data.code == 200) {
-                        this.newsList = resp.data.data.items;
-                        this.total = resp.data.data.total;
-                    }else{
-                        this.$message.error(resp.data.message);
+                    if (resp.code == 200) {
+                        this.newsList = resp.data.items;
+                        this.total = resp.data.total;
                     }
                 });
             },
@@ -180,8 +178,6 @@
                         this.$message.success("新建成功");
                         this.createNewsDialog = false
                         this.queryData()
-                    }else{
-                        this.$message.error(resp.data.message);
                     }
                 });
             },

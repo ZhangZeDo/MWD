@@ -138,7 +138,6 @@
 </template>
 
 <script>
-    import axios from 'axios'
     export default {
         name: "timingTask",
         data(){
@@ -201,16 +200,14 @@
         },
         methods:{
             queryData(){
-                axios({
-                    method: 'POST',
-                    url: 'http://localhost:8083/job/queryJobList',
-                    data: this.queryForm
+                this.$axios.post('/job/queryJobList',{
+                    page:this.queryForm.page,
+                    pageSize:this.queryForm.pageSize,
+                    searchInput: this.queryForm.searchInput
                 }).then(resp=>{
-                    if (resp.data.code == 200) {
-                        this.jobList = resp.data.data.items
-                        this.total = resp.data.data.total
-                    }else{
-                        this.$message.error(resp.data.message);
+                    if (resp.code == 200) {
+                        this.jobList = resp.data.items
+                        this.total = resp.data.total
                     }
                 });
             },

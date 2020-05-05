@@ -64,7 +64,6 @@
 </template>
 
 <script>
-    import axios from 'axios'
     export default {
         name: "bookmark",
         data() {
@@ -110,31 +109,24 @@
                 this.queryData()
             },
             getAllMediaType(){
-                axios({
-                    method: 'POST',
-                    url: 'http://localhost:8083/mediaType/getAllMediaType',
-                    data:{
-                        status:'1'
-                    }
+                this.$axios.post('/mediaType/getAllMediaType',{
+                    status:'1'
                 }).then(resp=>{
-                    if (resp.data.code == 200) {
-                        this.mediaTypeList = resp.data.data
-                    }else{
-                        this.$message.error(resp.data.message);
+                    if (resp.code == 200) {
+                        this.mediaTypeList = resp.data
                     }
                 });
             },
             queryData(){
-                axios({
-                    method: 'POST',
-                    url: 'http://localhost:8083/bookmark/getBookMediaList',
-                    data:this.queryForm
+                this.$axios.post('/bookmark/getBookMediaList',{
+                    mediaType:this.queryForm.mediaType,
+                    searchInput:this.queryForm.searchInput,
+                    pageSize:this.queryForm.pageSize,
+                    page:this.queryForm.page
                 }).then(resp=>{
-                    if (resp.data.code == 200) {
-                        this.mediaWorks = resp.data.data.items;
-                        this.total = resp.data.data.total;
-                    }else{
-                        this.$message.error(resp.data.message);
+                    if (resp.code == 200) {
+                        this.mediaWorks = resp.data.items;
+                        this.total = resp.data.total;
                     }
                 });
             },

@@ -71,7 +71,6 @@
 </template>
 
 <script>
-    import axios from 'axios'
     export default {
         name: "mediaList",
         data(){
@@ -109,16 +108,16 @@
                 }
             },
             queryData(){
-                axios({
-                    method: 'POST',
-                    url: 'http://localhost:8083/mediaWork/mediaWorkList',
-                    data:this.queryForm
+                this.axios.post('/mediaWork/mediaWorkList',{
+                    searchInput:this.queryForm.searchInput,
+                    status:this.queryForm.status,
+                    pageSize:this.queryForm.pageSize,
+                    page:this.queryForm.page,
+                    order:this.queryForm.order
                 }).then(resp=>{
-                    if (resp.data.code == 200) {
-                        this.meidaList = resp.data.data.items;
-                        this.total = resp.data.data.total;
-                    }else{
-                        this.$message.error(resp.data.message);
+                    if (resp.code == 200) {
+                        this.meidaList = resp.data.items;
+                        this.total = resp.data.total;
                     }
                 });
             },

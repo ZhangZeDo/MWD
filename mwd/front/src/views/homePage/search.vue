@@ -64,7 +64,6 @@
 </template>
 
 <script>
-    import axios from 'axios'
     export default {
         name: "search",
         data(){
@@ -90,17 +89,11 @@
                 return val
             },
             getAllMediaType(){
-                axios({
-                    method: 'POST',
-                    url: 'http://localhost:8083/mediaType/getAllMediaType',
-                    data:{
-                        status:'1'
-                    }
+                this.$axios.post('/mediaType/getAllMediaType',{
+                    status:'1'
                 }).then(resp=>{
-                    if (resp.data.code == 200) {
-                        this.mediaTypeList = resp.data.data
-                    }else{
-                        this.$message.error(resp.data.message);
+                    if (resp.code == 200) {
+                        this.mediaTypeList = resp.data
                     }
                 });
             },

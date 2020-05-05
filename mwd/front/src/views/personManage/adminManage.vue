@@ -86,7 +86,6 @@
 </template>
 
 <script>
-    import axios from 'axios'
     export default {
         name: "AdminManage",
         data(){
@@ -139,16 +138,16 @@
               }
             },
             queryData(){
-                axios({
-                    method: 'POST',
-                    url: 'http://localhost:8083/user/queryUserList',
-                    data:this.queryForm
+                this.$axios.post('/user/queryUserList',{
+                    searchInput:this.queryForm.searchInput,
+                    status:this.queryForm.status,
+                    pageSize:this.queryForm.pageSize,
+                    page:this.queryForm.page,
+                    roleType:this.queryForm.roleType
                 }).then(resp=>{
-                    if (resp.data.code == 200) {
-                        this.userList = resp.data.data.items;
-                        this.total = resp.data.data.total;
-                    }else{
-                        this.$message.error(resp.data.message);
+                    if (resp.code == 200) {
+                        this.userList = resp.data.items;
+                        this.total = resp.data.total;
                     }
                 });
             },
@@ -172,12 +171,13 @@
                 });
             },
             submitForm(){
-                axios({
-                    method: 'POST',
-                    url: 'http://localhost:8083/user/register',
-                    data:this.userForm
+                this.$axios.post('/user/register',{
+                    userName:this.userForm.userName,
+                    userAccount:this.userForm.userAccount,
+                    roleType:this.userForm.roleType,
+                    userPassword:this.userForm.userPassword
                 }).then(resp=>{
-                    if (resp.data.code == 200) {
+                    if (resp.code == 200) {
                         this.$message.success("管理员创建成功,初始密码为000000,请联系该管理员完善信息");
                     }
                     this.queryData()

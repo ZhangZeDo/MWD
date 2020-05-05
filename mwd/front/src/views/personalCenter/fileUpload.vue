@@ -206,17 +206,11 @@
                 this.mediaFileList = fileList;
             },
             getAllMediaType(){
-                axios({
-                    method: 'POST',
-                    url: 'http://localhost:8083/mediaType/getAllMediaType',
-                    data:{
-                        status:'1'
-                    }
+                this.$axios.post('/mediaType/getAllMediaType',{
+                    status:'1'
                 }).then(resp=>{
-                    if (resp.data.code == 200) {
-                        this.mediaTypeList = resp.data.data
-                    }else{
-                        this.$message.error(resp.data.message);
+                    if (resp.code == 200) {
+                        this.mediaTypeList = resp.data
                     }
                 });
             },
@@ -241,16 +235,16 @@
                 });
             },
             queryData(){
-                axios({
-                    method: 'POST',
-                    url: 'http://localhost:8083/mediaWork/mediaWorkList',
-                    data:this.queryForm
+                this.$axios.post('/mediaWork/mediaWorkList',{
+                    status:this.queryForm.status,
+                    mediaType:this.queryForm.mediaType,
+                    searchInput:this.queryForm.searchInput,
+                    pageSize:this.queryForm.pageSize,
+                    page:this.queryForm.page
                 }).then(resp=>{
-                    if (resp.data.code == 200) {
-                        this.mediaWorks = resp.data.data.items;
-                        this.total = resp.data.data.total;
-                    }else{
-                        this.$message.error(resp.data.message);
+                    if (resp.code == 200) {
+                        this.mediaWorks = resp.data.items;
+                        this.total = resp.data.total;
                     }
                 });
             },

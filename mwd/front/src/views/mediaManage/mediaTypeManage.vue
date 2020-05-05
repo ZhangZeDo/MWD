@@ -86,7 +86,7 @@
 </template>
 
 <script>
-    import axios from 'axios'
+
     export default {
         name: "mediaTypeManage",
         data(){
@@ -133,16 +133,15 @@
                 }
             },
             queryData(){
-                axios({
-                    method: 'POST',
-                    url: 'http://localhost:8083/mediaType/queryMediaTypeList',
-                    data:this.queryForm
+                this.$axios.post('/mediaType/queryMediaTypeList',{
+                    searchInput:this.queryForm.searchInput,
+                    status:this.queryForm.status,
+                    pageSize:this.queryForm.pageSize,
+                    page:this.queryForm.page
                 }).then(resp=>{
-                    if (resp.data.code == 200) {
-                        this.meidaTypeList = resp.data.data.items;
-                        this.total = resp.data.data.total;
-                    }else{
-                        this.$message.error(resp.data.message);
+                    if (resp.code == 200) {
+                        this.meidaTypeList = resp.data.items;
+                        this.total = resp.data.total;
                     }
                 });
             },
