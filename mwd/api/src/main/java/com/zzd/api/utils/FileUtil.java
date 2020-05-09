@@ -23,7 +23,7 @@ public class FileUtil {
             String baseUrl = "";
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
             String date = simpleDateFormat.format(new Date());
-            String result = "http://localhost:8083/";
+            String result = "http://129.204.251.179:8083/";
             if (StringUtils.equals(type, "cover")) {
                 baseUrl = coverBaseUrl+"\\"+date;
                 result = result + "cover/"+date;

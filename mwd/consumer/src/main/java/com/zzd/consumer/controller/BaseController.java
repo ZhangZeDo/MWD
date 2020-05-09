@@ -44,9 +44,8 @@ public class BaseController {
     }
 
     private String resetFileUrl(String fileUrl){
-        //http://localhost:8083/news/20200425/新建文本文档_2020-04-25-14-57-56.txt
         String baseUrl = "D:\\Program Files\\fileDepository\\";
-        fileUrl = fileUrl.replace("http://localhost:8083/",baseUrl);
+        fileUrl = fileUrl.replace("http://129.204.251.179:8083/",baseUrl);
         fileUrl = fileUrl.replace("/","\\");
         return fileUrl;
     }

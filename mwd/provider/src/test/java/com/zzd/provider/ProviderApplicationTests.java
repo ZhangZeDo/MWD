@@ -13,15 +13,4 @@ import javax.annotation.Resource;
 @SpringBootTest
 public class ProviderApplicationTests {
 
-    private final Logger logger = LoggerFactory.getLogger(ProviderApplicationTests.class);
-
-
-    @Test
-    public void contextLoads() {
-        logger.info("测试测试");
-    }
-
-
-
-
 }

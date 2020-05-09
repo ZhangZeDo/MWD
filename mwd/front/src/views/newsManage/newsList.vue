@@ -171,7 +171,7 @@
                 formData.append("content",this.ruleForm.content);
                 axios({
                     method: 'POST',
-                    url: 'http://localhost:8083/news/addNews',
+                    url: 'http://129.204.251.179:8083/news/addNews',
                     data:formData
                 }).then(resp=>{
                     if (resp.data.code == 200) {
