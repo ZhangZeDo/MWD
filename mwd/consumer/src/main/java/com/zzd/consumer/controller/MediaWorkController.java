@@ -6,10 +6,12 @@ import com.zzd.api.dto.PageResponseResult;
 import com.zzd.api.dto.ResponseResult;
 import com.zzd.api.eunms.ErrCode;
 import com.zzd.api.service.MediaWorkService;
-import com.zzd.api.utils.FileUtil;
+import com.zzd.consumer.utils.FileUtil;
+import org.apache.tomcat.util.http.fileupload.FileUploadBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -63,6 +65,8 @@ public class MediaWorkController extends BaseController{
             mediaWork.setMediaType(mediaType);
             mediaWorkService.addMediaWork(mediaWork,getOperator(request));
             return ResponseResult.ok();
+        }catch (MultipartException mx){
+            return ResponseResult.error("上传文件太大，请重新选择上传");
         }catch (Exception e){
             return ResponseResult.error(e.getMessage());
         }

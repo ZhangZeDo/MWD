@@ -108,7 +108,7 @@
                     fluid: true,
                     sources: [{
                         // type: "video/mp4", // 类型
-                        src: 'https://video.pearvideo.com/mp4/short/20200209/cont-1650197-14888002-hd.mp4' // url地址
+                        src: '' // url地址
                     }],
                     // 封面地址
                     poster: '',
@@ -167,7 +167,7 @@
                 }).then(resp =>{
                     this.mediaWork = resp.data
                     this.playerOptions.poster = this.mediaWork.mediaCover
-                    //this.playerOptions.sources[0].src = this.mediaWork.mediaUrl
+                    this.playerOptions.sources[0].src = this.mediaWork.mediaUrl
                 })
             },
             judgeBookmark(){

@@ -36,7 +36,7 @@ public class BaseController {
             response.setCharacterEncoding("utf-8");
             response.setContentType("application/octet-stream");
             response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
-            fileUrl = resetFileUrl(fileUrl);
+            //fileUrl = resetFileUrl(fileUrl);
             FileCopyUtils.copy(new FileInputStream(fileUrl), response.getOutputStream());
         } catch (Exception e) {
             logger.error("下载文件出现异常，异常信息为", e);

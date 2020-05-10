@@ -108,7 +108,7 @@
                 }
             },
             queryData(){
-                this.axios.post('/mediaWork/mediaWorkList',{
+                this.$axios.post('/mediaWork/mediaWorkList',{
                     searchInput:this.queryForm.searchInput,
                     status:this.queryForm.status,
                     pageSize:this.queryForm.pageSize,

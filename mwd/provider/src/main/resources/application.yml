@@ -29,6 +29,19 @@ spring:
     password: zemljfesefwyddfh
     protocol: smtp
     default-encoding: UTF-8
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 0
+      max-file-size: 1024MB
+      max-request-size: 1024MB
 mybatis:
   mapper-locations: classpath:mapper/*Mapper.xml
   type-aliases-package: com.zzd.api.dao
+
+constants:
+  coverBaseUrl: /data/mwd/cover
+  mediaBaseUrl: /data/mwd/media
+  newsBaseUrl: /data/mwd/news
+
+

@@ -153,6 +153,7 @@
                     searchInput:'',
                     pageSize:6,
                     page:1,
+                    belongTo:true,
                 },
                 total:0,
                 rules: {
@@ -240,7 +241,8 @@
                     mediaType:this.queryForm.mediaType,
                     searchInput:this.queryForm.searchInput,
                     pageSize:this.queryForm.pageSize,
-                    page:this.queryForm.page
+                    page:this.queryForm.page,
+                    belongTo:this.queryForm.belongTo
                 }).then(resp=>{
                     if (resp.code == 200) {
                         this.mediaWorks = resp.data.items;

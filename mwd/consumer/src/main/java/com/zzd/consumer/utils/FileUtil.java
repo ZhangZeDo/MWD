@@ -1,8 +1,10 @@
-package com.zzd.api.utils;
+package com.zzd.consumer.utils;
 
 import com.zzd.api.exceptions.BussException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
+
 import java.io.File;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -14,25 +16,27 @@ import java.util.Date;
  * @describe
  */
 public class FileUtil {
-    private static final String coverBaseUrl = "D:\\Program Files\\fileDepository\\cover";
+
+    private static final String coverBaseUrl = "/data/mwd/cover";
+    private static final String mediaBaseUrl = "/data/mwd/media";
+    private static final String newsBaseUrl = "/data/mwd/news";
+
+    /*private static final String coverBaseUrl = "D:\\Program Files\\fileDepository\\cover";
     private static final String mediaBaseUrl = "D:\\Program Files\\fileDepository\\media";
-    private static final String newsBaseUrl = "D:\\Program Files\\fileDepository\\news";
+    private static final String newsBaseUrl = "D:\\Program Files\\fileDepository\\news";*/
 
     public static String uploadFile(String type, InputStream inputStream,String fileName){
         try {
-            String baseUrl = "";
+            String result = "";
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
             String date = simpleDateFormat.format(new Date());
-            String result = "http://129.204.251.179:8083/";
+            //String result = "http://129.204.251.179:8083/";
             if (StringUtils.equals(type, "cover")) {
-                baseUrl = coverBaseUrl+"\\"+date;
-                result = result + "cover/"+date;
+                result = coverBaseUrl+"/"+date;
             } else if (StringUtils.equals(type, "media")) {
-                baseUrl = mediaBaseUrl+"\\"+date;
-                result = result + "media/"+date;
+                result = mediaBaseUrl+"/"+date;
             } else if (StringUtils.equals(type,"news")){
-                baseUrl = newsBaseUrl+"\\"+date;
-                result = result + "news/"+date;
+                result = newsBaseUrl+"/"+date;
             }else {
                 throw new BussException("保存文件失败");
             }
@@ -45,11 +49,9 @@ public class FileUtil {
             } else {
                 name = fileName.substring(0, i).concat(dateString).concat(fileName.substring(i, fileName.length()));
             }
-            String routeDir = baseUrl+"\\"+name;
+            String routeDir = result+"/"+name;
             FileUtils.copyInputStreamToFile(inputStream, new File(routeDir));
-
-            result = result + "/" + name;
-            return result;
+            return routeDir;
         }catch (Exception e){
             throw new BussException("保存文件失败");
         }

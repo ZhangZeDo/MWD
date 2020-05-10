@@ -23,4 +23,16 @@ spring:
   mvc:
     static-path-pattern: /**
   resources:
-    static-l  ocations: classpath:/META-INF/resources/,classpath:/resources/, classpath:/static/, classpath:/public/, file:D:/Program Files/fileDepository/
+    static-l  ocations: classpath:/META-INF/resources/,classpath:/resources/, classpath:/static/, classpath:/public/, file:/data/mwd/
+    #file:D:/Program Files/fileDepository/
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 0
+      max-file-size: 1024MB
+      max-request-size: 1024MB
+
+constants:
+  coverBaseUrl: /data/mwd/cover
+  mediaBaseUrl: /data/mwd/media
+  newsBaseUrl: /data/mwd/news

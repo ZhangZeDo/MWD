@@ -8,7 +8,7 @@ import com.zzd.api.dto.ResponseResult;
 import com.zzd.api.eunms.ErrCode;
 import com.zzd.api.exceptions.BussException;
 import com.zzd.api.service.NewsService;
-import com.zzd.api.utils.FileUtil;
+import com.zzd.consumer.utils.FileUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -105,7 +105,12 @@ public class MediaWorkServiceImpl implements MediaWorkService {
         if (mediaWork == null) {
             throw new BussException("作品已不存在，修改失败!");
         }
-        mediaWork.setStatus(status);
+        if(EntityStatus.Valid.getCode() == status){
+            mediaWork.setStatus(EntityStatus.InValid.getCode());
+        }else{
+            mediaWork.setStatus(EntityStatus.Valid.getCode());
+        }
+
         resetMediaWorkInfo(mediaWork, operator);
         mediaWorkMapper.updateByPrimaryKeySelective(mediaWork);
     }
