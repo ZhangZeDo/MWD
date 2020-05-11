@@ -113,12 +113,13 @@
                                 :before-remove="beforeRemove"
                                 multiple
                                 :limit="1"
+                                accept="audio/mpeg,video/mp4"
                                 :on-exceed="handleExceed"
                                 :auto-upload="false"
                                 :on-change="onChangeMedia"
                                 :file-list="mediaFileList">
                             <el-button size="small" type="primary">点击上传视频</el-button>
-                            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件</div>
+                            <div slot="tip" class="el-upload__tip">只能上传mp3/mp4文件</div>
                         </el-upload>
                     </div>
                 </el-form-item>
@@ -159,7 +160,7 @@
                 rules: {
                     mediaName: [
                         { required: true, message: '请输入作品名称', trigger: 'blur' },
-                        { min: 5, max: 20, message: '长度在 5 到 20个字符', trigger: 'blur' }
+                        { min: 1, max: 20, message: '长度在 1 到 20个字符', trigger: 'blur' }
                     ],
                     mediaType: [
                         { required: true, message: '请选择作品类型', trigger: 'change' }
@@ -225,7 +226,11 @@
                 axios({
                     method: 'POST',
                     url: 'http://129.204.251.179:8083/mediaWork/uploadMediaWork',
-                    data:formData
+                    data:formData,
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    },
+                    timeout:180000
                 }).then(resp=>{
                     if (resp.data.code == 200) {
                         this.$message.success("上传成功");

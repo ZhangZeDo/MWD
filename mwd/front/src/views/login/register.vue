@@ -50,12 +50,16 @@
                     ],
                     userName: [
                         { required: true, message: '请输入名称', trigger: 'blur' },
-                        { min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur' }
+                        { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }
                     ],
                     userPassword: [
                         { required: true, message: '请输入密码', trigger: 'blur' },
                         { min: 6, max: 10, message: '长度在 6 到 10 个字符', trigger: 'blur' }
                     ],
+                    userMail:[
+                        { required: true, message: '请输入邮箱', trigger: 'blur' },
+                        { min: 1, max: 30, message: '请输入正确的邮箱', trigger: 'blur' }
+                    ]
                 }
             }
         },
@@ -63,6 +67,8 @@
             doRegister(){
                 if (this.ruleForm.userPassword != this.reUserPassWord){
                     this.$message.error("输入的2次密码不一致")
+                }else if (!this.ruleForm.userMail){
+                    this.$message.error("请输入邮箱信息")
                 }else{
                     this.$axios.post('/user/register',{
                         userAccount:this.ruleForm.userAccount,

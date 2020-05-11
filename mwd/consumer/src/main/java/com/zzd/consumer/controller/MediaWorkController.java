@@ -52,6 +52,7 @@ public class MediaWorkController extends BaseController{
                                    @RequestParam("mediaType") String mediaType,
                                    HttpServletRequest request) {
         try{
+            logger.info("用户开始上传文件");
             if (coverFile == null || mediaFile==null) {
                 return ResponseResult.error("上传文件为空，上传失败");
             }
