@@ -17,20 +17,20 @@ import java.util.Date;
  */
 public class FileUtil {
 
-    private static final String coverBaseUrl = "/data/mwd/cover";
+/*    private static final String coverBaseUrl = "/data/mwd/cover";
     private static final String mediaBaseUrl = "/data/mwd/media";
-    private static final String newsBaseUrl = "/data/mwd/news";
+    private static final String newsBaseUrl = "/data/mwd/news";*/
 
-    /*private static final String coverBaseUrl = "D:\\Program Files\\fileDepository\\cover";
+    private static final String coverBaseUrl = "D:\\Program Files\\fileDepository\\cover";
     private static final String mediaBaseUrl = "D:\\Program Files\\fileDepository\\media";
-    private static final String newsBaseUrl = "D:\\Program Files\\fileDepository\\news";*/
+    private static final String newsBaseUrl = "D:\\Program Files\\fileDepository\\news";
 
     public static String uploadFile(String type, InputStream inputStream,String fileName){
         try {
             String result = "";
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
             String date = simpleDateFormat.format(new Date());
-            //String result = "http://129.204.251.179:8083/";
+            //String result = "http://127.0.0.1:8083/";
             if (StringUtils.equals(type, "cover")) {
                 result = coverBaseUrl+"/"+date;
             } else if (StringUtils.equals(type, "media")) {

@@ -17,7 +17,7 @@
         <!-- JDBC连接 -->
         <jdbcConnection
                 driverClass="com.mysql.jdbc.Driver"
-                connectionURL="jdbc:mysql://129.204.251.179:3306/mwd?useUnicode=true&amp;amp;characterEncoding=UTF-8&amp;amp;autoReconnect=true"
+                connectionURL="jdbc:mysql://127.0.0.1:3306/mwd?useUnicode=true&amp;amp;characterEncoding=UTF-8&amp;amp;autoReconnect=true"
                 userId="root"
                 password="ABCabc123">
         </jdbcConnection>

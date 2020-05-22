@@ -59,7 +59,7 @@ axios.interceptors.response.use(
     }
 );
 
-axios.defaults.baseURL = "http://129.204.251.179:8083";
+axios.defaults.baseURL = "http://127.0.0.1:8083";
 axios.defaults.withCredentials = true;
 axios.defaults.headers.post["Content-Type"] = "application/json";
 axios.defaults.headers.post["X-Requested-With"] = "XMLHttpRequest";

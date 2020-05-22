@@ -225,7 +225,7 @@
                 formData.append("mediaType",this.ruleForm.mediaType);
                 axios({
                     method: 'POST',
-                    url: 'http://129.204.251.179:8083/mediaWork/uploadMediaWork',
+                    url: 'http://127.0.0.1:8083/mediaWork/uploadMediaWork',
                     data:formData,
                     headers: {
                         'Content-Type': 'multipart/form-data'
