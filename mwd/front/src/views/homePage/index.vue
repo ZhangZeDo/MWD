@@ -45,6 +45,9 @@
                                     <img style="width: 30px;height: 20px;float: left" src="../static/img/homePageGood.svg"/>
                                     <span style="float: left;margin-top: 2px;padding-left: 3px">{{index.recommendNum}}</span>
                                 </div>
+                                <div style="width: 100px;height: 20px;float: right" >
+                                    <span style="float: left;margin-top: 1px;padding-left: 3px">上传者：{{index.uploadUser}}</span>
+                                </div>
                             </div>
                         </el-card>
                     </el-col>

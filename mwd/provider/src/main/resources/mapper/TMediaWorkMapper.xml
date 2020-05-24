@@ -438,7 +438,7 @@
             </if>
         </trim>
         <if test="param.order !=null and param.order!=''">
-            order by #{param.order} desc
+            order by ${param.order} desc
         </if>
     </sql>
 

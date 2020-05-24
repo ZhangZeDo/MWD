@@ -7,12 +7,14 @@ import com.zzd.api.dao.TMediaWorkMapper;
 import com.zzd.api.domain.EmailModel;
 import com.zzd.api.domain.TMediaWork;
 import com.zzd.api.domain.TMediaWorkExample;
+import com.zzd.api.domain.TUser;
 import com.zzd.api.dto.MediaWorkDTO;
 import com.zzd.api.dto.PageResponseResult;
 import com.zzd.api.eunms.EntityStatus;
 import com.zzd.api.exceptions.BussException;
 import com.zzd.api.service.MediaWorkService;
 import com.zzd.api.service.UnderRankService;
+import com.zzd.api.service.UserService;
 import com.zzd.provider.utils.MailSendUtils;
 import com.zzd.provider.utils.RedisUtil;
 import com.zzd.provider.utils.UniqIdUtil;
@@ -39,6 +41,9 @@ public class MediaWorkServiceImpl implements MediaWorkService {
     private UnderRankService underRankService;
 
     @Resource
+    private UserService userService;
+
+    @Resource
     private RedisUtil redisUtil;
 
     @Override
@@ -61,6 +66,12 @@ public class MediaWorkServiceImpl implements MediaWorkService {
         }
 
         List<TMediaWork> mediaWorkList = mediaWorkMapper.selectByMediaWorkDTO(mediaWorkDTO);
+        for (TMediaWork tMediaWork : mediaWorkList) {
+            TUser user = userService.selectUserByAccount(tMediaWork.getUploadUser(),EntityStatus.Valid.getCode());
+            if (user !=null){
+                tMediaWork.setUploadUser(user.getUserName());
+            }
+        }
         int total = mediaWorkMapper.selectByMediaWorkTotal(mediaWorkDTO);
         return new PageResponseResult(total, mediaWorkList);
     }
@@ -111,6 +122,7 @@ public class MediaWorkServiceImpl implements MediaWorkService {
             mediaWork.setStatus(EntityStatus.Valid.getCode());
         }
 
+        mediaWork.setApprovalUser(operator);
         resetMediaWorkInfo(mediaWork, operator);
         mediaWorkMapper.updateByPrimaryKeySelective(mediaWork);
     }
