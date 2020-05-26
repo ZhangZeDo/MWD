@@ -41,6 +41,9 @@
                                     <img style="width: 30px;height: 20px;float: left" src="../static/img/homePageGood.svg"/>
                                     <span style="float: left;margin-top: 2px;padding-left: 3px">{{index.recommendNum}}</span>
                                 </div>
+                                <div style="width: 100px;height: 20px;float: right" >
+                                    <span style="float: right;margin-top: 1px;padding-left: 3px">up:{{parseUp(index.uploadUser)}}</span>
+                                </div>
                             </div>
                         </el-card>
                     </el-col>
@@ -85,6 +88,12 @@
             parseString(val){
                 if (val.length>60){
                     val = val.substring(0,60)+"...";
+                }
+                return val
+            },
+            parseUp(val){
+                if (val.length>5){
+                    val = val.substring(0,5)+"...";
                 }
                 return val
             },

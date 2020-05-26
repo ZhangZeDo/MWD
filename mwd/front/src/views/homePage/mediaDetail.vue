@@ -249,7 +249,9 @@
                 })
             },
             focusclick () {
-                this.focusState = true
+                let x = document.getElementById('contentInput');
+                x.focus()
+                window.scrollTo(0,300)
             },
             addMediaPopular(){
                 this.$axios.post('/mediaWork/addMediaPopular',{
