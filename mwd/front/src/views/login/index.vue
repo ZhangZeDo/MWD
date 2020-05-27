@@ -1,6 +1,6 @@
 <template>
-    <div >
-        <div style="display: flex;justify-content: center;margin-top: 150px">
+    <div class="login">
+        <div style="display: flex;justify-content: center;margin-top: 150px;">
                 <el-form auto-complete="on" label-position="left">
                     <h3 class="title" align="center">欢迎使用多媒体展示平台</h3>
                     <el-card style="width: 450px;margin-top: 20px">
@@ -75,3 +75,11 @@
         }
     }
 </script>
+<style>
+    .login{
+        background-image: url("../static/img/background.png");
+        background-size: cover;
+        height: 650px;
+    }
+</style>
+

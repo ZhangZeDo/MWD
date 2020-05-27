@@ -1,5 +1,5 @@
 <template>
-    <div >
+    <div class="forgetPass">
         <div style="display: flex;justify-content: center;margin-top: 150px">
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" auto-complete="on" label-position="left">
                 <h3 class="title" align="center">忘记密码</h3>
@@ -81,6 +81,10 @@
     }
 </script>
 
-<style scoped>
-
+<style>
+    .forgetPass{
+        background-image: url("../static/img/background.png");
+        background-size: cover;
+        height: 650px;
+    }
 </style>
